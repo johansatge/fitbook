@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <title><%= htmlTitle %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="<%= assets.styles %>">
+  </head>
+  <body class="mdc-typography">
+    <div class="js-app"></div>
+    <script src="<%= assets.app %>"></script>
+    <script>Scripts.app.init(document.querySelector('.js-app'))</script>
+  </body>
+</html>

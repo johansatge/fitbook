@@ -1,0 +1,116 @@
+// Reset
+
+html, body, div, h1, h2, h3, div, span, p, header, section, a {
+  margin: 0;
+  padding: 0;
+}
+
+// Material UI colors
+// Amber 50
+
+$mdc-theme-primary: #e65100;
+$mdc-theme-secondary: #ef6c00;
+$mdc-theme-on-primary: #ffffff;
+$mdc-theme-on-secondary: #ffffff;
+
+// Material UI components
+
+@import "@material/top-app-bar/mdc-top-app-bar";
+@import "@material/button/mdc-button";
+@import "@material/drawer/mdc-drawer";
+@import "@material/list/mdc-list";
+@import "@material/icon-button/mdc-icon-button";
+@import "@material/typography/mdc-typography";
+@import "@material/select/mdc-select";
+@import "@material/textfield/mdc-text-field";
+@import "@material/elevation/mdc-elevation";
+@import "@material/list/mdc-list";
+@import "@material/fab/mdc-fab";
+
+// Modal drawer + standard top app bar
+// https://material.io/develop/web/components/drawers/
+// https://material-components.github.io/material-components-web-catalog/#/component/drawer/modal
+
+body {
+  width: 100%;
+  height: 100%;
+  background: #eeeeee;
+}
+
+.app-main {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.mdc-top-app-bar {
+  position: absolute;
+}
+
+// Loader
+
+.app-loading {
+    animation:spin 2s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform:rotate(360deg);
+  }
+}
+
+// Footer
+
+.app-footer {
+  margin: 32px 10px 32px 10px;
+  text-align: center;
+  color: #a2a2a2;
+}
+
+// Add button
+
+.app-add {
+  position: fixed;
+  right: 15px;
+  bottom: 15px;
+}
+
+// Top bar
+.mdc-top-app-bar__action-item:disabled {
+  opacity: 0.5;
+}
+
+// Feed
+
+.app-card {
+  background: #ffffff;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.app-card-field {
+  display: block;
+  margin: 0 0 15px 0;
+}
+
+.app-card-list {
+  padding: 0;
+  background: #ffffff;
+  border-top: 1px solid #e0e0e0;
+}
+
+.app-card-list li {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.app-card-date {
+  margin: 15px 15px 15px 15px;
+}
+
+.app-card-title {
+  padding: 15px 15px 15px 15px;
+}
+
+.app-card-button {
+  margin: 0 10px 0 0;
+}
