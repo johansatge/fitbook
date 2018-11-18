@@ -12,6 +12,6 @@ export default class FeedDate extends Component {
 
   render({ date }) {
     const readableDate = dateFns.format(date, 'dddd, MMMM Do')
-    return <h2 className="app-card-date mdc-typography--headline6">{readableDate}</h2>
+    return <h2 className="feed-date mdc-typography--headline6">{readableDate}</h2>
   }
 }

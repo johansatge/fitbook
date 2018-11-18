@@ -11,7 +11,7 @@ export default class FeedAddButton extends Component {
 
   render({ onClick }) {
     return (
-      <button onClick={onClick} className="app-add mdc-fab">
+      <button onClick={onClick} className="feed-add-button mdc-fab">
         <span className="mdc-fab__icon material-icons">add</span>
       </button>
     )

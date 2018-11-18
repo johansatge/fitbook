@@ -57,7 +57,7 @@ module.exports = ({ dropboxAppKey }) => {
             {
               loader: 'sass-loader',
               options: {
-                includePaths: [path.join(__dirname, '..', 'node_modules')],
+                includePaths: [path.join(__dirname, '..', 'node_modules'), path.join(__dirname, 'components')],
                 outputStyle: 'compressed',
               },
             },

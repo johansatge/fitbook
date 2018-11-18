@@ -11,6 +11,6 @@ export default class Footer extends Component {
   componentWillUnmount() {}
 
   render() {
-    return <div className="app-footer mdc-typography--body2">{`${pkg.name} ${pkg.version}`}</div>
+    return <div className="footer mdc-typography--body2">{`${pkg.name} ${pkg.version}`}</div>
   }
 }

@@ -29,8 +29,8 @@ export default class Add extends Component {
       )
     })
     return (
-      <div className="app-card">
-        <div className="app-card-field mdc-select mdc-select--with-leading-icon">
+      <div className="add">
+        <div className="field mdc-select mdc-select--with-leading-icon">
           <i className="material-icons mdc-select__icon">accessibility_new</i>
           <i className="mdc-select__dropdown-icon" />
           <select className="mdc-select__native-control">
@@ -40,7 +40,7 @@ export default class Add extends Component {
           <label className="mdc-floating-label">Workout type</label>
           <div className="mdc-line-ripple" />
         </div>
-        <div className="app-card-field mdc-text-field mdc-text-field--with-leading-icon">
+        <div className="field mdc-text-field mdc-text-field--with-leading-icon">
           <i className="material-icons mdc-text-field__icon">event</i>
           <input type="text" id="my-input" className="mdc-text-field__input" />
           <label htmlFor="my-input" className="mdc-floating-label">
@@ -48,7 +48,7 @@ export default class Add extends Component {
           </label>
           <div className="mdc-line-ripple" />
         </div>
-        <div className="app-card-field mdc-text-field mdc-text-field--with-leading-icon">
+        <div className="field mdc-text-field mdc-text-field--with-leading-icon">
           <i className="material-icons mdc-text-field__icon">map</i>
           <input type="text" id="my-input" className="mdc-text-field__input" />
           <label htmlFor="my-input" className="mdc-floating-label">
@@ -56,7 +56,7 @@ export default class Add extends Component {
           </label>
           <div className="mdc-line-ripple" />
         </div>
-        <div className="app-card-field mdc-text-field mdc-text-field--with-leading-icon">
+        <div className="field mdc-text-field mdc-text-field--with-leading-icon">
           <i className="material-icons mdc-text-field__icon">play_arrow</i>
           <input type="text" id="my-input" className="mdc-text-field__input" />
           <label htmlFor="my-input" className="mdc-floating-label">
@@ -64,7 +64,7 @@ export default class Add extends Component {
           </label>
           <div className="mdc-line-ripple" />
         </div>
-        <div className="app-card-field mdc-text-field mdc-text-field--with-leading-icon">
+        <div className="field mdc-text-field mdc-text-field--with-leading-icon">
           <i className="material-icons mdc-text-field__icon">fast_forward</i>
           <input type="text" id="my-input" className="mdc-text-field__input" />
           <label htmlFor="my-input" className="mdc-floating-label">
@@ -72,7 +72,7 @@ export default class Add extends Component {
           </label>
           <div className="mdc-line-ripple" />
         </div>
-        <div className="app-card-field mdc-text-field mdc-text-field--with-leading-icon">
+        <div className="field mdc-text-field mdc-text-field--with-leading-icon">
           <i className="material-icons mdc-text-field__icon">whatshot</i>
           <input type="text" id="my-input" className="mdc-text-field__input" />
           <label htmlFor="my-input" className="mdc-floating-label">
@@ -80,7 +80,7 @@ export default class Add extends Component {
           </label>
           <div className="mdc-line-ripple" />
         </div>
-        <div className="app-card-field mdc-text-field mdc-text-field--with-leading-icon">
+        <div className="field mdc-text-field mdc-text-field--with-leading-icon">
           <i className="material-icons mdc-text-field__icon">favorite</i>
           <input type="text" id="my-input" className="mdc-text-field__input" />
           <label htmlFor="my-input" className="mdc-floating-label">
@@ -88,10 +88,8 @@ export default class Add extends Component {
           </label>
           <div className="mdc-line-ripple" />
         </div>
-        <div className="app-card-buttons">
-          <button className="app-card-button mdc-button mdc-button--unelevated">Save workout</button>
-          <button className="app-card-button mdc-button">Cancel</button>
-        </div>
+        <button className="button mdc-button mdc-button--unelevated">Save workout</button>
+        <button className="button mdc-button">Cancel</button>
       </div>
     )
   }

@@ -37,6 +37,6 @@ export default class Log extends Component {
         </li>
       )
     })
-    return <ul className="app-card-list mdc-list mdc-list--two-line">{fields}</ul>
+    return <ul className="log mdc-list mdc-list--two-line">{fields}</ul>
   }
 }

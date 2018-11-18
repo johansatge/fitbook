@@ -5,15 +5,13 @@ html, body, div, h1, h2, h3, div, span, p, header, section, a {
   padding: 0;
 }
 
-// Material UI colors
-// Amber 50
+// Material UI components
+// Color: Amber 50
 
 $mdc-theme-primary: #e65100;
 $mdc-theme-secondary: #ef6c00;
 $mdc-theme-on-primary: #ffffff;
 $mdc-theme-on-secondary: #ffffff;
-
-// Material UI components
 
 @import "@material/top-app-bar/mdc-top-app-bar";
 @import "@material/button/mdc-button";
@@ -27,9 +25,7 @@ $mdc-theme-on-secondary: #ffffff;
 @import "@material/list/mdc-list";
 @import "@material/fab/mdc-fab";
 
-// Modal drawer + standard top app bar
-// https://material.io/develop/web/components/drawers/
-// https://material-components.github.io/material-components-web-catalog/#/component/drawer/modal
+// App base
 
 body {
   width: 100%;
@@ -43,74 +39,12 @@ body {
   height: 100%;
 }
 
-.mdc-top-app-bar {
-  position: absolute;
-}
+// App modules
 
-// Loader
-
-.app-loading {
-    animation:spin 2s linear infinite;
-}
-
-@keyframes spin {
-  100% {
-    transform:rotate(360deg);
-  }
-}
-
-// Footer
-
-.app-footer {
-  margin: 32px 10px 32px 10px;
-  text-align: center;
-  color: #a2a2a2;
-}
-
-// Add button
-
-.app-add {
-  position: fixed;
-  right: 15px;
-  bottom: 15px;
-}
-
-// Top bar
-.mdc-top-app-bar__action-item:disabled {
-  opacity: 0.5;
-}
-
-// Feed
-
-.app-card {
-  background: #ffffff;
-  padding: 15px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.app-card-field {
-  display: block;
-  margin: 0 0 15px 0;
-}
-
-.app-card-list {
-  padding: 0;
-  background: #ffffff;
-  border-top: 1px solid #e0e0e0;
-}
-
-.app-card-list li {
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.app-card-date {
-  margin: 15px 15px 15px 15px;
-}
-
-.app-card-title {
-  padding: 15px 15px 15px 15px;
-}
-
-.app-card-button {
-  margin: 0 10px 0 0;
-}
+@import "TopBar/TopBar.scss";
+@import "FeedAddButton/FeedAddButton.scss";
+@import "Footer/Footer.scss";
+@import "Add/Add.scss";
+@import "Log/Log.scss";
+@import "Feed/Feed.scss";
+@import "FeedDate/FeedDate.scss";

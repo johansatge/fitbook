@@ -18,7 +18,7 @@ export default class FeedAddButton extends Component {
       const dayLogs = logs[day].map((log, index) => {
         return <FeedLog key={index} log={log} onOpenLog={onOpenLog} />
       })
-      html.push(<ul className="app-card-list mdc-list mdc-list--two-line">{dayLogs}</ul>)
+      html.push(<ul className="feed mdc-list mdc-list--two-line">{dayLogs}</ul>)
     })
     return <div>{html}</div>
   }

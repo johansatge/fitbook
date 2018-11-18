@@ -30,7 +30,7 @@ export default class TopBar extends Component {
             {onClickRefresh ? (
               <button
                 onClick={onClickRefresh}
-                className={`material-icons mdc-top-app-bar__action-item ${isLoading ? 'app-loading' : ''}`}
+                className={`material-icons mdc-top-app-bar__action-item ${isLoading ? 'top-bar--loading' : ''}`}
                 disabled={isLoading}
               >
                 autorenew
