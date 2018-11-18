@@ -1,4 +1,4 @@
-/* global document DROPBOX_APP_KEY FileReader localStorage Promise */
+/* global document DROPBOX_APP_KEY FileReader localStorage Promise fetch */
 
 import dateFns from 'date-fns'
 import dropbox from 'dropbox'
@@ -14,7 +14,7 @@ export function isStoreConnected() {
 }
 
 export function getStoreAuthUrl() {
-  const dbx = new Dropbox({ clientId: dropboxAppKey })
+  const dbx = new Dropbox({ clientId: dropboxAppKey, fetch })
   return dbx.getAuthenticationUrl(document.location.href, null, 'token')
 }
 
@@ -118,7 +118,7 @@ function getAccessTokenFromStore() {
 function getDropboxInstance() {
   if (isStoreConnected()) {
     const token = getAccessTokenFromStore()
-    return new Dropbox({ accessToken: token })
+    return new Dropbox({ accessToken: token, fetch })
   }
   return null
 }
