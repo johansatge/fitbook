@@ -1,3 +1,4 @@
+import dateFns from 'date-fns'
 import { h, Component } from 'preact'
 import { MDCSelect } from '@material/select'
 import { MDCTextField } from '@material/textfield'
@@ -40,6 +41,7 @@ export default class Add extends Component {
     this.props.workouts[evt.target.value].fields.forEach((fieldName) => {
       defaultFields[fieldName] = null
     })
+    defaultFields.datetime = this.getDefaultDateTime()
     this.setState({
       ...this.state,
       workoutType: evt.target.value,
@@ -54,6 +56,14 @@ export default class Add extends Component {
     this.props.onUpdate(this.state.workoutType, { ...this.state.fields })
   }
 
+  getDefaultDateTime() {
+    return dateFns.format(new Date(), 'YYYY-MM-DD HH:mm:ss')
+  }
+
+  isValidDateTime(rawDateTime) {
+    return rawDateTime.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/)
+  }
+
   parseFieldValue(fieldName, rawValue) {
     const type = this.props.fields[fieldName].type
     if (type === 'string') {
@@ -62,6 +72,9 @@ export default class Add extends Component {
     if (type === 'number') {
       const number = parseFloat(rawValue)
       return isNaN(number) ? 0 : number
+    }
+    if (type === 'datetime') {
+      return this.isValidDateTime(rawValue) ? rawValue : this.getDefaultDateTime()
     }
     return rawValue
   }
