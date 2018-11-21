@@ -16,7 +16,7 @@ export default class TopBar extends Component {
 
   componentWillUnmount() {}
 
-  render({ isLoading, onClickRefresh, menuIcon, title }) {
+  render({ isLoading, onClickRefresh, onClickSave, menuIcon, title }) {
     return (
       <header className="mdc-top-app-bar">
         <div className="mdc-top-app-bar__row">
@@ -34,6 +34,11 @@ export default class TopBar extends Component {
                 disabled={isLoading}
               >
                 autorenew
+              </button>
+            ) : null}
+            {onClickSave ? (
+              <button onClick={onClickSave} className="material-icons mdc-top-app-bar__action-item">
+                done
               </button>
             ) : null}
           </section>

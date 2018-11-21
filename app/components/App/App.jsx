@@ -34,6 +34,8 @@ export default class App extends Component {
     this.onOpenAdd = this.onOpenAdd.bind(this)
     this.onOpenLog = this.onOpenLog.bind(this)
     this.onReturnToFeed = this.onReturnToFeed.bind(this)
+    this.onAddSave = this.onAddSave.bind(this)
+    this.onAddUpdate = this.onAddUpdate.bind(this)
     if (this.state.store.isConnected) {
       this.onFetchStoreData()
     }
@@ -45,6 +47,15 @@ export default class App extends Component {
 
   onOpenAdd() {
     this.setState({ ...this.state, page: 'add', pageData: null })
+  }
+
+  onAddSave() {
+    console.log('@todo save', this.state.pageData)
+    this.setState({ ...this.state, page: 'feed', pageData: null })
+  }
+
+  onAddUpdate(workoutType, data) {
+    this.setState({ ...this.state, pageData: { workout: workoutType, ...data } })
   }
 
   onReturnToFeed() {
@@ -94,31 +105,41 @@ export default class App extends Component {
     if (!this.state.store.isConnected) {
       return <AuthButton authUrl={this.state.store.authUrl} />
     }
-    if (this.state.page === 'log') {
+    if (state.page === 'log') {
       return (
         <div>
           <TopBar onClickMenu={this.onReturnToFeed} menuIcon="keyboard_backspace" title="Workout" />
           <main className="app-main">
             <div className="mdc-top-app-bar--fixed-adjust" />
-            <Log log={this.state.pageData} />
+            <Log log={state.pageData} />
             <Footer />
           </main>
         </div>
       )
     }
-    if (this.state.page === 'add') {
+    if (state.page === 'add') {
       return (
         <div>
-          <TopBar onClickMenu={this.onReturnToFeed} menuIcon="keyboard_backspace" title="Add workout" />
+          <TopBar
+            onClickMenu={this.onReturnToFeed}
+            menuIcon="keyboard_backspace"
+            title="Add workout"
+            onClickSave={this.onAddSave}
+          />
           <main className="app-main">
             <div className="mdc-top-app-bar--fixed-adjust" />
-            <Add fields={this.state.store.fields} workouts={this.state.store.workouts} />
+            <Add
+              fields={state.store.fields}
+              workouts={state.store.workouts}
+              data={state.store.pageData}
+              onUpdate={this.onAddUpdate}
+            />
             <Footer />
           </main>
         </div>
       )
     }
-    if (this.state.page === 'feed') {
+    if (state.page === 'feed') {
       return (
         <div>
           <Drawer onClickItem={this.onCloseDrawer} onClose={this.onCloseDrawer} isVisible={state.isDrawerVisible} />
@@ -134,7 +155,7 @@ export default class App extends Component {
             <div className="mdc-top-app-bar--fixed-adjust" />
             <Feed logs={state.store.logs} onOpenLog={this.onOpenLog} />
             <Footer />
-            <FeedAddButton onClick={this.onOpenAdd} />
+            {!state.isLoading ? <FeedAddButton onClick={this.onOpenAdd} /> : null}
           </main>
         </div>
       )
