@@ -36,14 +36,34 @@ export default class Add extends Component {
   }
 
   onSelectWorkoutType(evt) {
-    this.setState({ ...this.state, workoutType: evt.target.value, fields: {} })
+    const defaultFields = {}
+    this.props.workouts[evt.target.value].fields.forEach((fieldName) => {
+      defaultFields[fieldName] = null
+    })
+    this.setState({
+      ...this.state,
+      workoutType: evt.target.value,
+      fields: defaultFields,
+    })
   }
 
   onFieldChange(evt) {
     const fields = { ...this.state.fields }
-    fields[evt.target.name] = evt.target.value
+    fields[evt.target.name] = this.parseFieldValue(evt.target.name, evt.target.value)
     this.setState({ ...this.state, fields })
     this.props.onUpdate(this.state.workoutType, { ...this.state.fields })
+  }
+
+  parseFieldValue(fieldName, rawValue) {
+    const type = this.props.fields[fieldName].type
+    if (type === 'string') {
+      return String(rawValue)
+    }
+    if (type === 'number') {
+      const number = parseFloat(rawValue)
+      return isNaN(number) ? 0 : number
+    }
+    return rawValue
   }
 
   render({ fields, workouts }, state) {
@@ -56,6 +76,7 @@ export default class Add extends Component {
     })
     const fieldNodes = state.workoutType
       ? workouts[state.workoutType].fields.map((fieldName, index) => {
+          const readableUnit = fields[fieldName].unit ? ` (${fields[fieldName].unit})` : ''
           return (
             <div key={index} className="field mdc-text-field mdc-text-field--with-leading-icon">
               <i className="material-icons mdc-text-field__icon">{fields[fieldName].icon}</i>
@@ -68,7 +89,7 @@ export default class Add extends Component {
                 onChange={this.onFieldChange}
               />
               <label htmlFor={fieldName} className="mdc-floating-label">
-                {fields[fieldName].name}
+                {fields[fieldName].name + readableUnit}
               </label>
               <div className="mdc-line-ripple" />
             </div>

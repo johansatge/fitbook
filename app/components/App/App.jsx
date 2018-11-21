@@ -54,8 +54,18 @@ export default class App extends Component {
     this.setState({ ...this.state, page: 'feed', pageData: null })
   }
 
-  onAddUpdate(workoutType, data) {
-    this.setState({ ...this.state, pageData: { workout: workoutType, ...data } })
+  canSaveAddData() {
+    if (!this.state.pageData || !this.state.pageData.fields) {
+      return false
+    }
+    const emptyFields = Object.keys(this.state.pageData.fields).filter((fieldName) => {
+      return this.state.pageData.fields[fieldName] === null || this.state.pageData.fields[fieldName] === ''
+    })
+    return emptyFields.length === 0
+  }
+
+  onAddUpdate(workoutType, fields) {
+    this.setState({ ...this.state, pageData: { workout: workoutType, fields: { ...fields } } })
   }
 
   onReturnToFeed() {
@@ -125,6 +135,7 @@ export default class App extends Component {
             menuIcon="keyboard_backspace"
             title="Add workout"
             onClickSave={this.onAddSave}
+            canSave={this.canSaveAddData()}
           />
           <main className="app-main">
             <div className="mdc-top-app-bar--fixed-adjust" />

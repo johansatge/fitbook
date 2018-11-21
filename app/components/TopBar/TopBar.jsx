@@ -16,7 +16,7 @@ export default class TopBar extends Component {
 
   componentWillUnmount() {}
 
-  render({ isLoading, onClickRefresh, onClickSave, menuIcon, title }) {
+  render({ isLoading, onClickRefresh, onClickSave, canSave, menuIcon, title }) {
     return (
       <header className="mdc-top-app-bar">
         <div className="mdc-top-app-bar__row">
@@ -37,7 +37,7 @@ export default class TopBar extends Component {
               </button>
             ) : null}
             {onClickSave ? (
-              <button onClick={onClickSave} className="material-icons mdc-top-app-bar__action-item">
+              <button onClick={onClickSave} disabled={!canSave} className="material-icons mdc-top-app-bar__action-item">
                 done
               </button>
             ) : null}
