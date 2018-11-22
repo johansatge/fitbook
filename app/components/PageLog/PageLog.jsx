@@ -1,7 +1,9 @@
 import dateFns from 'date-fns'
 import { h, Component } from 'preact'
+import Footer from '../Footer/Footer.jsx'
+import TopBar from '../TopBar/TopBar.jsx'
 
-export default class Log extends Component {
+export default class PageLog extends Component {
   constructor() {
     super()
   }
@@ -19,7 +21,7 @@ export default class Log extends Component {
     return `${log.fields[fieldName]}${fieldUnit}`
   }
 
-  render({ log, fields, workouts }) {
+  render({ onBack, onDelete, log, workouts, fields }) {
     const items = [
       <li key="0" className="mdc-list-item">
         <span className="mdc-list-item__graphic material-icons">accessibility_new</span>
@@ -42,6 +44,15 @@ export default class Log extends Component {
         </li>
       )
     })
-    return <ul className="log mdc-list mdc-list--two-line">{items}</ul>
+    return (
+      <div>
+        <TopBar onClickMenu={onBack} onClickDelete={onDelete} menuIcon="keyboard_backspace" title="Workout" />
+        <main className="app-main">
+          <div className="mdc-top-app-bar--fixed-adjust" />
+          <ul className="page-log mdc-list mdc-list--two-line">{items}</ul>
+          <Footer />
+        </main>
+      </div>
+    )
   }
 }

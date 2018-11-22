@@ -3,11 +3,11 @@
 import { h, Component } from 'preact'
 import Drawer from '../Drawer/Drawer.jsx'
 import Add from '../Add/Add.jsx'
-import Log from '../Log/Log.jsx'
 import Feed from '../Feed/Feed.jsx'
 import FeedAddButton from '../FeedAddButton/FeedAddButton.jsx'
 import Footer from '../Footer/Footer.jsx'
 import AuthButton from '../AuthButton/AuthButton.jsx'
+import PageLog from '../PageLog/PageLog.jsx'
 import TopBar from '../TopBar/TopBar.jsx'
 import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected, saveLog } from '../../store.js'
 
@@ -135,19 +135,13 @@ export default class App extends Component {
     }
     if (state.page === 'log') {
       return (
-        <div>
-          <TopBar
-            onClickMenu={this.onReturnToFeed}
-            onClickDelete={this.onDelete}
-            menuIcon="keyboard_backspace"
-            title="Workout"
-          />
-          <main className="app-main">
-            <div className="mdc-top-app-bar--fixed-adjust" />
-            <Log log={state.pageData} workouts={state.store.workouts} fields={state.store.fields} />
-            <Footer />
-          </main>
-        </div>
+        <PageLog
+          log={state.pageData}
+          workouts={state.store.workouts}
+          fields={state.store.fields}
+          onBack={this.onReturnToFeed}
+          onDelete={this.onDelete}
+        />
       )
     }
     if (state.page === 'add') {
