@@ -4,6 +4,12 @@ import { MDCTopAppBar } from '@material/top-app-bar'
 export default class TopBar extends Component {
   constructor() {
     super()
+    this.state = {
+      isConfirmDelete: false,
+    }
+    this.onDelete = this.onDelete.bind(this)
+    this.onConfirmDelete = this.onConfirmDelete.bind(this)
+    this.onCancelDelete = this.onCancelDelete.bind(this)
   }
 
   componentDidMount() {
@@ -14,7 +20,42 @@ export default class TopBar extends Component {
     })
   }
 
-  render({ isLoading, onClickRefresh, onClickSave, onClickDelete, canSave, menuIcon, title }) {
+  onDelete() {
+    this.setState({ ...this.state, isConfirmDelete: true })
+  }
+
+  onConfirmDelete() {
+    this.setState({ ...this.state, isConfirmDelete: false })
+    this.props.onClickDelete()
+  }
+
+  onCancelDelete() {
+    this.setState({ ...this.state, isConfirmDelete: false })
+  }
+
+  getDeleteUi() {
+    if (!this.props.onClickDelete) {
+      return null
+    }
+    if (this.state.isConfirmDelete) {
+      const buttons = [
+        <button key="0" onClick={this.onConfirmDelete} className="material-icons mdc-top-app-bar__action-item">
+          done
+        </button>,
+        <button key="1" onClick={this.onCancelDelete} className="material-icons mdc-top-app-bar__action-item">
+          clear
+        </button>,
+      ]
+      return buttons
+    }
+    return (
+      <button onClick={this.onDelete} className="material-icons mdc-top-app-bar__action-item">
+        delete_forever
+      </button>
+    )
+  }
+
+  render({ isLoading, onClickRefresh, onClickSave, canSave, menuIcon, title }, state) {
     return (
       <header className="mdc-top-app-bar">
         <div className="mdc-top-app-bar__row">
@@ -22,7 +63,7 @@ export default class TopBar extends Component {
             <a href="#" className="demo-menu material-icons mdc-top-app-bar__navigation-icon">
               {menuIcon}
             </a>
-            <span className="mdc-top-app-bar__title">{title}</span>
+            <span className="mdc-top-app-bar__title">{state.isConfirmDelete ? 'Delete?' : title}</span>
           </section>
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
             {onClickRefresh ? (
@@ -39,11 +80,7 @@ export default class TopBar extends Component {
                 done
               </button>
             ) : null}
-            {onClickDelete ? (
-              <button onClick={onClickDelete} className="material-icons mdc-top-app-bar__action-item">
-                delete_forever
-              </button>
-            ) : null}
+            {this.getDeleteUi()}
           </section>
         </div>
       </header>
