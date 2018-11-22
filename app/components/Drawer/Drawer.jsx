@@ -22,8 +22,6 @@ export default class Drawer extends Component {
     this.mdcDrawer.open = this.props.isVisible
   }
 
-  componentWillUnmount() {}
-
   render() {
     return (
       <aside className="mdc-drawer mdc-drawer--modal">

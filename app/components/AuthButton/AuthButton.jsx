@@ -5,10 +5,6 @@ export default class AuthButton extends Component {
     super()
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   render({ authUrl }) {
     return (
       <a href={authUrl} className="mdc-button mdc-button--raised">

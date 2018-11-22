@@ -1,12 +1,10 @@
 /* global Promise */
 
 import { h, Component } from 'preact'
-import Drawer from '../Drawer/Drawer.jsx'
 import Add from '../Add/Add.jsx'
-import Feed from '../Feed/Feed.jsx'
-import FeedAddButton from '../FeedAddButton/FeedAddButton.jsx'
 import Footer from '../Footer/Footer.jsx'
 import AuthButton from '../AuthButton/AuthButton.jsx'
+import PageFeed from '../PageFeed/PageFeed.jsx'
 import PageLog from '../PageLog/PageLog.jsx'
 import TopBar from '../TopBar/TopBar.jsx'
 import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected, saveLog } from '../../store.js'
@@ -15,7 +13,6 @@ export default class App extends Component {
   constructor() {
     super()
     this.state = {
-      isDrawerVisible: false,
       isLoading: false,
       page: 'feed',
       pageData: null,
@@ -28,10 +25,8 @@ export default class App extends Component {
         logs: [],
       },
     }
-    this.onOpenDrawer = this.onOpenDrawer.bind(this)
-    this.onCloseDrawer = this.onCloseDrawer.bind(this)
     this.onFetchStoreData = this.onFetchStoreData.bind(this)
-    this.onOpenAdd = this.onOpenAdd.bind(this)
+    this.onAddLog = this.onAddLog.bind(this)
     this.onOpenLog = this.onOpenLog.bind(this)
     this.onReturnToFeed = this.onReturnToFeed.bind(this)
     this.onAddSave = this.onAddSave.bind(this)
@@ -46,7 +41,7 @@ export default class App extends Component {
     this.setState({ ...this.state, page: 'log', pageData: log })
   }
 
-  onOpenAdd() {
+  onAddLog() {
     this.setState({ ...this.state, page: 'add', pageData: null })
   }
 
@@ -116,18 +111,6 @@ export default class App extends Component {
       })
   }
 
-  onOpenDrawer() {
-    this.setState({ ...this.state, isDrawerVisible: true })
-  }
-
-  onCloseDrawer() {
-    this.setState({ ...this.state, isDrawerVisible: false })
-  }
-
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   render(props, state) {
     console.log('App', state)
     if (!state.store.isConnected) {
@@ -169,28 +152,15 @@ export default class App extends Component {
     }
     if (state.page === 'feed') {
       return (
-        <div>
-          <Drawer onClickItem={this.onCloseDrawer} onClose={this.onCloseDrawer} isVisible={state.isDrawerVisible} />
-          <div className="mdc-drawer-scrim" />
-          <TopBar
-            onClickMenu={this.onOpenDrawer}
-            menuIcon="menu"
-            title="Feed"
-            onClickRefresh={this.onFetchStoreData}
-            isLoading={state.isLoading}
-          />
-          <main className="app-main">
-            <div className="mdc-top-app-bar--fixed-adjust" />
-            <Feed
-              logs={state.store.logs}
-              workouts={state.store.workouts}
-              fields={state.store.fields}
-              onOpenLog={this.onOpenLog}
-            />
-            <Footer />
-            {!state.isLoading ? <FeedAddButton onClick={this.onOpenAdd} /> : null}
-          </main>
-        </div>
+        <PageFeed
+          onRefresh={this.onFetchStoreData}
+          onOpenLog={this.onOpenLog}
+          onAddLog={this.onAddLog}
+          isLoading={state.isLoading}
+          logs={state.store.logs}
+          workouts={state.store.workouts}
+          fields={state.store.fields}
+        />
       )
     }
   }

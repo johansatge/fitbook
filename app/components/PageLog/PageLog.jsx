@@ -8,10 +8,6 @@ export default class PageLog extends Component {
     super()
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   readableFieldValue(log, fieldName, fieldUnit) {
     if (fieldName === 'datetime') {
       const readableDate = dateFns.format(log.fields.datetime, 'dddd, MMMM Do')

@@ -22,8 +22,6 @@ export default class Add extends Component {
     this.updateMdcFields()
   }
 
-  componentWillUnmount() {}
-
   updateMdcFields() {
     // @todo make sure we don't apply the MDC classes several times on the same node
     const selectNodes = this.base.querySelectorAll('.mdc-select')

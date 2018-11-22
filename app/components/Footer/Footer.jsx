@@ -6,10 +6,6 @@ export default class Footer extends Component {
     super()
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   render() {
     return <div className="footer mdc-typography--body2">{`${pkg.name} ${pkg.version}`}</div>
   }
