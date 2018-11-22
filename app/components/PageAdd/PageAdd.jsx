@@ -1,7 +1,9 @@
 import dateFns from 'date-fns'
+import Footer from '../Footer/Footer.jsx'
 import { h, Component } from 'preact'
 import { MDCSelect } from '@material/select'
 import { MDCTextField } from '@material/textfield'
+import TopBar from '../TopBar/TopBar.jsx'
 
 export default class Add extends Component {
   constructor() {
@@ -51,7 +53,6 @@ export default class Add extends Component {
     const fields = { ...this.state.fields }
     fields[evt.target.name] = this.parseFieldValue(evt.target.name, evt.target.value)
     this.setState({ ...this.state, fields })
-    this.props.onUpdate({ workout: this.state.workoutType, fields: { ...this.state.fields } })
   }
 
   getDefaultDateTime() {
@@ -77,16 +78,29 @@ export default class Add extends Component {
     return rawValue
   }
 
-  render({ fields, workouts }, state) {
-    const workoutNodes = Object.keys(workouts).map((workoutName, index) => {
+  canSaveAddData(state) {
+    if (!state.workoutType || !state.fields) {
+      return false
+    }
+    const emptyFields = Object.keys(state.fields).filter((fieldName) => {
+      return state.fields[fieldName] === null || state.fields[fieldName] === ''
+    })
+    return emptyFields.length === 0
+  }
+
+  getWorkouts(workouts, currentWorkoutType) {
+    return Object.keys(workouts).map((workoutName, index) => {
       return (
-        <option key={index} value={workoutName} selected={workoutName === state.workoutType}>
+        <option key={index} value={workoutName} selected={workoutName === currentWorkoutType}>
           {workouts[workoutName].name}
         </option>
       )
     })
-    const fieldNodes = state.workoutType
-      ? workouts[state.workoutType].fields.map((fieldName, index) => {
+  }
+
+  getFields(workouts, fields, currentWorkoutType, data) {
+    return currentWorkoutType
+      ? workouts[currentWorkoutType].fields.map((fieldName, index) => {
           const readableUnit = fields[fieldName].unit ? ` (${fields[fieldName].unit})` : ''
           return (
             <div key={index} className="field mdc-text-field mdc-text-field--with-leading-icon">
@@ -95,7 +109,7 @@ export default class Add extends Component {
                 type="text"
                 id={fieldName}
                 name={fieldName}
-                value={state.fields[fieldName]}
+                value={data[fieldName]}
                 className="mdc-text-field__input"
                 onChange={this.onFieldChange}
               />
@@ -107,19 +121,38 @@ export default class Add extends Component {
           )
         })
       : []
+  }
+
+  render({ fields, workouts, onSave, onBack }, state) {
+    const sendData = function() {
+      onSave({ workout: state.workoutType, fields: { ...state.fields } })
+    }
     return (
-      <div className="add">
-        <div className="field mdc-select mdc-select--with-leading-icon">
-          <i className="material-icons mdc-select__icon">accessibility_new</i>
-          <i className="mdc-select__dropdown-icon" />
-          <select className="mdc-select__native-control" onChange={this.onSelectWorkoutType}>
-            <option value="" selected={state.workoutType ? null : true} />
-            {workoutNodes}
-          </select>
-          <label className="mdc-floating-label">Workout type</label>
-          <div className="mdc-line-ripple" />
-        </div>
-        {fieldNodes}
+      <div>
+        <TopBar
+          onClickMenu={onBack}
+          menuIcon="keyboard_backspace"
+          title="Add workout"
+          onClickSave={sendData}
+          canSave={this.canSaveAddData(state)}
+        />
+        <main className="app-main">
+          <div className="mdc-top-app-bar--fixed-adjust" />
+          <div className="page-add">
+            <div className="field mdc-select mdc-select--with-leading-icon">
+              <i className="material-icons mdc-select__icon">accessibility_new</i>
+              <i className="mdc-select__dropdown-icon" />
+              <select className="mdc-select__native-control" onChange={this.onSelectWorkoutType}>
+                <option value="" selected={state.workoutType ? null : true} />
+                {this.getWorkouts(workouts, state.workoutType)}
+              </select>
+              <label className="mdc-floating-label">Workout type</label>
+              <div className="mdc-line-ripple" />
+            </div>
+            {this.getFields(workouts, fields, state.workoutType, state.fields)}
+          </div>
+          <Footer />
+        </main>
       </div>
     )
   }

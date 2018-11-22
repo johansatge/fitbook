@@ -1,6 +1,6 @@
 import { h, Component } from 'preact'
 
-export default class AuthButton extends Component {
+export default class PageAuth extends Component {
   constructor() {
     super()
   }

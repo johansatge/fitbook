@@ -14,8 +14,6 @@ export default class TopBar extends Component {
     })
   }
 
-  componentWillUnmount() {}
-
   render({ isLoading, onClickRefresh, onClickSave, onClickDelete, canSave, menuIcon, title }) {
     return (
       <header className="mdc-top-app-bar">

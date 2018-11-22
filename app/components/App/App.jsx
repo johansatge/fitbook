@@ -1,12 +1,10 @@
 /* global Promise */
 
 import { h, Component } from 'preact'
-import Add from '../Add/Add.jsx'
-import Footer from '../Footer/Footer.jsx'
-import AuthButton from '../AuthButton/AuthButton.jsx'
+import PageAdd from '../PageAdd/PageAdd.jsx'
+import PageAuth from '../PageAuth/PageAuth.jsx'
 import PageFeed from '../PageFeed/PageFeed.jsx'
 import PageLog from '../PageLog/PageLog.jsx'
-import TopBar from '../TopBar/TopBar.jsx'
 import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected, saveLog } from '../../store.js'
 
 export default class App extends Component {
@@ -29,9 +27,8 @@ export default class App extends Component {
     this.onAddLog = this.onAddLog.bind(this)
     this.onOpenLog = this.onOpenLog.bind(this)
     this.onReturnToFeed = this.onReturnToFeed.bind(this)
-    this.onAddSave = this.onAddSave.bind(this)
-    this.onAddUpdate = this.onAddUpdate.bind(this)
-    this.onDelete = this.onDelete.bind(this)
+    this.onSaveLogg = this.onSaveLogg.bind(this)
+    this.onDeleteLog = this.onDeleteLog.bind(this)
     if (this.state.store.isConnected) {
       this.onFetchStoreData()
     }
@@ -45,8 +42,7 @@ export default class App extends Component {
     this.setState({ ...this.state, page: 'add', pageData: null })
   }
 
-  onAddSave() {
-    const data = { ...this.state.pageData }
+  onSaveLogg(data) {
     this.setState({
       ...this.state,
       page: 'feed',
@@ -63,22 +59,8 @@ export default class App extends Component {
       })
   }
 
-  canSaveAddData() {
-    if (!this.state.pageData || !this.state.pageData.fields) {
-      return false
-    }
-    const emptyFields = Object.keys(this.state.pageData.fields).filter((fieldName) => {
-      return this.state.pageData.fields[fieldName] === null || this.state.pageData.fields[fieldName] === ''
-    })
-    return emptyFields.length === 0
-  }
-
-  onAddUpdate(data) {
-    this.setState({ ...this.state, pageData: data })
-  }
-
-  onDelete() {
-    // @todo delete and return to feed page
+  onDeleteLog() {
+    // @todo delete log and return to feed page
   }
 
   onReturnToFeed() {
@@ -114,7 +96,7 @@ export default class App extends Component {
   render(props, state) {
     console.log('App', state)
     if (!state.store.isConnected) {
-      return <AuthButton authUrl={state.store.authUrl} />
+      return <PageAuth authUrl={state.store.authUrl} />
     }
     if (state.page === 'log') {
       return (
@@ -123,31 +105,18 @@ export default class App extends Component {
           workouts={state.store.workouts}
           fields={state.store.fields}
           onBack={this.onReturnToFeed}
-          onDelete={this.onDelete}
+          onDelete={this.onDeleteLog}
         />
       )
     }
     if (state.page === 'add') {
       return (
-        <div>
-          <TopBar
-            onClickMenu={this.onReturnToFeed}
-            menuIcon="keyboard_backspace"
-            title="Add workout"
-            onClickSave={this.onAddSave}
-            canSave={this.canSaveAddData()}
-          />
-          <main className="app-main">
-            <div className="mdc-top-app-bar--fixed-adjust" />
-            <Add
-              fields={state.store.fields}
-              workouts={state.store.workouts}
-              data={state.store.pageData}
-              onUpdate={this.onAddUpdate}
-            />
-            <Footer />
-          </main>
-        </div>
+        <PageAdd
+          workouts={state.store.workouts}
+          fields={state.store.fields}
+          onBack={this.onReturnToFeed}
+          onSave={this.onSaveLogg}
+        />
       )
     }
     if (state.page === 'feed') {
