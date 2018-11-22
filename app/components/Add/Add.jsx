@@ -53,7 +53,7 @@ export default class Add extends Component {
     const fields = { ...this.state.fields }
     fields[evt.target.name] = this.parseFieldValue(evt.target.name, evt.target.value)
     this.setState({ ...this.state, fields })
-    this.props.onUpdate(this.state.workoutType, { ...this.state.fields })
+    this.props.onUpdate({ workout: this.state.workoutType, fields: { ...this.state.fields } })
   }
 
   getDefaultDateTime() {

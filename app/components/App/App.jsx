@@ -36,6 +36,7 @@ export default class App extends Component {
     this.onReturnToFeed = this.onReturnToFeed.bind(this)
     this.onAddSave = this.onAddSave.bind(this)
     this.onAddUpdate = this.onAddUpdate.bind(this)
+    this.onDelete = this.onDelete.bind(this)
     if (this.state.store.isConnected) {
       this.onFetchStoreData()
     }
@@ -77,8 +78,12 @@ export default class App extends Component {
     return emptyFields.length === 0
   }
 
-  onAddUpdate(workoutType, fields) {
-    this.setState({ ...this.state, pageData: { workout: workoutType, fields: { ...fields } } })
+  onAddUpdate(data) {
+    this.setState({ ...this.state, pageData: data })
+  }
+
+  onDelete() {
+    // @todo delete and return to feed page
   }
 
   onReturnToFeed() {
@@ -131,7 +136,12 @@ export default class App extends Component {
     if (state.page === 'log') {
       return (
         <div>
-          <TopBar onClickMenu={this.onReturnToFeed} menuIcon="keyboard_backspace" title="Workout" />
+          <TopBar
+            onClickMenu={this.onReturnToFeed}
+            onClickDelete={this.onDelete}
+            menuIcon="keyboard_backspace"
+            title="Workout"
+          />
           <main className="app-main">
             <div className="mdc-top-app-bar--fixed-adjust" />
             <Log log={state.pageData} workouts={state.store.workouts} fields={state.store.fields} />
