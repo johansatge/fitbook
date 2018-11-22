@@ -38,6 +38,7 @@
     "babel-loader": "^8.0.4",
     "css-loader": "^1.0.1",
     "date-fns": "^1.29.0",
+    "dotenv": "^6.1.0",
     "dropbox": "^4.0.12",
     "ejs": "^2.6.1",
     "eslint": "^5.8.0",

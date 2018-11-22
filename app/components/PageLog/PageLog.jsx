@@ -18,6 +18,9 @@ export default class PageLog extends Component {
   }
 
   render({ onBack, onDelete, log, workouts, fields }) {
+    const onDeleteClick = function() {
+      onDelete(log)
+    }
     const items = [
       <li key="0" className="mdc-list-item">
         <span className="mdc-list-item__graphic material-icons">accessibility_new</span>
@@ -42,7 +45,7 @@ export default class PageLog extends Component {
     })
     return (
       <div>
-        <TopBar onClickMenu={onBack} onClickDelete={onDelete} menuIcon="keyboard_backspace" title="Workout" />
+        <TopBar onClickMenu={onBack} onClickDelete={onDeleteClick} menuIcon="keyboard_backspace" title="Workout" />
         <main className="app-main">
           <div className="mdc-top-app-bar--fixed-adjust" />
           <ul className="page-log mdc-list mdc-list--two-line">{items}</ul>

@@ -13,7 +13,7 @@ export default class App extends Component {
     this.state = {
       isLoading: false,
       page: 'feed',
-      pageData: null,
+      currentLog: null,
       store: {
         isConnected: isStoreConnected(),
         authUrl: getStoreAuthUrl(),
@@ -27,7 +27,7 @@ export default class App extends Component {
     this.onAddLog = this.onAddLog.bind(this)
     this.onOpenLog = this.onOpenLog.bind(this)
     this.onReturnToFeed = this.onReturnToFeed.bind(this)
-    this.onSaveLogg = this.onSaveLogg.bind(this)
+    this.onSaveLog = this.onSaveLog.bind(this)
     this.onDeleteLog = this.onDeleteLog.bind(this)
     if (this.state.store.isConnected) {
       this.onFetchStoreData()
@@ -35,18 +35,18 @@ export default class App extends Component {
   }
 
   onOpenLog(log) {
-    this.setState({ ...this.state, page: 'log', pageData: log })
+    this.setState({ ...this.state, page: 'log', currentLog: log })
   }
 
   onAddLog() {
-    this.setState({ ...this.state, page: 'add', pageData: null })
+    this.setState({ ...this.state, page: 'add' })
   }
 
-  onSaveLogg(data) {
+  onSaveLog(data) {
     this.setState({
       ...this.state,
       page: 'feed',
-      pageData: null,
+      currentLog: null,
       isLoading: true,
     })
     saveLog(data, [...this.state.store.logs])
@@ -59,12 +59,13 @@ export default class App extends Component {
       })
   }
 
-  onDeleteLog() {
+  onDeleteLog(log) {
+    console.log('@todo delete log', log)
     // @todo delete log and return to feed page
   }
 
   onReturnToFeed() {
-    this.setState({ ...this.state, page: 'feed', pageData: null })
+    this.setState({ ...this.state, page: 'feed', currentLog: null })
   }
 
   onFetchStoreData() {
@@ -101,7 +102,7 @@ export default class App extends Component {
     if (state.page === 'log') {
       return (
         <PageLog
-          log={state.pageData}
+          log={state.currentLog}
           workouts={state.store.workouts}
           fields={state.store.fields}
           onBack={this.onReturnToFeed}
@@ -115,7 +116,7 @@ export default class App extends Component {
           workouts={state.store.workouts}
           fields={state.store.fields}
           onBack={this.onReturnToFeed}
-          onSave={this.onSaveLogg}
+          onSave={this.onSaveLog}
         />
       )
     }

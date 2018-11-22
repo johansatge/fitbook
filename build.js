@@ -1,6 +1,7 @@
 /* global Promise */
 
-const dropbox = require('./.dropbox.js')
+require('dotenv').config()
+
 const ejs = require('ejs')
 const fs = require('fs-extra')
 const path = require('path')
@@ -30,7 +31,7 @@ function cleanDist() {
 function buildWebpack() {
   log('Building webpack assets')
   return new Promise((resolve, reject) => {
-    const config = webpackConfig({ dropboxAppKey: dropbox.appKey })
+    const config = webpackConfig({ dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY })
     webpack(config, (error, stats) => {
       if (error) {
         return reject(error)
