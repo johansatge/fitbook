@@ -19,7 +19,7 @@ export function getStoreAuthUrl() {
 }
 
 export function getStoreUser() {
-  return dbx.usersGetCurrentAccount().then(function(response) {
+  return dbx.usersGetCurrentAccount().then((response) => {
     return {
       name: response.name.familiar_name,
       email: response.email,
@@ -28,56 +28,41 @@ export function getStoreUser() {
   })
 }
 
+export function saveLog(data, currentLogs) {
+  const date = dateFns.format(data.fields.datetime, 'YYYY-MM')
+  const filePath = `/logs/${date}.json`
+  const fileLogs = currentLogs.filter((log) => log.fields.datetime.startsWith(date))
+  fileLogs.push(data)
+  fileLogs.sort(sortLogsByDate)
+  const fileContents = JSON.stringify(fileLogs, null, 2)
+  return dbx.filesUpload({ path: filePath, contents: fileContents, mode: 'overwrite' }).then(() => {
+    currentLogs.push(data)
+    currentLogs.sort(sortLogsByDate)
+    return currentLogs
+  })
+}
+
 export function getConfigAndLogs() {
   const getters = [getLogs(), getJsonFile('/config/fields.json'), getJsonFile('/config/workouts.json')]
   return Promise.all(getters).then(([logs, fields, workouts]) => {
+    logs.sort(sortLogsByDate)
     return {
-      logs: consolidateLogs(logs, workouts, fields),
+      logs,
       workouts,
       fields,
     }
   })
 }
 
-function consolidateLogs(rawLogs, workouts, fields) {
-  const logs = []
-  rawLogs.forEach((rawLog) => {
-    const data = {}
-    Object.keys(rawLog.fields).map((fieldName) => {
-      data[fieldName] = {
-        field: fields[fieldName],
-        value: rawLog.fields[fieldName],
-      }
-    })
-    logs.push({
-      datetime: rawLog.fields.datetime,
-      readableDate: dateFns.format(rawLog.fields.datetime, 'dddd, MMMM Do'),
-      readableTime: dateFns.format(rawLog.fields.datetime, 'HH:mm'),
-      workout: workouts[rawLog.workout],
-      data,
-    })
-  })
-  logs.sort(sortLogs)
-  const days = {}
-  logs.forEach((log) => {
-    const day = dateFns.format(log.datetime, 'YYYY-MM-DD')
-    if (!days[day]) {
-      days[day] = []
-    }
-    days[day].push(log)
-  })
-  return days
-}
-
-function sortLogs(a, b) {
-  const aTime = new Date(a.datetime).getTime()
-  const bTime = new Date(b.datetime).getTime()
+function sortLogsByDate(a, b) {
+  const aTime = new Date(a.fields.datetime).getTime()
+  const bTime = new Date(b.fields.datetime).getTime()
   return aTime < bTime ? 1 : aTime > bTime ? -1 : 0
 }
 
 function getLogs() {
   // @todo read the folder recursively
-  return dbx.filesListFolder({ path: '/logs', recursive: false, limit: 100 }).then(function(response) {
+  return dbx.filesListFolder({ path: '/logs', recursive: false, limit: 100 }).then((response) => {
     return new Promise((resolve, reject) => {
       recursiveGetLogs([], response.entries.map((entry) => entry.path_display), function(error, logs) {
         error ? reject(error) : resolve(logs)
@@ -124,10 +109,10 @@ function getDropboxInstance() {
 }
 
 function getJsonFile(filePath) {
-  return dbx.filesDownload({ path: filePath }).then(function(response) {
+  return dbx.filesDownload({ path: filePath }).then((response) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
-      reader.addEventListener('loadend', function() {
+      reader.addEventListener('loadend', () => {
         try {
           const json = JSON.parse(reader.result)
           resolve(json)

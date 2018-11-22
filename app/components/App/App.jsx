@@ -9,7 +9,7 @@ import FeedAddButton from '../FeedAddButton/FeedAddButton.jsx'
 import Footer from '../Footer/Footer.jsx'
 import AuthButton from '../AuthButton/AuthButton.jsx'
 import TopBar from '../TopBar/TopBar.jsx'
-import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected } from '../../store.js'
+import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected, saveLog } from '../../store.js'
 
 export default class App extends Component {
   constructor() {
@@ -50,8 +50,21 @@ export default class App extends Component {
   }
 
   onAddSave() {
-    console.log('@todo save', this.state.pageData)
-    this.setState({ ...this.state, page: 'feed', pageData: null })
+    const data = { ...this.state.pageData }
+    this.setState({
+      ...this.state,
+      page: 'feed',
+      pageData: null,
+      isLoading: true,
+    })
+    saveLog(data, [...this.state.store.logs])
+      .then((updatedLogs) => {
+        this.setState({ ...this.state, isLoading: false, store: { ...this.state.store, logs: updatedLogs } })
+      })
+      .catch((error) => {
+        this.setState({ ...this.state, isLoading: false })
+        console.log('@todo handle store error', error)
+      })
   }
 
   canSaveAddData() {
@@ -112,8 +125,8 @@ export default class App extends Component {
 
   render(props, state) {
     console.log('App', state)
-    if (!this.state.store.isConnected) {
-      return <AuthButton authUrl={this.state.store.authUrl} />
+    if (!state.store.isConnected) {
+      return <AuthButton authUrl={state.store.authUrl} />
     }
     if (state.page === 'log') {
       return (
@@ -121,7 +134,7 @@ export default class App extends Component {
           <TopBar onClickMenu={this.onReturnToFeed} menuIcon="keyboard_backspace" title="Workout" />
           <main className="app-main">
             <div className="mdc-top-app-bar--fixed-adjust" />
-            <Log log={state.pageData} />
+            <Log log={state.pageData} workouts={state.store.workouts} fields={state.store.fields} />
             <Footer />
           </main>
         </div>
@@ -164,7 +177,12 @@ export default class App extends Component {
           />
           <main className="app-main">
             <div className="mdc-top-app-bar--fixed-adjust" />
-            <Feed logs={state.store.logs} onOpenLog={this.onOpenLog} />
+            <Feed
+              logs={state.store.logs}
+              workouts={state.store.workouts}
+              fields={state.store.fields}
+              onOpenLog={this.onOpenLog}
+            />
             <Footer />
             {!state.isLoading ? <FeedAddButton onClick={this.onOpenAdd} /> : null}
           </main>

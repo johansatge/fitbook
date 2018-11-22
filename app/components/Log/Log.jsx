@@ -1,3 +1,4 @@
+import dateFns from 'date-fns'
 import { h, Component } from 'preact'
 
 export default class Log extends Component {
@@ -9,34 +10,38 @@ export default class Log extends Component {
 
   componentWillUnmount() {}
 
-  readableFieldValue(log, fieldName) {
+  readableFieldValue(log, fieldName, fieldUnit) {
     if (fieldName === 'datetime') {
-      return `${log.readableDate} (${log.readableTime})`
+      const readableDate = dateFns.format(log.fields.datetime, 'dddd, MMMM Do')
+      const readableTime = dateFns.format(log.fields.datetime, 'HH:mm')
+      return `${readableDate} (${readableTime})`
     }
-    return `${log.data[fieldName].value}${log.data[fieldName].field.unit}`
+    return `${log.fields[fieldName]}${fieldUnit}`
   }
 
-  render({ log }) {
-    const fields = [
+  render({ log, fields, workouts }) {
+    const items = [
       <li key="0" className="mdc-list-item">
         <span className="mdc-list-item__graphic material-icons">accessibility_new</span>
         <span className="mdc-list-item__text">
-          <span className="mdc-list-item__primary-text">{log.workout.name}</span>
+          <span className="mdc-list-item__primary-text">{workouts[log.workout].name}</span>
           <span className="mdc-list-item__secondary-text">Workout type</span>
         </span>
       </li>,
     ]
-    Object.keys(log.data).forEach((fieldName, index) => {
-      fields.push(
+    Object.keys(log.fields).forEach((fieldName, index) => {
+      items.push(
         <li key={index + 1} className="mdc-list-item">
-          <span className="mdc-list-item__graphic material-icons">{log.data[fieldName].field.icon}</span>
+          <span className="mdc-list-item__graphic material-icons">{fields[fieldName].icon}</span>
           <span className="mdc-list-item__text">
-            <span className="mdc-list-item__primary-text">{this.readableFieldValue(log, fieldName)}</span>
-            <span className="mdc-list-item__secondary-text">{log.data[fieldName].field.name}</span>
+            <span className="mdc-list-item__primary-text">
+              {this.readableFieldValue(log, fieldName, fields[fieldName].unit)}
+            </span>
+            <span className="mdc-list-item__secondary-text">{fields[fieldName].name}</span>
           </span>
         </li>
       )
     })
-    return <ul className="log mdc-list mdc-list--two-line">{fields}</ul>
+    return <ul className="log mdc-list mdc-list--two-line">{items}</ul>
   }
 }
