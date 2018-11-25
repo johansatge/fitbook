@@ -8,9 +8,6 @@ export default class TopBar extends Component {
     this.state = {
       isConfirmDelete: false,
     }
-    this.onDelete = this.onDelete.bind(this)
-    this.onConfirmDelete = this.onConfirmDelete.bind(this)
-    this.onCancelDelete = this.onCancelDelete.bind(this)
   }
 
   componentDidMount() {
@@ -21,16 +18,16 @@ export default class TopBar extends Component {
     })
   }
 
-  onDelete() {
+  onDelete = () => {
     this.setState({ ...this.state, isConfirmDelete: true })
   }
 
-  onConfirmDelete() {
+  onConfirmDelete = () => {
     this.setState({ ...this.state, isConfirmDelete: false })
     this.props.onClickDelete()
   }
 
-  onCancelDelete() {
+  onCancelDelete = () => {
     this.setState({ ...this.state, isConfirmDelete: false })
   }
 

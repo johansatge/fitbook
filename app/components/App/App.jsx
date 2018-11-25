@@ -31,19 +31,12 @@ export default class App extends Component {
         logs: [],
       },
     }
-    this.onFetchStoreData = this.onFetchStoreData.bind(this)
-    this.onAddLog = this.onAddLog.bind(this)
-    this.onOpenLog = this.onOpenLog.bind(this)
-    this.onReturnToFeed = this.onReturnToFeed.bind(this)
-    this.onSaveLog = this.onSaveLog.bind(this)
-    this.onDeleteLog = this.onDeleteLog.bind(this)
-    this.onLogout = this.onLogout.bind(this)
     if (this.state.store.isConnected) {
       this.onFetchStoreData()
     }
   }
 
-  onLogout() {
+  onLogout = () => {
     clearAccessToken()
     this.setState({
       ...this.state,
@@ -51,15 +44,15 @@ export default class App extends Component {
     })
   }
 
-  onOpenLog(log) {
+  onOpenLog = (log) => {
     this.setState({ ...this.state, page: 'log', currentLog: log })
   }
 
-  onAddLog() {
+  onAddLog = () => {
     this.setState({ ...this.state, page: 'add' })
   }
 
-  onSaveLog(data) {
+  onSaveLog = (data) => {
     this.setState({ ...this.state, page: 'feed', currentLog: null, isLoading: true })
     saveLog(data, [...this.state.store.logs])
       .then((updatedLogs) => {
@@ -71,7 +64,7 @@ export default class App extends Component {
       })
   }
 
-  onDeleteLog(log) {
+  onDeleteLog = (log) => {
     this.setState({ ...this.state, page: 'feed', isLoading: true })
     deleteLog(log, [...this.state.store.logs])
       .then((updatedLogs) => {
@@ -83,11 +76,11 @@ export default class App extends Component {
       })
   }
 
-  onReturnToFeed() {
+  onReturnToFeed = () => {
     this.setState({ ...this.state, page: 'feed', currentLog: null })
   }
 
-  onFetchStoreData() {
+  onFetchStoreData = () => {
     this.setState({
       ...this.state,
       isLoading: true,

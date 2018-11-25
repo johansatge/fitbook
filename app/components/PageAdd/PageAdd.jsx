@@ -13,8 +13,6 @@ export default class Add extends Component {
       workoutType: null,
       fields: {},
     }
-    this.onSelectWorkoutType = this.onSelectWorkoutType.bind(this)
-    this.onFieldChange = this.onFieldChange.bind(this)
   }
 
   componentDidMount() {
@@ -37,7 +35,7 @@ export default class Add extends Component {
     }
   }
 
-  onSelectWorkoutType(evt) {
+  onSelectWorkoutType = (evt) => {
     const defaultFields = {}
     this.props.workouts[evt.target.value].fields.forEach((fieldName) => {
       defaultFields[fieldName] = null
@@ -50,7 +48,7 @@ export default class Add extends Component {
     })
   }
 
-  onFieldChange(evt) {
+  onFieldChange = (evt) => {
     const fields = { ...this.state.fields }
     fields[evt.target.name] = this.parseFieldValue(evt.target.name, evt.target.value)
     this.setState({ ...this.state, fields })

@@ -11,15 +11,13 @@ export default class PageFeed extends Component {
     this.state = {
       isDrawerVisible: false,
     }
-    this.onOpenDrawer = this.onOpenDrawer.bind(this)
-    this.onCloseDrawer = this.onCloseDrawer.bind(this)
   }
 
-  onOpenDrawer() {
+  onOpenDrawer = () => {
     this.setState({ ...this.state, isDrawerVisible: true })
   }
 
-  onCloseDrawer() {
+  onCloseDrawer = () => {
     this.setState({ ...this.state, isDrawerVisible: false })
   }
 

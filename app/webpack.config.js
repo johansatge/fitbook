@@ -30,7 +30,10 @@ module.exports = ({ dropboxAppKey }) => {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            plugins: [['@babel/plugin-transform-react-jsx', { pragma: 'h' }]],
+            plugins: [
+              ['@babel/plugin-transform-react-jsx', { pragma: 'h' }],
+              ['@babel/plugin-proposal-class-properties'],
+            ],
           },
         },
         {
