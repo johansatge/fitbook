@@ -1,6 +1,7 @@
 import dateFns from 'date-fns'
 import { h, Component } from 'preact'
 import Footer from '../Footer/Footer.jsx'
+import SvgIcon from '../SvgIcon/SvgIcon.jsx'
 import TopBar from '../TopBar/TopBar.jsx'
 
 export default class PageLog extends Component {
@@ -23,7 +24,9 @@ export default class PageLog extends Component {
     }
     const items = [
       <li key="0" className="mdc-list-item">
-        <span className="mdc-list-item__graphic material-icons">accessibility_new</span>
+        <span className="mdc-list-item__graphic">
+          <SvgIcon icon="accessibility_new" />
+        </span>
         <span className="mdc-list-item__text">
           <span className="mdc-list-item__primary-text">{workouts[log.workout].name}</span>
           <span className="mdc-list-item__secondary-text">Workout type</span>
@@ -33,7 +36,9 @@ export default class PageLog extends Component {
     Object.keys(log.fields).forEach((fieldName, index) => {
       items.push(
         <li key={index + 1} className="mdc-list-item">
-          <span className="mdc-list-item__graphic material-icons">{fields[fieldName].icon}</span>
+          <span className="mdc-list-item__graphic">
+            <SvgIcon icon={fields[fieldName].icon} />
+          </span>
           <span className="mdc-list-item__text">
             <span className="mdc-list-item__primary-text">
               {this.readableFieldValue(log, fieldName, fields[fieldName].unit)}

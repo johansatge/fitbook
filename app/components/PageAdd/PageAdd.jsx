@@ -3,6 +3,7 @@ import Footer from '../Footer/Footer.jsx'
 import { h, Component } from 'preact'
 import { MDCSelect } from '@material/select'
 import { MDCTextField } from '@material/textfield'
+import SvgIcon from '../SvgIcon/SvgIcon.jsx'
 import TopBar from '../TopBar/TopBar.jsx'
 
 export default class Add extends Component {
@@ -104,7 +105,9 @@ export default class Add extends Component {
           const readableUnit = fields[fieldName].unit ? ` (${fields[fieldName].unit})` : ''
           return (
             <div key={index} className="field mdc-text-field mdc-text-field--with-leading-icon">
-              <i className="material-icons mdc-text-field__icon">{fields[fieldName].icon}</i>
+              <i className="mdc-text-field__icon">
+                <SvgIcon icon={fields[fieldName].icon} variant="darkgrey" />
+              </i>
               <input
                 type="text"
                 id={fieldName}
@@ -140,7 +143,9 @@ export default class Add extends Component {
           <div className="mdc-top-app-bar--fixed-adjust" />
           <div className="page-add">
             <div className="field mdc-select mdc-select--with-leading-icon">
-              <i className="material-icons mdc-select__icon">accessibility_new</i>
+              <i className="mdc-select__icon">
+                <SvgIcon icon="accessibility_new" />
+              </i>
               <i className="mdc-select__dropdown-icon" />
               <select className="mdc-select__native-control" onChange={this.onSelectWorkoutType}>
                 <option value="" selected={state.workoutType ? null : true} />
