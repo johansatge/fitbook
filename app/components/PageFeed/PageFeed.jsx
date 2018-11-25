@@ -2,6 +2,7 @@ import dateFns from 'date-fns'
 import { h, Component } from 'preact'
 import Drawer from '../Drawer/Drawer.jsx'
 import Footer from '../Footer/Footer.jsx'
+import SvgIcon from '../SvgIcon/SvgIcon.jsx'
 import TopBar from '../TopBar/TopBar.jsx'
 
 export default class PageFeed extends Component {
@@ -52,14 +53,18 @@ export default class PageFeed extends Component {
     const readableTime = dateFns.format(log.fields.datetime, 'HH:mm')
     return (
       <li key={index} onClick={onClick} className="mdc-list-item">
-        <span className="mdc-list-item__graphic material-icons">{workouts[log.workout].icon}</span>
+        <span className="mdc-list-item__graphic">
+          <SvgIcon icon={workouts[log.workout].icon} />
+        </span>
         <span className="mdc-list-item__text">
           <span className="mdc-list-item__primary-text">{workouts[log.workout].name}</span>
           <span className="mdc-list-item__secondary-text">
             {`${highlightField.name}: ${highlightValue}${highlightField.unit} (${readableTime})`}
           </span>
         </span>
-        <span className="mdc-list-item__meta material-icons">info</span>
+        <span className="mdc-list-item__meta">
+          <SvgIcon icon="info" variant="grey" />
+        </span>
       </li>
     )
   }
@@ -82,7 +87,9 @@ export default class PageFeed extends Component {
           <Footer />
           {!isLoading ? (
             <button onClick={onAddLog} className="page-feed-add-button mdc-fab">
-              <span className="mdc-fab__icon material-icons">add</span>
+              <span className="mdc-fab__icon">
+                <SvgIcon icon="add" />
+              </span>
             </button>
           ) : null}
         </main>

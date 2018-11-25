@@ -5,9 +5,9 @@ export default class SvgIcon extends Component {
     super()
   }
 
-  render({ icon }) {
+  render({ icon, variant }) {
     return (
-      <svg className="svg-icon">
+      <svg className={`svg-icon ${variant ? `svg-icon--${variant}` : ''}`}>
         <use href={`#svg-${icon}`} />
       </svg>
     )
