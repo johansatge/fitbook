@@ -1,5 +1,6 @@
 const argv = require('yargs').argv
 const autoprefixer = require('autoprefixer')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 const webpack = require('webpack')
@@ -71,6 +72,11 @@ module.exports = ({ dropboxAppKey }) => {
       }),
       new MiniCssExtractPlugin({
         filename: '[name].[chunkhash].css',
+      }),
+      new BundleAnalyzerPlugin({
+        analyzerMode: argv.dev ? 'static' : 'disabled',
+        reportFilename: path.join(__dirname, '../.dist/bundle.analyze.html'),
+        openAnalyzer: false,
       }),
     ],
   }
