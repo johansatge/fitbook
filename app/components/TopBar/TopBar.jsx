@@ -1,5 +1,6 @@
 import { h, Component } from 'preact'
 import { MDCTopAppBar } from '@material/top-app-bar'
+import SvgIcon from '../SvgIcon/SvgIcon.jsx'
 
 export default class TopBar extends Component {
   constructor() {
@@ -39,18 +40,18 @@ export default class TopBar extends Component {
     }
     if (this.state.isConfirmDelete) {
       const buttons = [
-        <button key="0" onClick={this.onConfirmDelete} className="material-icons mdc-top-app-bar__action-item">
-          done
+        <button key="0" onClick={this.onConfirmDelete} className="mdc-top-app-bar__action-item">
+          <SvgIcon icon="done" />
         </button>,
-        <button key="1" onClick={this.onCancelDelete} className="material-icons mdc-top-app-bar__action-item">
-          clear
+        <button key="1" onClick={this.onCancelDelete} className="mdc-top-app-bar__action-item">
+          <SvgIcon icon="clear" />
         </button>,
       ]
       return buttons
     }
     return (
-      <button onClick={this.onDelete} className="material-icons mdc-top-app-bar__action-item">
-        delete_forever
+      <button onClick={this.onDelete} className="mdc-top-app-bar__action-item">
+        <SvgIcon icon="delete_forever" />
       </button>
     )
   }
@@ -60,8 +61,8 @@ export default class TopBar extends Component {
       <header className="mdc-top-app-bar">
         <div className="mdc-top-app-bar__row">
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <a href="#" className="demo-menu material-icons mdc-top-app-bar__navigation-icon">
-              {menuIcon}
+            <a href="#" className="mdc-top-app-bar__navigation-icon">
+              <SvgIcon icon={menuIcon} />
             </a>
             <span className="mdc-top-app-bar__title">{state.isConfirmDelete ? 'Delete?' : title}</span>
           </section>
@@ -69,15 +70,15 @@ export default class TopBar extends Component {
             {onClickRefresh ? (
               <button
                 onClick={onClickRefresh}
-                className={`material-icons mdc-top-app-bar__action-item ${isLoading ? 'top-bar--loading' : ''}`}
+                className={`mdc-top-app-bar__action-item ${isLoading ? 'top-bar--loading' : ''}`}
                 disabled={isLoading}
               >
-                autorenew
+                <SvgIcon icon="autorenew" />
               </button>
             ) : null}
             {onClickSave ? (
-              <button onClick={onClickSave} disabled={!canSave} className="material-icons mdc-top-app-bar__action-item">
-                done
+              <button onClick={onClickSave} disabled={!canSave} className="mdc-top-app-bar__action-item">
+                <SvgIcon icon="done" />
               </button>
             ) : null}
             {this.getDeleteUi()}
