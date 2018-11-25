@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="<%= assets.styles %>">
   </head>
   <body class="mdc-typography">
+    <div style="display: none">
+      <%- icons %>
+    </div>
     <div class="js-app"></div>
     <script src="<%= assets.app %>"></script>
     <script>Scripts.app.init(document.querySelector('.js-app'))</script>
