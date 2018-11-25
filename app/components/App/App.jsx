@@ -5,7 +5,7 @@ import PageAdd from '../PageAdd/PageAdd.jsx'
 import PageAuth from '../PageAuth/PageAuth.jsx'
 import PageFeed from '../PageFeed/PageFeed.jsx'
 import PageLog from '../PageLog/PageLog.jsx'
-import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected, saveLog } from '../../store.js'
+import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected, saveLog, deleteLog } from '../../store.js'
 
 export default class App extends Component {
   constructor() {
@@ -43,12 +43,7 @@ export default class App extends Component {
   }
 
   onSaveLog(data) {
-    this.setState({
-      ...this.state,
-      page: 'feed',
-      currentLog: null,
-      isLoading: true,
-    })
+    this.setState({ ...this.state, page: 'feed', currentLog: null, isLoading: true })
     saveLog(data, [...this.state.store.logs])
       .then((updatedLogs) => {
         this.setState({ ...this.state, isLoading: false, store: { ...this.state.store, logs: updatedLogs } })
@@ -60,8 +55,15 @@ export default class App extends Component {
   }
 
   onDeleteLog(log) {
-    console.log('@todo delete log', log)
-    // @todo delete log and return to feed page
+    this.setState({ ...this.state, page: 'feed', isLoading: true })
+    deleteLog(log, [...this.state.store.logs])
+      .then((updatedLogs) => {
+        this.setState({ ...this.state, isLoading: false, store: { ...this.state.store, logs: updatedLogs } })
+      })
+      .catch((error) => {
+        this.setState({ ...this.state, isLoading: false })
+        console.log('@todo handle store error', error)
+      })
   }
 
   onReturnToFeed() {

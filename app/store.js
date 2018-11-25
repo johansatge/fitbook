@@ -42,6 +42,19 @@ export function saveLog(data, currentLogs) {
   })
 }
 
+export function deleteLog(logDelete, currentLogs) {
+  const date = dateFns.format(logDelete.fields.datetime, 'YYYY-MM')
+  const filePath = `/logs/${date}.json`
+  const fileLogs = currentLogs.filter((log) => {
+    return log.fields.datetime.startsWith(date) && log.fields.datetime !== logDelete.fields.datetime
+  })
+  fileLogs.sort(sortLogsByDate)
+  const fileContents = JSON.stringify(fileLogs, null, 2)
+  return dbx.filesUpload({ path: filePath, contents: fileContents, mode: 'overwrite' }).then(() => {
+    return currentLogs.filter((log) => log.fields.datetime !== logDelete.fields.datetime)
+  })
+}
+
 export function getConfigAndLogs() {
   const getters = [getLogs(), getJsonFile('/config/fields.json'), getJsonFile('/config/workouts.json')]
   return Promise.all(getters).then(([logs, fields, workouts]) => {
