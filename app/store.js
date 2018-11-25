@@ -99,6 +99,10 @@ function recursiveGetLogs(logs, paths, callback) {
     })
 }
 
+export function clearAccessToken() {
+  localStorage.removeItem(localStorageTokenKey)
+}
+
 export function saveAccessTokenFromUrlAndRedirect() {
   const matches = document.location.href.match(/access_token=([a-zA-Z0-9-_]+)/)
   const token = matches && matches[1] ? matches[1] : null

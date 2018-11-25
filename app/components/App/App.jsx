@@ -5,7 +5,15 @@ import PageAdd from '../PageAdd/PageAdd.jsx'
 import PageAuth from '../PageAuth/PageAuth.jsx'
 import PageFeed from '../PageFeed/PageFeed.jsx'
 import PageLog from '../PageLog/PageLog.jsx'
-import { getConfigAndLogs, getStoreAuthUrl, getStoreUser, isStoreConnected, saveLog, deleteLog } from '../../store.js'
+import {
+  getConfigAndLogs,
+  getStoreAuthUrl,
+  getStoreUser,
+  isStoreConnected,
+  saveLog,
+  deleteLog,
+  clearAccessToken,
+} from '../../store.js'
 
 export default class App extends Component {
   constructor() {
@@ -29,9 +37,18 @@ export default class App extends Component {
     this.onReturnToFeed = this.onReturnToFeed.bind(this)
     this.onSaveLog = this.onSaveLog.bind(this)
     this.onDeleteLog = this.onDeleteLog.bind(this)
+    this.onLogout = this.onLogout.bind(this)
     if (this.state.store.isConnected) {
       this.onFetchStoreData()
     }
+  }
+
+  onLogout() {
+    clearAccessToken()
+    this.setState({
+      ...this.state,
+      store: { ...this.state.store, isConnected: false, user: null, fields: null, workouts: null, logs: [] },
+    })
   }
 
   onOpenLog(log) {
@@ -129,6 +146,7 @@ export default class App extends Component {
           onOpenLog={this.onOpenLog}
           onAddLog={this.onAddLog}
           isLoading={state.isLoading}
+          onLogout={this.onLogout}
           logs={state.store.logs}
           workouts={state.store.workouts}
           fields={state.store.fields}

@@ -69,10 +69,15 @@ export default class PageFeed extends Component {
     )
   }
 
-  render({ logs, workouts, fields, onOpenLog, onAddLog, onRefresh, isLoading }, state) {
+  render({ logs, workouts, fields, onOpenLog, onAddLog, onRefresh, isLoading, onLogout }, state) {
     return (
       <div>
-        <Drawer onClickItem={this.onCloseDrawer} onClose={this.onCloseDrawer} isVisible={state.isDrawerVisible} />
+        <Drawer
+          onClickItem={this.onCloseDrawer}
+          onClose={this.onCloseDrawer}
+          isVisible={state.isDrawerVisible}
+          onLogout={onLogout}
+        />
         <div className="mdc-drawer-scrim" />
         <TopBar
           onClickMenu={this.onOpenDrawer}

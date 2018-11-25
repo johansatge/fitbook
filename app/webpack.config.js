@@ -30,17 +30,7 @@ module.exports = ({ dropboxAppKey }) => {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            plugins: [
-              ['@babel/plugin-transform-react-jsx', { pragma: 'h' }],
-              // [
-              //   'babel-plugin-jsx-pragmatic',
-              //   {
-              //     module: 'preact',
-              //     import: 'h',
-              //     export: 'h',
-              //   },
-              // ],
-            ],
+            plugins: [['@babel/plugin-transform-react-jsx', { pragma: 'h' }]],
           },
         },
         {
@@ -77,6 +67,7 @@ module.exports = ({ dropboxAppKey }) => {
         analyzerMode: argv.dev ? 'static' : 'disabled',
         reportFilename: path.join(__dirname, '../.dist/bundle.analyze.html'),
         openAnalyzer: false,
+        logLevel: 'silent',
       }),
     ],
   }

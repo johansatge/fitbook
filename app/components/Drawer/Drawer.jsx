@@ -23,7 +23,7 @@ export default class Drawer extends Component {
     this.mdcDrawer.open = this.props.isVisible
   }
 
-  render() {
+  render({ onLogout }) {
     return (
       <aside className="mdc-drawer mdc-drawer--modal">
         <div className="mdc-drawer__header">
@@ -52,6 +52,12 @@ export default class Drawer extends Component {
             </a>
             <hr className="mdc-list-divider" />
             <h6 className="mdc-list-group__subheader">More</h6>
+            <a className="mdc-list-item" href="#" onClick={onLogout}>
+              <i className="mdc-list-item__graphic">
+                <SvgIcon icon="exit_to_app" />
+              </i>
+              <span className="mdc-list-item__text">Logout</span>
+            </a>
             <a className="mdc-list-item" href="#">
               <i className="mdc-list-item__graphic">
                 <SvgIcon icon="help" />
