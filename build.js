@@ -64,7 +64,7 @@ function buildIcons() {
 }
 
 function insertIconIdInSvg(filePath, svg) {
-  const fileName = filePath.match(/([a-z_]+)\.svg$/)
+  const fileName = filePath.match(/([a-z0-9_]+)\.svg$/)
   return svg.replace('<svg ', `<svg id="svg-${fileName[1]}" `)
 }
 
