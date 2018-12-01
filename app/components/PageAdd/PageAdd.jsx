@@ -112,7 +112,7 @@ export default class Add extends Component {
                 name={fieldName}
                 value={data[fieldName]}
                 className="mdc-text-field__input"
-                onChange={this.onFieldChange}
+                onInput={this.onFieldChange}
               />
               <label htmlFor={fieldName} className="mdc-floating-label">
                 {fields[fieldName].name + readableUnit}

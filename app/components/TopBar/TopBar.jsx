@@ -1,5 +1,4 @@
 import { h, Component } from 'preact'
-import { MDCTopAppBar } from '@material/top-app-bar'
 import SvgIcon from '../SvgIcon/SvgIcon.jsx'
 
 export default class TopBar extends Component {
@@ -8,14 +7,6 @@ export default class TopBar extends Component {
     this.state = {
       isConfirmDelete: false,
     }
-  }
-
-  componentDidMount() {
-    const topAppBar = MDCTopAppBar.attachTo(this.base)
-    topAppBar.setScrollTarget(document.querySelector('.app-main')) // @todo this is not good
-    topAppBar.listen('MDCTopAppBar:nav', () => {
-      this.props.onClickMenu()
-    })
   }
 
   onDelete = () => {
@@ -53,12 +44,12 @@ export default class TopBar extends Component {
     )
   }
 
-  render({ isLoading, onClickRefresh, onClickSave, canSave, menuIcon, title }, state) {
+  render({ isLoading, onClickRefresh, onClickMenu, onClickSave, canSave, menuIcon, title }, state) {
     return (
       <header className="mdc-top-app-bar">
         <div className="mdc-top-app-bar__row">
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-            <a href="#" className="mdc-top-app-bar__navigation-icon">
+            <a href="#" className="mdc-top-app-bar__navigation-icon" onClick={onClickMenu}>
               <SvgIcon icon={menuIcon} />
             </a>
             <span className="mdc-top-app-bar__title">{state.isConfirmDelete ? 'Delete?' : title}</span>
