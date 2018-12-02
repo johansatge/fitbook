@@ -64,27 +64,38 @@ export default class Add extends Component {
 
   parseFieldValue(fieldName, rawValue) {
     const type = this.props.fields[fieldName].type
-    if (type === 'string') {
+    if (type === 'string' || type === 'datetime') {
       return String(rawValue)
     }
     if (type === 'number') {
       const number = parseFloat(rawValue)
-      return isNaN(number) ? 0 : number
-    }
-    if (type === 'datetime') {
-      return this.isValidDateTime(rawValue) ? rawValue : this.getDefaultDateTime()
+      return isNaN(number) ? rawValue : number
     }
     return rawValue
+  }
+
+  isFieldValid(fieldName, rawValue) {
+    const type = this.props.fields[fieldName].type
+    if (type === 'string') {
+      return typeof rawValue === 'string' && rawValue.length > 0
+    }
+    if (type === 'number') {
+      return typeof rawValue === 'number' && !isNaN(rawValue)
+    }
+    if (type === 'datetime') {
+      return rawValue.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/)
+    }
+    return false
   }
 
   canSaveAddData(state) {
     if (!state.workoutType || !state.fields) {
       return false
     }
-    const emptyFields = Object.keys(state.fields).filter((fieldName) => {
-      return state.fields[fieldName] === null || state.fields[fieldName] === ''
+    const errorFields = Object.keys(state.fields).filter((fieldName) => {
+      return !this.isFieldValid(fieldName, state.fields[fieldName])
     })
-    return emptyFields.length === 0
+    return errorFields.length === 0
   }
 
   getWorkouts(workouts, currentWorkoutType) {
@@ -101,8 +112,9 @@ export default class Add extends Component {
     return currentWorkoutType
       ? workouts[currentWorkoutType].fields.map((fieldName, index) => {
           const readableUnit = fields[fieldName].unit ? ` (${fields[fieldName].unit})` : ''
+          const hasErrorClass = this.isFieldValid(fieldName, data[fieldName]) ? '' : 'has-error'
           return (
-            <div key={index} className="field mdc-text-field mdc-text-field--with-leading-icon">
+            <div key={index} className={`field mdc-text-field mdc-text-field--with-leading-icon ${hasErrorClass}`}>
               <i className="mdc-text-field__icon">
                 <SvgIcon icon={fields[fieldName].icon} variant="darkgrey" />
               </i>
@@ -112,7 +124,7 @@ export default class Add extends Component {
                 name={fieldName}
                 value={data[fieldName]}
                 className="mdc-text-field__input"
-                onInput={this.onFieldChange}
+                onChange={this.onFieldChange}
               />
               <label htmlFor={fieldName} className="mdc-floating-label">
                 {fields[fieldName].name + readableUnit}
@@ -125,18 +137,14 @@ export default class Add extends Component {
   }
 
   render({ fields, workouts, onSave, onBack }, state) {
-    const sendData = function() {
-      onSave({ workout: state.workoutType, fields: { ...state.fields } })
+    const sendData = () => {
+      if (this.canSaveAddData(state)) {
+        onSave({ workout: state.workoutType, fields: { ...state.fields } })
+      }
     }
     return (
       <div>
-        <TopBar
-          onClickMenu={onBack}
-          menuIcon="keyboard_backspace"
-          title="Add workout"
-          onClickSave={sendData}
-          canSave={this.canSaveAddData(state)}
-        />
+        <TopBar onClickMenu={onBack} menuIcon="keyboard_backspace" title="Add workout" onClickSave={sendData} />
         <main className="app-main">
           <div className="mdc-top-app-bar--fixed-adjust" />
           <div className="page-add">

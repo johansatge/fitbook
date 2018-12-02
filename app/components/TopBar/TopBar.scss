@@ -4,10 +4,6 @@
   .top-bar--loading {
     animation:spin 2s linear infinite;
   }
-
-  .mdc-top-app-bar__action-item:disabled {
-    opacity: 0.5;
-  }
 }
 @keyframes spin {
   100% {

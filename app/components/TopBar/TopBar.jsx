@@ -44,7 +44,7 @@ export default class TopBar extends Component {
     )
   }
 
-  render({ isLoading, onClickRefresh, onClickMenu, onClickSave, canSave, menuIcon, title }, state) {
+  render({ isLoading, onClickRefresh, onClickMenu, onClickSave, menuIcon, title }, state) {
     return (
       <header className="mdc-top-app-bar">
         <div className="mdc-top-app-bar__row">
@@ -65,7 +65,7 @@ export default class TopBar extends Component {
               </button>
             ) : null}
             {onClickSave ? (
-              <button onClick={onClickSave} disabled={!canSave} className="mdc-top-app-bar__action-item">
+              <button onClick={onClickSave} className="mdc-top-app-bar__action-item">
                 <SvgIcon icon="done" />
               </button>
             ) : null}
