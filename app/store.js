@@ -31,27 +31,27 @@ export function getStoreUser() {
 export function saveLog(data, currentLogs) {
   const date = dateFns.format(data.fields.datetime, 'YYYY-MM')
   const filePath = `/logs/${date}.json`
-  const fileLogs = currentLogs.filter((log) => log.fields.datetime.startsWith(date))
-  fileLogs.push(data)
-  fileLogs.sort(sortLogsByDate)
-  const fileContents = JSON.stringify(fileLogs, null, 2)
-  return dbx.filesUpload({ path: filePath, contents: fileContents, mode: 'overwrite' }).then(() => {
-    currentLogs.push(data)
-    currentLogs.sort(sortLogsByDate)
-    return currentLogs
+  return getJsonFile(filePath, true).then((json) => {
+    json.push(data)
+    json.sort(sortLogsByDate)
+    return saveLogFileAndUpdateCurrentLogs(filePath, date, json, currentLogs)
   })
 }
 
 export function deleteLog(logDelete, currentLogs) {
   const date = dateFns.format(logDelete.fields.datetime, 'YYYY-MM')
   const filePath = `/logs/${date}.json`
-  const fileLogs = currentLogs.filter((log) => {
-    return log.fields.datetime.startsWith(date) && log.fields.datetime !== logDelete.fields.datetime
+  return getJsonFile(filePath, true).then((json) => {
+    json = json.filter((log) => log.fields.datetime !== logDelete.fields.datetime)
+    return saveLogFileAndUpdateCurrentLogs(filePath, date, json, currentLogs)
   })
-  fileLogs.sort(sortLogsByDate)
-  const fileContents = JSON.stringify(fileLogs, null, 2)
-  return dbx.filesUpload({ path: filePath, contents: fileContents, mode: 'overwrite' }).then(() => {
-    return currentLogs.filter((log) => log.fields.datetime !== logDelete.fields.datetime)
+}
+
+function saveLogFileAndUpdateCurrentLogs(filePath, date, json, currentLogs) {
+  return dbx.filesUpload({ path: filePath, contents: JSON.stringify(json, null, 2), mode: 'overwrite' }).then(() => {
+    const otherLogs = [...currentLogs.filter((log) => !log.fields.datetime.startsWith(date)), ...json]
+    otherLogs.sort(sortLogsByDate)
+    return otherLogs
   })
 }
 
@@ -125,19 +125,30 @@ function getDropboxInstance() {
   return null
 }
 
-function getJsonFile(filePath) {
-  return dbx.filesDownload({ path: filePath }).then((response) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.addEventListener('loadend', () => {
-        try {
-          const json = JSON.parse(reader.result)
-          resolve(json)
-        } catch (error) {
-          reject(error)
-        }
+function getJsonFile(filePath, returnEmptyIfNotFound = false) {
+  return dbx
+    .filesDownload({ path: filePath })
+    .then((response) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.addEventListener('loadend', () => {
+          try {
+            const json = JSON.parse(reader.result)
+            resolve(json)
+          } catch (error) {
+            reject(error)
+          }
+        })
+        reader.readAsText(response.fileBlob)
       })
-      reader.readAsText(response.fileBlob)
     })
-  })
+    .catch((rawError) => {
+      if (rawError.error) {
+        const errorObject = JSON.parse(rawError.error)
+        if (returnEmptyIfNotFound && errorObject.error_summary.search('path/not_found') > -1) {
+          return []
+        }
+      }
+      throw rawError
+    })
 }
