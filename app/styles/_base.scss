@@ -1,0 +1,23 @@
+html, body, div, h1, h2, h3, div, span, p, header, section, a, button, input, textarea, select, ul, li, table, tr, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html, body {
+  background: #eeeeee;
+  font-family: Roboto, sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 500;
+}
+
+button {
+  cursor: pointer;
+  background: transparent;
+}
+
+.svg-icon {
+  width: 24px;
+  height: 24px;
+}

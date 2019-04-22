@@ -4,11 +4,8 @@ module.exports = {
     node: true,
   },
   plugins: ['prettier'],
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended', // Makes eslint understand JSX modules import
-  ],
-  parser: 'babel-eslint', // Makes eslint understand JSX statements
+  extends: ['eslint:recommended'],
+  parser: 'babel-eslint',
   rules: {
     'prettier/prettier': 'error',
     'no-console': ['error'],
@@ -20,11 +17,5 @@ module.exports = {
     'prefer-const': ['error'],
     'prefer-template': ['warn'],
     'react/prop-types': ['off'],
-  },
-  settings: {
-    react: {
-      pragma: 'h', // Preact JSX pragma
-      version: '15.0', // React version, useless with Preact but eslint emits a warning otherwise
-    },
   },
 }

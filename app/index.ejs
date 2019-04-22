@@ -1,17 +1,55 @@
 <html>
   <head>
-    <title><%= htmlTitle %></title>
+    <title><%= appTitleFull %></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link rel="stylesheet" href="<%= assets.styles %>">
   </head>
-  <body class="mdc-typography">
+  <body>
     <div style="display: none">
       <%- icons %>
     </div>
-    <div class="js-app"></div>
-    <script src="<%= assets.app %>"></script>
-    <script>Scripts.app.init(document.querySelector('.js-app'))</script>
+    <div class="navbar">
+      <div class="navbar-left">
+        <button class="navbar-menu">
+          <svg class="svg-icon"><use href="#svg-menu"></use></svg>
+        </button>
+        <h1 class="navbar-title">
+          <%= appTitle %>
+          <svg class="svg-icon"><use href="#svg-play_arrow"></use></svg>
+          <span class="navbar-title-current">
+            <span data-js-feed-filter-name>
+              loading
+            </span>
+            <select class="navbar-filter" data-js-feed-filter>
+              <option>option 1</option>
+              <option>option 2</option>
+              <option>option 3</option>
+            </select>
+          </span>
+        </h1>
+      </div>
+      <div class="navbar-right">
+        <button class="navbar-menu navbar-menu--inactive navbar-menu--loading" data-js-loader>
+          <svg class="svg-icon"><use href="#svg-autorenew"></use></svg>
+        </button>
+      </div>
+    </div>
+    <button class="floatingbutton">
+      <svg class="svg-icon"><use href="#svg-add"></use></svg>
+    </button>
+    <div class="toast">
+      I am a toast
+      <button class="toast-close">
+        <svg class="svg-icon"><use href="#svg-clear"></use></svg>
+      </button>
+    </div>
+    <div class="feed" data-js-feed></div>
+    <div class="footer">
+      <%= appTitleFull %>
+    </div>
+    <script src="<%= assets.index %>"></script>
+    <script>Scripts.index.init()</script>
   </body>
 </html>

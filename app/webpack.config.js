@@ -5,12 +5,32 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 const webpack = require('webpack')
 
-module.exports = ({ dropboxAppKey }) => {
+class MiniCssExtractPluginCleaner {
+  apply(compiler) {
+    compiler.hooks.emit.tapAsync('MiniCssExtractPluginCleaner', (compilation, callback) => {
+      const cssAssets = Object.keys(compilation.assets).filter((asset) => asset.match(/\.css$/))
+      Object.keys(compilation.assets).forEach((asset) => {
+        if (!asset.match(/\.css$/) && cssAssets.includes(asset.replace(/\.js$/, '.css'))) {
+          delete compilation.assets[asset]
+        }
+      })
+      callback()
+    })
+  }
+}
+
+module.exports = ({ dropboxAppKey, ejsTemplates }) => {
+  const defines = {
+    __DROPBOX_APP_KEY__: JSON.stringify(dropboxAppKey),
+  }
+  Object.keys(ejsTemplates).forEach((templateName) => {
+    defines[`__EJS_${templateName.toUpperCase()}__`] = ejsTemplates[templateName]
+  })
   return {
-    mode: argv.dev ? 'development' : 'production',
+    mode: argv.dev ? 'none' : 'production',
     entry: {
-      app: path.join(__dirname, 'app.js'),
-      styles: path.join(__dirname, 'styles.scss'),
+      index: path.join(__dirname, 'index.js'),
+      styles: path.join(__dirname, 'styles/styles.scss'),
     },
     output: {
       path: path.join(__dirname, '../.dist'),
@@ -25,15 +45,11 @@ module.exports = ({ dropboxAppKey }) => {
     module: {
       rules: [
         {
-          test: /\.jsx?$/,
+          test: /\.js$/,
           include: [__dirname],
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            plugins: [
-              ['@babel/plugin-transform-react-jsx', { pragma: 'h' }],
-              ['@babel/plugin-proposal-class-properties'],
-            ],
           },
         },
         {
@@ -59,10 +75,13 @@ module.exports = ({ dropboxAppKey }) => {
         },
       ],
     },
+    resolve: {
+      alias: {
+        // materialize: path.resolve(__dirname, '..', 'node_modules/materialize-css/dist/js/materialize.js'),
+      },
+    },
     plugins: [
-      new webpack.DefinePlugin({
-        DROPBOX_APP_KEY: JSON.stringify(dropboxAppKey),
-      }),
+      new webpack.DefinePlugin(defines),
       new MiniCssExtractPlugin({
         filename: '[name].[chunkhash].css',
       }),
@@ -72,6 +91,7 @@ module.exports = ({ dropboxAppKey }) => {
         openAnalyzer: false,
         logLevel: 'silent',
       }),
+      new MiniCssExtractPluginCleaner(),
     ],
   }
 }

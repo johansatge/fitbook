@@ -15,8 +15,9 @@ const distDir = path.join(__dirname, '.dist')
 
 const startTime = new Date().getTime()
 cleanDist()
-  .then(() => {
-    return Promise.all([buildWebpack(), buildIcons()])
+  .then(buildEjsTemplates)
+  .then((ejsTemplates) => {
+    return Promise.all([buildWebpack(ejsTemplates), buildIcons()])
   })
   .then(renderHtml)
   .then(() => {
@@ -32,25 +33,31 @@ function cleanDist() {
   return fs.emptyDir(distDir)
 }
 
-function buildWebpack() {
-  log('Building webpack assets')
-  return new Promise((resolve, reject) => {
-    const config = webpackConfig({ dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY })
-    webpack(config, (error, stats) => {
-      if (error) {
-        return reject(error)
-      }
-      stats = stats.toJson()
-      if (stats.errors.length > 0) {
-        return reject(new Error(stats.errors[0]))
-      }
-      stats.warnings.forEach((warning) => {
-        log(`Webpack warning: ${warning}`)
-      })
-      // @todo cleaner? & delete js file
-      stats.assetsByChunkName.styles = stats.assetsByChunkName.styles.shift()
-      resolve(stats.assetsByChunkName)
+function buildEjsTemplates() {
+  log('Building EJS templates')
+  return fs.readFile('app/feed.ejs', 'utf8').then((feedTemplate) => {
+    const feed = ejs.compile(feedTemplate, {
+      client: true,
+      compileDebug: false,
+      strict: true,
+      localsName: 'data',
     })
+    return { feed: feed.toString() }
+  })
+}
+
+function buildWebpack(ejsTemplates) {
+  log('Building webpack assets')
+  const config = webpackConfig({ dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY, ejsTemplates })
+  return promisify(webpack)(config).then((stats) => {
+    stats = stats.toJson()
+    if (stats.errors.length > 0) {
+      throw new Error(stats.errors[0])
+    }
+    stats.warnings.forEach((warning) => {
+      log(`Webpack warning: ${warning}`)
+    })
+    return stats.assetsByChunkName
   })
 }
 
@@ -71,7 +78,12 @@ function insertIconIdInSvg(filePath, svg) {
 function renderHtml([assets, icons]) {
   log('Rendering HTML')
   return fs.readFile(path.join(__dirname, 'app/index.ejs'), 'utf8').then((ejsTemplate) => {
-    const html = ejs.render(ejsTemplate, { assets, icons, htmlTitle: pkg.name })
+    const html = ejs.render(ejsTemplate, {
+      assets,
+      icons,
+      appTitle: pkg.name,
+      appTitleFull: `${pkg.name} ${pkg.version}`,
+    })
     return fs.writeFile(path.join(distDir, 'index.html'), html, 'utf8')
   })
 }

@@ -1,0 +1,87 @@
+.navbar {
+  width: 100%;
+  height: 64px;
+  box-sizing: border-box;
+  padding: 8px 12px 8px 12px;
+  position: fixed;
+  background: #E65100;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+}
+
+.navbar-left {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.navbar-right {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.navbar-menu {
+  width: 48px;
+  height: 48px;
+
+  .svg-icon {
+    fill: #ffffff;
+  }
+}
+
+.navbar-menu--inactive {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.navbar-menu--loading {
+  animation:spin 2s linear infinite;
+}
+@keyframes spin {
+  100% {
+    transform:rotate(360deg);
+  }
+}
+
+.navbar-title {
+  font-size: 20px;
+  color: #ffffff;
+  font-weight: inherit;
+  margin: 0 0 0 10px;
+  display: inline-block;
+
+  .svg-icon {
+    width: 16px;
+    height: 16px;
+    fill: #ffffff;
+    vertical-align: middle;
+  }
+}
+
+.navbar-title-current {
+  position: relative;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  padding: 3px 8px 3px 8px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.navbar-title-current-label {
+  position: relative;
+  z-index: 1;
+}
+
+.navbar-filter {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
