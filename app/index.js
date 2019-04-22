@@ -9,6 +9,7 @@ const nodeFeedFilter = document.querySelector('[data-js-feed-filter]')
 const nodeFeedFilterName = document.querySelector('[data-js-feed-filter-name]')
 const nodeLoader = document.querySelector('[data-js-loader]')
 const nodeFeed = document.querySelector('[data-js-feed]')
+const nodeToast = document.querySelector('[data-js-toast]')
 
 const templates = {
   feed: __EJS_FEED__,
@@ -19,6 +20,7 @@ const state = {
   workouts: null,
   fields: null,
   currentMonthId: null,
+  toastTimeout: null,
 }
 
 function init() {
@@ -34,8 +36,24 @@ function init() {
     state.workouts = workouts
     state.fields = fields
     populateFeedFilter()
+    setLoading(false)
+    setToast('Loaded app config')
     onHashChangeLoadMonth()
   })
+}
+
+function setToast(message) {
+  if (state.toastTimeout) {
+    clearTimeout(state.toastTimeout)
+    state.toastTimeout = null
+  }
+  nodeToast.classList.add('js-visible')
+  nodeToast.innerHTML = message
+  nodeToast.style.display = 'block'
+  state.toastTimeout = setTimeout(() => {
+    nodeToast.classList.remove('js-visible')
+    state.toastTimeout = null
+  }, 2000)
 }
 
 function onChangeMonth() {
@@ -73,6 +91,7 @@ function onHashChangeLoadMonth() {
 
     nodeFeed.innerHTML = templates.feed({ days, workouts: state.workouts, fields: state.fields })
     setLoading(false)
+    setToast('Loaded month data')
   })
 }
 
