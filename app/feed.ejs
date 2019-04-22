@@ -1,38 +1,34 @@
-<% for(let i = 0; i < 4; i += 1) { %>
-  <h2 class="feed-title">Friday, April 12th</h2>
+<% Object.keys(data.days).forEach((dayId) => { const day = data.days[dayId] %>
+  <h2 class="feed-title"><%= day.name %> </h2>
   <div class="feed-card">
-    <% for(let j = 0; j < 4; j += 1) { %>
-      <div class="feed-card-line <%= j % 2 !== 0 ? 'feed-card-line--odd' : '' %>">
+    <% day.logs.forEach((log, index) => { %>
+      <div class="feed-card-line <%= index % 2 !== 0 ? 'feed-card-line--odd' : '' %>">
         <div class="feed-card-line-icon">
-          <svg class="svg-icon"><use href="#svg-fitness_center"></use></svg>
+          <svg class="svg-icon"><use href="#svg-<%= data.workouts[log.workout].icon %>"></use></svg>
         </div>
-        <button class="feed-card-toggle">
+        <button class="feed-card-toggle" data-js-feed-toggle="<%= dayId %>-<%= index %>">
           <svg class="svg-icon"><use href="#svg-keyboard_arrow_down"></use></svg>
         </button>
-        <h3 class="feed-card-title">Abs (crunch machine)</h3>
+        <h3 class="feed-card-title"><%= data.workouts[log.workout].name %></h3>
         <p class="feed-card-text">
-          Weight: 68kg (08:35)
+          <%= data.fields[data.workouts[log.workout].highlight].name %>:
+          <%= log.fields[data.workouts[log.workout].highlight] %><%= data.fields[data.workouts[log.workout].highlight].unit %>
+          (<%= log.time %>)
         </p>
-        <% if (j === 0) { %>
-          <table class="feed-card-data" cellpadding="0" cellspacing="0">
+        <table class="feed-card-data" cellpadding="0" cellspacing="0" data-js-feed-data="<%= dayId %>-<%= index %>">
+          <% data.workouts[log.workout].fields.forEach((field) => { if (field === 'datetime') return %>
             <tr class="feed-card-data-line">
-              <td class="feed-card-data-cell"><svg class="svg-icon"><use href="#svg-map"></use></svg></td>
-              <td class="feed-card-data-cell">Distance</td>
-              <td class="feed-card-data-cell">20km</td>
+              <td class="feed-card-data-cell">
+                <svg class="svg-icon"><use href="#svg-<%= data.fields[field].icon %>"></use></svg>
+              </td>
+              <td class="feed-card-data-cell"><%= data.fields[field].name %></td>
+              <td class="feed-card-data-cell">
+                <%= log.fields[field] %><%= data.fields[field].unit %>
+              </td>
             </tr>
-            <tr class="feed-card-data-line">
-              <td class="feed-card-data-cell"><svg class="svg-icon"><use href="#svg-alarm_on"></use></svg></td>
-              <td class="feed-card-data-cell">Duration</td>
-              <td class="feed-card-data-cell">30mn</td>
-            </tr>
-            <tr class="feed-card-data-line">
-              <td class="feed-card-data-cell"><svg class="svg-icon"><use href="#svg-event"></use></svg></td>
-              <td class="feed-card-data-cell">Date</td>
-              <td class="feed-card-data-cell">Thursday, April 18th (08:21)</td>
-            </tr>
-          </table>
-        <% } %>
+          <% }) %>
+        </table>
       </div>
-    <% } %>
+    <% }) %>
   </div>
-<% } %>
+<% }) %>

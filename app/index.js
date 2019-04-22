@@ -1,5 +1,6 @@
 /* global __EJS_FEED__ */
 
+import { format as formatDate } from 'date-fns'
 import { getConfigAndMonths, getMonth } from './store.js'
 
 export { init }
@@ -22,6 +23,7 @@ const state = {
 
 function init() {
   nodeFeedFilter.addEventListener('change', onChangeMonth)
+  nodeFeed.addEventListener('click', onFeedClick)
   window.addEventListener('hashchange', onHashChangeLoadMonth)
   setLoading(true)
   getConfigAndMonths().then(({ months, workouts, fields }) => {
@@ -38,12 +40,35 @@ function onChangeMonth() {
   window.location.hash = `#${state.months[monthId].hash}`
 }
 
+function onFeedClick(evt) {
+  const toggleId = evt.target.dataset.jsFeedToggle
+  if (!toggleId) {
+    return
+  }
+  evt.target.classList.toggle('js-opened')
+  nodeFeed.querySelector(`[data-js-feed-data="${toggleId}"]`).classList.toggle('js-visible')
+}
+
 function onHashChangeLoadMonth() {
+  setLoading(true)
   state.currentMonthId = getCurrentMonth()
   setFeedFilter()
-  getMonth(state.months[state.currentMonthId].path).then((data) => {
-    console.log('@todo html', data)
-    nodeFeed.innerHTML = templates.feed()
+  nodeFeed.innerHTML = ''
+  getMonth(state.months[state.currentMonthId].path).then((logs) => {
+    const days = {}
+    logs.forEach((log) => {
+      const day = formatDate(log.fields.datetime, 'YYYY-MM-DD')
+      if (!days[day]) {
+        days[day] = {
+          name: formatDate(log.fields.datetime, 'dddd, MMMM Do'),
+          logs: [],
+        }
+      }
+      log.time = formatDate(log.fields.datetime, 'HH:mm')
+      days[day].logs.push(log)
+    })
+
+    nodeFeed.innerHTML = templates.feed({ days, workouts: state.workouts, fields: state.fields })
     setLoading(false)
   })
 }
