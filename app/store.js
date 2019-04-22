@@ -13,6 +13,10 @@ export function isStoreConnected() {
   return getAccessTokenFromStore() ? true : false
 }
 
+export function redirectToLogin() {
+  window.location.href = '/login.html'
+}
+
 export function getConfigAndMonths() {
   const getters = [getMonths(), getJsonFile('/config/fields.json'), getJsonFile('/config/workouts.json')]
   return Promise.all(getters).then(([months, fields, workouts]) => {
@@ -26,6 +30,20 @@ export function getConfigAndMonths() {
 
 export function getMonth(monthPath) {
   return getJsonFile(monthPath)
+}
+
+export function getAuthUrl() {
+  const dbx = new Dropbox({ clientId: dropboxAppKey, fetch })
+  return dbx.getAuthenticationUrl(document.location.href, null, 'token')
+}
+
+export function saveAccessTokenFromUrlAndRedirect() {
+  const matches = document.location.href.match(/access_token=([a-zA-Z0-9-_]+)/)
+  const token = matches && matches[1] ? matches[1] : null
+  if (token) {
+    localStorage.setItem(localStorageTokenKey, token)
+    document.location.href = '/'
+  }
 }
 
 function getMonths() {

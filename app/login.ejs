@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title><%= appTitleFull %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="stylesheet" href="<%= assets.styles %>">
+  </head>
+  <body>
+    <div class="login">
+      <h1 class="login-title"><%= appTitle %></h1>
+      <a class="login-button" data-js-login-button>Login to Dropbox</a>
+    </div>
+    <script src="<%= assets.login %>"></script>
+    <script>Scripts.login.init()</script>
+  </body>
+</html>

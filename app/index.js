@@ -1,7 +1,7 @@
 /* global __EJS_FEED__ */
 
 import { format as formatDate } from 'date-fns'
-import { getConfigAndMonths, getMonth } from './store.js'
+import { getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin } from './store.js'
 
 export { init }
 
@@ -22,6 +22,9 @@ const state = {
 }
 
 function init() {
+  if (!isStoreConnected()) {
+    redirectToLogin()
+  }
   nodeFeedFilter.addEventListener('change', onChangeMonth)
   nodeFeed.addEventListener('click', onFeedClick)
   window.addEventListener('hashchange', onHashChangeLoadMonth)

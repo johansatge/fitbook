@@ -30,6 +30,7 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
     mode: argv.dev ? 'none' : 'production',
     entry: {
       index: path.join(__dirname, 'index.js'),
+      login: path.join(__dirname, 'login.js'),
       styles: path.join(__dirname, 'styles/styles.scss'),
     },
     output: {

@@ -19,13 +19,15 @@ cleanDist()
   .then((ejsTemplates) => {
     return Promise.all([buildWebpack(ejsTemplates), buildIcons()])
   })
-  .then(renderHtml)
+  .then(([assets, icons]) => {
+    return Promise.all([renderIndexHtml({ assets, icons }), renderLoginHtml({ assets })])
+  })
   .then(() => {
     const endTime = new Date().getTime()
     log(`Done in ${endTime - startTime}ms`)
   })
   .catch((error) => {
-    log(`An error occurred (${error.message})`)
+    log(`An error occurred (${error})`)
   })
 
 function cleanDist() {
@@ -75,8 +77,8 @@ function insertIconIdInSvg(filePath, svg) {
   return svg.replace('<svg ', `<svg id="svg-${fileName[1]}" `)
 }
 
-function renderHtml([assets, icons]) {
-  log('Rendering HTML')
+function renderIndexHtml({ assets, icons }) {
+  log('Rendering HTML (index)')
   return fs.readFile(path.join(__dirname, 'app/index.ejs'), 'utf8').then((ejsTemplate) => {
     const html = ejs.render(ejsTemplate, {
       assets,
@@ -85,6 +87,19 @@ function renderHtml([assets, icons]) {
       appTitleFull: `${pkg.name} ${pkg.version}`,
     })
     return fs.writeFile(path.join(distDir, 'index.html'), html, 'utf8')
+  })
+}
+
+function renderLoginHtml({ assets }) {
+  log('Rendering HTML (login)')
+  return fs.readFile(path.join(__dirname, 'app/login.ejs'), 'utf8').then((ejsTemplate) => {
+    const html = ejs.render(ejsTemplate, {
+      assets,
+      appTitle: pkg.name,
+      appTitleFull: `${pkg.name} ${pkg.version}`,
+      dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY,
+    })
+    return fs.writeFile(path.join(distDir, 'login.html'), html, 'utf8')
   })
 }
 
