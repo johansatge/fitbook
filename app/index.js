@@ -10,6 +10,7 @@ const nodeFeedFilterName = document.querySelector('[data-js-feed-filter-name]')
 const nodeLoader = document.querySelector('[data-js-loader]')
 const nodeFeed = document.querySelector('[data-js-feed]')
 const nodeToast = document.querySelector('[data-js-toast]')
+const nodeAddMenu = document.querySelector('[data-js-add-menu]')
 
 const templates = {
   feed: __EJS_FEED__,
@@ -30,12 +31,14 @@ function init() {
   nodeFeedFilter.addEventListener('change', onChangeMonth)
   nodeFeed.addEventListener('click', onFeedClick)
   window.addEventListener('hashchange', onHashChangeLoadMonth)
+  nodeAddMenu.addEventListener('change', onAddLog)
   setLoading(true)
   getConfigAndMonths().then(({ months, workouts, fields }) => {
     state.months = months
     state.workouts = workouts
     state.fields = fields
     populateFeedFilter()
+    populateAddMenu()
     setLoading(false)
     setToast('Loaded app config')
     onHashChangeLoadMonth()
@@ -59,6 +62,12 @@ function setToast(message) {
 function onChangeMonth() {
   const monthId = nodeFeedFilter.querySelector('option:checked').value
   window.location.hash = `#${state.months[monthId].hash}`
+}
+
+function onAddLog() {
+  const workoutId = nodeAddMenu.querySelector('option:checked').value
+  nodeAddMenu.querySelector('option:checked').selected = false
+  console.log('@todo add UI', workoutId)
 }
 
 function onFeedClick(evt) {
@@ -107,6 +116,15 @@ function populateFeedFilter() {
       return `<option value="${index}">${month.name}</option>`
     })
     .join('')
+}
+
+function populateAddMenu() {
+  nodeAddMenu.innerHTML = [
+    ...'<option value="-1">Choose a workout...</option>',
+    ...Object.keys(state.workouts).map((workoutId) => {
+      return `<option value="${workoutId}">${state.workouts[workoutId].name}</option>`
+    }),
+  ].join('')
 }
 
 function setFeedFilter() {

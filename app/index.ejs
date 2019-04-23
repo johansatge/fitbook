@@ -23,9 +23,7 @@
               loading
             </span>
             <select class="navbar-filter" data-js-feed-filter>
-              <option>option 1</option>
-              <option>option 2</option>
-              <option>option 3</option>
+              <option disabled>loading</option>
             </select>
           </span>
         </h1>
@@ -36,9 +34,12 @@
         </button>
       </div>
     </div>
-    <button class="floatingbutton">
+    <span class="floatingbutton">
       <svg class="svg-icon"><use href="#svg-add"></use></svg>
-    </button>
+      <select class="floatingbutton-actions" data-js-add-menu>
+        <option disabled>loading</option>
+      </select>
+    </span>
     <div class="toast" data-js-toast>
       I am a toast
     </div>
