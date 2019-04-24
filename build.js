@@ -37,14 +37,20 @@ function cleanDist() {
 
 function buildEjsTemplates() {
   log('Building EJS templates')
-  return fs.readFile('app/feed.ejs', 'utf8').then((feedTemplate) => {
-    const feed = ejs.compile(feedTemplate, {
+  return Promise.all([buildEjsTemplate('app/feed.ejs'), buildEjsTemplate('app/add.ejs')]).then(([feed, add]) => {
+    return { feed, add }
+  })
+}
+
+function buildEjsTemplate(templatePath) {
+  return fs.readFile(templatePath, 'utf8').then((contents) => {
+    const compiled = ejs.compile(contents, {
       client: true,
       compileDebug: false,
       strict: true,
       localsName: 'data',
     })
-    return { feed: feed.toString() }
+    return compiled.toString()
   })
 }
 

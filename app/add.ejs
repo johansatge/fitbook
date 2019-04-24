@@ -1,0 +1,12 @@
+<h2 class="addoverlay-title">
+  <svg class="svg-icon"><use href="#svg-<%= data.workout.icon %>"></use></svg>
+  <%= data.workout.name %>
+</h2>
+<div class="addoverlay-fields">
+  <% data.workout.fields.forEach((field) => { %>
+    <label class="addoverlay-field">
+      <svg class="addoverlay-icon svg-icon"><use href="#svg-<%= data.fields[field].icon %>"></use></svg>
+      <input type="text" class="addoverlay-input" placeholder="<%= data.fields[field].name + (data.fields[field].unit ? ' (' + data.fields[field].unit + ')' : '') %>">
+    </label>
+  <% }) %>
+</div>

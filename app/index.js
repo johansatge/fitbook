@@ -1,4 +1,4 @@
-/* global __EJS_FEED__ */
+/* global __EJS_FEED__, __EJS_ADD__ */
 
 import { format as formatDate } from 'date-fns'
 import { getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin } from './store.js'
@@ -11,9 +11,14 @@ const nodeLoader = document.querySelector('[data-js-loader]')
 const nodeFeed = document.querySelector('[data-js-feed]')
 const nodeToast = document.querySelector('[data-js-toast]')
 const nodeAddMenu = document.querySelector('[data-js-add-menu]')
+const nodeAddOverlay = document.querySelector('[data-js-add-overlay]')
+const nodeAddForm = document.querySelector('[data-js-add-form]')
+const nodeAddCancel = document.querySelector('[data-js-add-cancel]')
+const nodeAddSave = document.querySelector('[data-js-add-save]')
 
 const templates = {
   feed: __EJS_FEED__,
+  add: __EJS_ADD__,
 }
 
 const state = {
@@ -32,6 +37,8 @@ function init() {
   nodeFeed.addEventListener('click', onFeedClick)
   window.addEventListener('hashchange', onHashChangeLoadMonth)
   nodeAddMenu.addEventListener('change', onAddLog)
+  nodeAddCancel.addEventListener('click', onAddCancel)
+  nodeAddSave.addEventListener('click', onAddSave)
   setLoading(true)
   getConfigAndMonths().then(({ months, workouts, fields }) => {
     state.months = months
@@ -67,7 +74,17 @@ function onChangeMonth() {
 function onAddLog() {
   const workoutId = nodeAddMenu.querySelector('option:checked').value
   nodeAddMenu.querySelector('option:checked').selected = false
-  console.log('@todo add UI', workoutId)
+  nodeAddOverlay.style.display = 'block'
+  nodeAddForm.innerHTML = templates.add({ workout: state.workouts[workoutId], fields: state.fields })
+}
+
+function onAddCancel() {
+  nodeAddOverlay.style.display = 'none'
+  nodeAddForm.innerHTML = ''
+}
+
+function onAddSave() {
+  console.log('@todo save')
 }
 
 function onFeedClick(evt) {
