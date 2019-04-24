@@ -1,0 +1,128 @@
+.addoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.addoverlay-form {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px 2px 5px 5px;
+  background: #eeeeee;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.08),0 3px 1px -2px rgba(0,0,0,0.02),0 1px 5px 0 rgba(0,0,0,0.05);
+}
+
+.addoverlay-title {
+  font-size: 22px;
+  color: #000000;
+  padding: 18px 18px 0 18px;
+
+  .svg-icon {
+    margin: 2px 0 0 10px;
+    fill: #cccccc;
+    float: right;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.addoverlay-fields {
+  position: absolute;
+  top: 52px;
+  left: 18px;
+  right: 18px;
+  bottom: 80px;
+  padding: 18px 0 0 0;
+  overflow-y: auto;
+
+  &:before {
+    content: ' ';
+    z-index: 2;
+    display: block;
+    position: fixed;
+    top: 72px;
+    left: 20px;
+    right: 20px;
+    height: 18px;
+    background: linear-gradient(to bottom, rgba(238,238,238,1) 0%,rgba(238,238,238,0) 100%);
+  }
+
+  &:after {
+    content: ' ';
+    z-index: 2;
+    display: block;
+    position: fixed;
+    bottom: 100px;
+    left: 20px;
+    right: 20px;
+    height: 18px;
+    background: linear-gradient(to bottom, rgba(238,238,238,0) 0%, #eee 100%);
+  }
+}
+
+.addoverlay-field {
+  display: block;
+  position: relative;
+  z-index: 1;
+  margin: 0 0 18px 0;
+}
+
+.addoverlay-input {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 56px;
+  background: #ffffff;
+  border-radius: 2px 2px 0 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
+  color: #333333;
+  text-indent: 40px;
+
+  &:focus {
+    border-bottom: 1px solid #919191;
+  }
+}
+
+.addoverlay-icon {
+  position: absolute;
+  z-index: 2;
+  fill: #919191;
+  top: 16px;
+  left: 8px;
+}
+
+.addoverlay-buttons {
+  background: #ffffff;
+  text-align: right;
+  padding: 18px 18px 18px 18px;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 2px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.addoverlay-button {
+  background: #cccccc;
+  box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);
+  text-transform: uppercase;
+  border-radius: 4px;
+  padding: 12px 22px 12px 22px;
+  color: #333333;
+  font-size: 14px;
+  margin: 0 0 0 8px;
+}
+
+.addoverlay-button--main {
+  background: #e65100;
+  color: #ffffff;
+}

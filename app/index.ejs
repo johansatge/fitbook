@@ -47,6 +47,26 @@
     <div class="footer">
       <%= appTitleFull %>
     </div>
+    <div class="addoverlay">
+      <div class="addoverlay-form">
+        <h2 class="addoverlay-title">
+          <svg class="svg-icon"><use href="#svg-fitness_center"></use></svg>
+          Name of the workout
+        </h2>
+        <div class="addoverlay-fields">
+          <% for(let i = 0; i < 10; i += 1) { %>
+            <label class="addoverlay-field">
+              <svg class="addoverlay-icon svg-icon"><use href="#svg-fitness_center"></use></svg>
+              <input type="text" class="addoverlay-input" placeholder="Some field">
+            </label>
+          <% } %>
+        </div>
+        <div class="addoverlay-buttons">
+          <button class="addoverlay-button">Cancel</button>
+          <button class="addoverlay-button addoverlay-button--main">Save</button>
+        <div>
+      </div>
+    </div>
     <script src="<%= assets.index %>"></script>
     <script>Scripts.index.init()</script>
   </body>
