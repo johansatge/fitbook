@@ -1,7 +1,7 @@
 /* global __EJS_FEED__, __EJS_ADD__ */
 
 import { format as formatDate } from 'date-fns'
-import { getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin } from './store.js'
+import { getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin, saveLog } from './store.js'
 
 export { init }
 
@@ -26,6 +26,7 @@ const state = {
   workouts: null,
   fields: null,
   currentMonthId: null,
+  currentAddWorkout: null,
   toastTimeout: null,
 }
 
@@ -37,7 +38,7 @@ function init() {
   nodeFeed.addEventListener('click', onFeedClick)
   window.addEventListener('hashchange', onHashChangeLoadMonth)
   nodeAddMenu.addEventListener('change', onAddOpen)
-  nodeAddCancel.addEventListener('click', onAddCancel)
+  nodeAddCancel.addEventListener('click', onAddClose)
   nodeAddSave.addEventListener('click', onAddSave)
   setLoading(true)
   getConfigAndMonths().then(({ months, workouts, fields }) => {
@@ -72,31 +73,48 @@ function onChangeMonth() {
 }
 
 function onAddOpen() {
-  const workoutId = nodeAddMenu.querySelector('option:checked').value
+  state.currentAddWorkout = nodeAddMenu.querySelector('option:checked').value
   const currentDate = formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss')
   nodeAddMenu.querySelector('option:checked').selected = false
   nodeAddOverlay.style.display = 'block'
-  nodeAddForm.innerHTML = templates.add({ workout: state.workouts[workoutId], fields: state.fields, currentDate })
+  nodeAddForm.innerHTML = templates.add({
+    workout: state.workouts[state.currentAddWorkout],
+    fields: state.fields,
+    currentDate,
+  })
 }
 
-function onAddCancel() {
+function onAddClose() {
   nodeAddOverlay.style.display = 'none'
   nodeAddForm.innerHTML = ''
 }
 
 function onAddSave() {
   const inputs = nodeAddForm.querySelectorAll('[data-js-add-input]')
-  const data = {}
+  const data = {
+    workout: state.currentAddWorkout,
+    fields: {},
+  }
   const errors = []
   for (let index = 0; index < inputs.length; index += 1) {
     const value = parseFieldValue(inputs[index].name, inputs[index].value)
-    data[inputs[index].name] = value
+    data.fields[inputs[index].name] = value
     if (value === null) {
       errors.push(inputs[index].name)
     }
+    inputs[index].classList.toggle('js-error', value === null)
   }
-  console.log('@todo save', data)
-  console.log('@todo errors', errors)
+  if (errors.length === 0) {
+    nodeAddSave.disabled = true
+    nodeAddCancel.disabled = true
+    saveLog(data).then((monthHash) => {
+      nodeAddSave.disabled = false
+      nodeAddCancel.disabled = false
+      onAddClose()
+      document.location.hash = `#${monthHash}`
+      document.location.reload() // Cheap method to update the months list
+    })
+  }
 }
 
 function parseFieldValue(fieldName, rawValue) {

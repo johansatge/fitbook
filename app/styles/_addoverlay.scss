@@ -86,6 +86,11 @@
   color: #333333;
   text-indent: 40px;
 
+  &.js-error {
+    background: #fadccc;
+    border-bottom: 1px solid #e65100;
+  }
+
   &:focus {
     border-bottom: 1px solid #919191;
   }
@@ -121,6 +126,10 @@
   color: #333333;
   font-size: 14px;
   margin: 0 0 0 8px;
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 
 .addoverlay-button--main {
