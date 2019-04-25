@@ -36,7 +36,7 @@ function init() {
   nodeFeedFilter.addEventListener('change', onChangeMonth)
   nodeFeed.addEventListener('click', onFeedClick)
   window.addEventListener('hashchange', onHashChangeLoadMonth)
-  nodeAddMenu.addEventListener('change', onAddLog)
+  nodeAddMenu.addEventListener('change', onAddOpen)
   nodeAddCancel.addEventListener('click', onAddCancel)
   nodeAddSave.addEventListener('click', onAddSave)
   setLoading(true)
@@ -71,11 +71,12 @@ function onChangeMonth() {
   window.location.hash = `#${state.months[monthId].hash}`
 }
 
-function onAddLog() {
+function onAddOpen() {
   const workoutId = nodeAddMenu.querySelector('option:checked').value
+  const currentDate = formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss')
   nodeAddMenu.querySelector('option:checked').selected = false
   nodeAddOverlay.style.display = 'block'
-  nodeAddForm.innerHTML = templates.add({ workout: state.workouts[workoutId], fields: state.fields })
+  nodeAddForm.innerHTML = templates.add({ workout: state.workouts[workoutId], fields: state.fields, currentDate })
 }
 
 function onAddCancel() {
@@ -84,7 +85,34 @@ function onAddCancel() {
 }
 
 function onAddSave() {
-  console.log('@todo save')
+  const inputs = nodeAddForm.querySelectorAll('[data-js-add-input]')
+  const data = {}
+  const errors = []
+  for (let index = 0; index < inputs.length; index += 1) {
+    const value = parseFieldValue(inputs[index].name, inputs[index].value)
+    data[inputs[index].name] = value
+    if (value === null) {
+      errors.push(inputs[index].name)
+    }
+  }
+  console.log('@todo save', data)
+  console.log('@todo errors', errors)
+}
+
+function parseFieldValue(fieldName, rawValue) {
+  rawValue = String(rawValue)
+  const type = state.fields[fieldName].type
+  if (type === 'string') {
+    return rawValue.length > 0 ? rawValue : null
+  }
+  if (type === 'datetime') {
+    return rawValue.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/) ? rawValue : null
+  }
+  if (type === 'number') {
+    const number = parseFloat(rawValue)
+    return !isNaN(number) ? number : null
+  }
+  return null
 }
 
 function onFeedClick(evt) {
