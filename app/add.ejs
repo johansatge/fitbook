@@ -2,15 +2,13 @@
   <svg class="svg-icon"><use href="#svg-<%= data.workout.icon %>"></use></svg>
   <%= data.workout.name %>
 </h2>
-<div class="addoverlay-fields">
-  <% data.workout.fields.forEach((field) => { %>
-    <label class="addoverlay-field">
-      <svg class="addoverlay-icon svg-icon"><use href="#svg-<%= data.fields[field].icon %>"></use></svg>
-      <%
-        const placeholder = data.fields[field].name + (data.fields[field].unit ? ' (' + data.fields[field].unit + ')' : '')
-        const defaultValue = field === 'datetime' ? data.currentDate : ''
-      %>
-      <input type="text" class="addoverlay-input" data-js-add-input name="<%= field %>" placeholder="<%= placeholder %>" value="<%= defaultValue %>">
-    </label>
-  <% }) %>
-</div>
+<% data.workout.fields.forEach((field) => { %>
+  <label class="addoverlay-field">
+    <svg class="addoverlay-icon svg-icon"><use href="#svg-<%= data.fields[field].icon %>"></use></svg>
+    <%
+      const placeholder = data.fields[field].name + (data.fields[field].unit ? ' (' + data.fields[field].unit + ')' : '')
+      const defaultValue = field === 'datetime' ? data.currentDate : ''
+    %>
+    <input type="text" class="addoverlay-input" data-js-add-input name="<%= field %>" placeholder="<%= placeholder %>" value="<%= defaultValue %>">
+  </label>
+<% }) %>
