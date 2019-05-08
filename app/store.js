@@ -53,7 +53,7 @@ export function saveLog(data) {
     json.push(data)
     json.sort(sortLogsByDate)
     return dbx.filesUpload({ path: filePath, contents: JSON.stringify(json, null, 2), mode: 'overwrite' }).then(() => {
-      return formatDate(date, 'MMMM-YYYY').toLowerCase()
+      return { monthHash: formatDate(date, 'MMMM-YYYY').toLowerCase(), logs: json }
     })
   })
 }

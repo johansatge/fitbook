@@ -2,6 +2,7 @@
 
 import { format as formatDate } from 'date-fns'
 import { getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin, saveLog } from './store.js'
+import { setToast } from './toast.js'
 
 export { init }
 
@@ -9,7 +10,6 @@ const nodeFeedFilter = document.querySelector('[data-js-feed-filter]')
 const nodeFeedFilterName = document.querySelector('[data-js-feed-filter-name]')
 const nodeLoader = document.querySelector('[data-js-loader]')
 const nodeFeed = document.querySelector('[data-js-feed]')
-const nodeToast = document.querySelector('[data-js-toast]')
 const nodeAddMenu = document.querySelector('[data-js-add-menu]')
 const nodeAddOverlay = document.querySelector('[data-js-add-overlay]')
 const nodeAddForm = document.querySelector('[data-js-add-form]')
@@ -27,7 +27,6 @@ const state = {
   fields: null,
   currentMonthId: null,
   currentAddWorkout: null,
-  toastTimeout: null,
 }
 
 function init() {
@@ -51,20 +50,6 @@ function init() {
     setToast('Loaded app config')
     onHashChangeLoadMonth()
   })
-}
-
-function setToast(message) {
-  if (state.toastTimeout) {
-    clearTimeout(state.toastTimeout)
-    state.toastTimeout = null
-  }
-  nodeToast.classList.add('js-visible')
-  nodeToast.innerHTML = message
-  nodeToast.classList.add('js-visible')
-  state.toastTimeout = setTimeout(() => {
-    nodeToast.classList.remove('js-visible')
-    state.toastTimeout = null
-  }, 2000)
 }
 
 function onChangeMonth() {
@@ -105,14 +90,17 @@ function onAddSave() {
     inputs[index].classList.toggle('js-error', value === null)
   }
   if (errors.length === 0) {
-    nodeAddSave.disabled = true
-    nodeAddCancel.disabled = true
-    saveLog(data).then((monthHash) => {
-      nodeAddSave.disabled = false
-      nodeAddCancel.disabled = false
-      onAddClose()
-      document.location.hash = `#${monthHash}`
-      document.location.reload() // Cheap method to update the months list
+    onAddClose()
+    setLoading(true)
+    saveLog(data).then(({ monthHash, logs }) => {
+      setLoading(false)
+      const currentMonthHash = state.months[state.currentMonthId].hash
+      if (monthHash === currentMonthHash) {
+        populateFeedWithMonth(logs)
+      } else {
+        document.location.hash = `#${monthHash}`
+        document.location.reload()
+      }
     })
   }
 }
@@ -148,23 +136,26 @@ function onHashChangeLoadMonth() {
   setFeedFilter()
   nodeFeed.innerHTML = ''
   getMonth(state.months[state.currentMonthId].path).then((logs) => {
-    const days = {}
-    logs.forEach((log) => {
-      const day = formatDate(log.fields.datetime, 'YYYY-MM-DD')
-      if (!days[day]) {
-        days[day] = {
-          name: formatDate(log.fields.datetime, 'dddd, MMMM Do'),
-          logs: [],
-        }
-      }
-      log.time = formatDate(log.fields.datetime, 'HH:mm')
-      days[day].logs.push(log)
-    })
-
-    nodeFeed.innerHTML = templates.feed({ days, workouts: state.workouts, fields: state.fields })
+    populateFeedWithMonth(logs)
     setLoading(false)
     setToast('Loaded month data')
   })
+}
+
+function populateFeedWithMonth(logs) {
+  const days = {}
+  logs.forEach((log) => {
+    const day = formatDate(log.fields.datetime, 'YYYY-MM-DD')
+    if (!days[day]) {
+      days[day] = {
+        name: formatDate(log.fields.datetime, 'dddd, MMMM Do'),
+        logs: [],
+      }
+    }
+    log.time = formatDate(log.fields.datetime, 'HH:mm')
+    days[day].logs.push(log)
+  })
+  nodeFeed.innerHTML = templates.feed({ days, workouts: state.workouts, fields: state.fields })
 }
 
 function getCurrentMonth() {
