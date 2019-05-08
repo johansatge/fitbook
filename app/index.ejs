@@ -12,7 +12,7 @@
     </div>
     <div class="navbar">
       <div class="navbar-left">
-        <button class="navbar-menu">
+        <button class="navbar-menu" data-js-menu-overlay-open>
           <svg class="svg-icon"><use href="#svg-menu"></use></svg>
         </button>
         <h1 class="navbar-title">
@@ -34,7 +34,7 @@
         </button>
       </div>
     </div>
-    <span class="floatingbutton">
+    <span class="floatingbutton" data-js-add-button>
       <svg class="svg-icon"><use href="#svg-add"></use></svg>
       <select class="floatingbutton-actions" data-js-add-menu>
         <option disabled>loading</option>
@@ -53,7 +53,41 @@
         <div class="addoverlay-buttons">
           <button class="button" data-js-add-cancel>Cancel</button>
           <button class="button button--main" data-js-add-save>Save</button>
-        <div>
+        </div>
+      </div>
+    </div>
+    <div class="menuoverlay" data-js-menu-overlay>
+      <div class="menu-back" data-js-menu-overlay-back></div>
+      <div class="menu">
+        <div class="menu-hero">
+          <%= appTitle %>
+        </div>
+        <ul class="menu-items">
+          <li>
+            <a href="#" class="menu-item menu-item--current">
+              <svg class="svg-icon"><use href="#svg-list"></use></svg>
+              Feed
+            </a>
+          </li>
+          <li>
+            <a href="#" class="menu-item">
+              <svg class="svg-icon"><use href="#svg-insert_chart_outlined"></use></svg>
+              Statistics
+            </a>
+          </li>
+          <li>
+            <button class="menu-item">
+              <svg class="svg-icon"><use href="#svg-exit_to_app"></use></svg>
+              Logout
+            </button>
+          </li>
+          <li>
+            <a href="#" class="menu-item">
+              <svg class="svg-icon"><use href="#svg-help"></use></svg>
+              About the app
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
     <script src="<%= assets.index %>"></script>

@@ -10,11 +10,15 @@ const nodeFeedFilter = document.querySelector('[data-js-feed-filter]')
 const nodeFeedFilterName = document.querySelector('[data-js-feed-filter-name]')
 const nodeLoader = document.querySelector('[data-js-loader]')
 const nodeFeed = document.querySelector('[data-js-feed]')
+const nodeAddButton = document.querySelector('[data-js-add-button]')
 const nodeAddMenu = document.querySelector('[data-js-add-menu]')
 const nodeAddOverlay = document.querySelector('[data-js-add-overlay]')
 const nodeAddForm = document.querySelector('[data-js-add-form]')
 const nodeAddCancel = document.querySelector('[data-js-add-cancel]')
 const nodeAddSave = document.querySelector('[data-js-add-save]')
+const nodeMenuOverlay = document.querySelector('[data-js-menu-overlay]')
+const nodeMenuOverlayOpen = document.querySelector('[data-js-menu-overlay-open]')
+const nodeMenuOverlayBack = document.querySelector('[data-js-menu-overlay-back]')
 
 const templates = {
   feed: __EJS_FEED__,
@@ -33,6 +37,8 @@ function init() {
   if (!isStoreConnected()) {
     redirectToLogin()
   }
+  nodeMenuOverlayOpen.addEventListener('click', onMenuToggle)
+  nodeMenuOverlayBack.addEventListener('click', onMenuToggle)
   nodeFeedFilter.addEventListener('change', onChangeMonth)
   nodeFeed.addEventListener('click', onFeedClick)
   window.addEventListener('hashchange', onHashChangeLoadMonth)
@@ -50,6 +56,10 @@ function init() {
     setToast('Loaded app config')
     onHashChangeLoadMonth()
   })
+}
+
+function onMenuToggle() {
+  nodeMenuOverlay.classList.toggle('js-visible')
 }
 
 function onChangeMonth() {
@@ -189,4 +199,5 @@ function setFeedFilter() {
 
 function setLoading(isLoading) {
   nodeLoader.classList.toggle('js-visible', isLoading)
+  nodeAddButton.classList.toggle('js-visible', !isLoading)
 }

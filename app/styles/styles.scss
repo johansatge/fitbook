@@ -1,6 +1,7 @@
 $colorBackground: #eeeeee;
 $colorBackgroundAlt: #f5f5f5;
 $colorBackgroundDark: #323232;
+$colorBackgroundLight: #ffffff;
 $colorBackgroundOverlay: rgba(0, 0, 0, 0.75);
 
 $colorTheme: #e65100;
@@ -29,3 +30,4 @@ $fontWeightLight: 400;
 @import "footer";
 @import "login";
 @import "addoverlay";
+@import "menuoverlay";

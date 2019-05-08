@@ -1,0 +1,85 @@
+.menuoverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+
+  &.js-visible {
+    display: block;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100%;
+  box-sizing: border-box;
+  background: $colorBackgroundLight;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);
+}
+
+.menu-back {
+  position: absolute;
+  top: 0;
+  left: 270px;
+  right: 0;
+  height: 100%;
+  background: $colorBackgroundOverlay;
+}
+
+.menu-hero {
+  width: 100%;
+  background: $colorTheme;
+  color: $colorThemeText;
+  font-size: $fontSizeTitleBig;
+  box-sizing: border-box;
+  padding: 80px 14px 14px 14px;
+}
+
+.menu-items {
+  list-style-type: none;
+  padding: 14px;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: $fontSizeTextBig;
+  color: $colorText;
+  padding: 10px 14px 10px 14px;
+  border-radius: 4px;
+  margin: 0 0 7px 0;
+  text-decoration: none;
+  box-sizing: border-box;
+
+  &:hover {
+    background: $colorBackground;
+  }
+
+  .svg-icon {
+    fill: $colorTextAlt;
+    width: 20px;
+    height: 20px;
+    margin: 2px 14px 0 0;
+    float: left;
+  }
+
+  &.menu-item--current {
+    background: $colorThemeLight;
+    color: $colorTheme;
+
+    &:hover {
+      background: $colorThemeLight;
+    }
+
+    .svg-icon {
+      fill: $colorTheme;
+    }
+  }
+}
