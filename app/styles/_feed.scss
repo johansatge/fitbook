@@ -3,7 +3,7 @@
 }
 
 .feed-title {
-  font-size: 20px;
+  font-size: $fontSizeTitle;
   color: $colorText;
   margin: 18px 14px 18px 26px;
 }
@@ -39,7 +39,7 @@
   margin: 0 10px 0 0;
 
   .svg-icon {
-    fill: $colorTextLight;
+    fill: $colorTextAlt;
   }
 }
 
@@ -50,7 +50,7 @@
   transition: transform 200ms;
 
   .svg-icon {
-    fill: $colorTextLight;
+    fill: $colorTextAlt;
     pointer-events: none;
   }
 
@@ -60,13 +60,13 @@
 }
 
 .feed-card-title {
-  font-weight: 400;
-  font-size: 16px;
+  font-size: $fontSizeTextBig;
 }
 
 .feed-card-text {
-  font-weight: 300;
-  font-size: 14px;
+  color: $colorTextAlt;
+  font-weight: $fontWeightLight;
+  font-size: $fontSizeText;
 }
 
 .feed-card-data {
@@ -84,8 +84,8 @@
 .feed-card-data-line {
   border-bottom: 1px solid $colorBorder;
   padding: 8px 10px 8px 10px;
-  font-weight: 300;
-  font-size: 14px;
+  font-weight: $fontWeightLight;
+  font-size: $fontSizeText;
 
   &:last-child .feed-card-data-cell {
     border-bottom: 0;
@@ -107,13 +107,13 @@
   }
 
   &:last-child {
-    font-weight: 400;
+    font-weight: $fontWeightLight;
   }
 
   .svg-icon {
     width: 20px;
     height: 20px;
-    fill: $colorTextLight;
+    fill: $colorTextAlt;
     margin: 0 0 0 10px;
   }
 }

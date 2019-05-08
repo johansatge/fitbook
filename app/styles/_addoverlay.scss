@@ -20,7 +20,7 @@
 }
 
 .addoverlay-title {
-  font-size: 24px;
+  font-size: $fontSizeTitleBig;
   color: $colorText;
   padding: 10px 0 14px 0;
 
@@ -81,7 +81,7 @@
   background: $colorThemeText;
   border-radius: 2px 2px 0 0;
   border-bottom: 1px solid $colorBorder;
-  font-size: 16px;
+  font-size: $fontSizeTextBig;
   color: $colorText;
   text-indent: 40px;
 

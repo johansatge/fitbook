@@ -8,8 +8,17 @@ $colorThemeLight: #fadccc;
 $colorThemeText: #ffffff;
 
 $colorText: #333333;
-$colorTextLight: #cccccc;
+$colorTextAlt: #999999;
 $colorBorder: #e0e0e0;
+
+$fontSizeTitleHero: 96px;
+$fontSizeTitleBig: 24px;
+$fontSizeTitle: 20px;
+$fontSizeTextBig: 16px;
+$fontSizeText: 14px;
+
+$fontWeightNormal: 500;
+$fontWeightLight: 400;
 
 @import "reset";
 @import "button";
