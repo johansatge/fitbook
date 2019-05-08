@@ -8,6 +8,10 @@
   background: $colorBackgroundOverlay;
   padding: 14px;
   box-sizing: border-box;
+
+  &.js-visible {
+    display: block;
+  }
 }
 
 .addoverlay-form {

@@ -60,7 +60,7 @@ function setToast(message) {
   }
   nodeToast.classList.add('js-visible')
   nodeToast.innerHTML = message
-  nodeToast.style.display = 'block'
+  nodeToast.classList.add('js-visible')
   state.toastTimeout = setTimeout(() => {
     nodeToast.classList.remove('js-visible')
     state.toastTimeout = null
@@ -76,7 +76,7 @@ function onAddOpen() {
   state.currentAddWorkout = nodeAddMenu.querySelector('option:checked').value
   const currentDate = formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss')
   nodeAddMenu.querySelector('option:checked').selected = false
-  nodeAddOverlay.style.display = 'block'
+  nodeAddOverlay.classList.add('js-visible')
   nodeAddForm.innerHTML = templates.add({
     workout: state.workouts[state.currentAddWorkout],
     fields: state.fields,
@@ -85,7 +85,7 @@ function onAddOpen() {
 }
 
 function onAddClose() {
-  nodeAddOverlay.style.display = 'none'
+  nodeAddOverlay.classList.remove('js-visible')
   nodeAddForm.innerHTML = ''
 }
 
@@ -197,5 +197,5 @@ function setFeedFilter() {
 }
 
 function setLoading(isLoading) {
-  nodeLoader.style.display = isLoading ? 'block' : 'none'
+  nodeLoader.classList.toggle('js-visible', isLoading)
 }
