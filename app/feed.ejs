@@ -1,3 +1,6 @@
+<div class="feed-stats">
+  <%= data.countDays %> days, <%= data.countWorkouts %> workouts
+</div>
 <% Object.keys(data.days).forEach((dayId) => { const day = data.days[dayId] %>
   <h2 class="feed-title"><%= day.name %> </h2>
   <div class="feed-card">

@@ -161,6 +161,8 @@ function onHashChangeLoadMonth() {
 
 function populateFeedWithMonth(logs) {
   const days = {}
+  let countDays = 0
+  let countWorkouts = 0
   logs.forEach((log) => {
     const day = formatDate(log.fields.datetime, 'YYYY-MM-DD')
     if (!days[day]) {
@@ -168,11 +170,19 @@ function populateFeedWithMonth(logs) {
         name: formatDate(log.fields.datetime, 'dddd, MMMM Do'),
         logs: [],
       }
+      countDays += 1
     }
     log.time = formatDate(log.fields.datetime, 'HH:mm')
     days[day].logs.push(log)
+    countWorkouts += 1
   })
-  nodeFeed.innerHTML = templates.feed({ days, workouts: state.workouts, fields: state.fields })
+  nodeFeed.innerHTML = templates.feed({
+    days,
+    workouts: state.workouts,
+    fields: state.fields,
+    countDays,
+    countWorkouts,
+  })
 }
 
 function getCurrentMonth() {
