@@ -1,3 +1,5 @@
 # fitbook
 
-WIP
+![logo](logo.png)
+
+wip.
