@@ -17,6 +17,10 @@ export function redirectToLogin() {
   window.location.href = '/login.html'
 }
 
+export function clearAccessToken() {
+  localStorage.removeItem(localStorageTokenKey)
+}
+
 export function getConfigAndMonths() {
   const getters = [getMonths(), getJsonFile('/config/fields.json'), getJsonFile('/config/workouts.json')]
   return Promise.all(getters).then(([months, fields, workouts]) => {

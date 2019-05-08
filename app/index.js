@@ -1,7 +1,7 @@
 /* global __EJS_FEED__, __EJS_ADD__ */
 
 import { format as formatDate } from 'date-fns'
-import { getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin, saveLog } from './store.js'
+import { clearAccessToken, getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin, saveLog } from './store.js'
 import { setToast } from './toast.js'
 
 export { init }
@@ -19,6 +19,7 @@ const nodeAddSave = document.querySelector('[data-js-add-save]')
 const nodeMenuOverlay = document.querySelector('[data-js-menu-overlay]')
 const nodeMenuOverlayOpen = document.querySelector('[data-js-menu-overlay-open]')
 const nodeMenuOverlayBack = document.querySelector('[data-js-menu-overlay-back]')
+const nodeLogout = document.querySelector('[data-js-logout]')
 
 const templates = {
   feed: __EJS_FEED__,
@@ -37,6 +38,7 @@ function init() {
   if (!isStoreConnected()) {
     redirectToLogin()
   }
+  nodeLogout.addEventListener('click', onLogout)
   nodeMenuOverlayOpen.addEventListener('click', onMenuToggle)
   nodeMenuOverlayBack.addEventListener('click', onMenuToggle)
   nodeFeedFilter.addEventListener('change', onChangeMonth)
@@ -56,6 +58,11 @@ function init() {
     setToast('Loaded app config')
     onHashChangeLoadMonth()
   })
+}
+
+function onLogout() {
+  clearAccessToken()
+  redirectToLogin()
 }
 
 function onMenuToggle() {
