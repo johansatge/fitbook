@@ -4,7 +4,7 @@
   box-sizing: border-box;
   padding: 8px 12px 8px 12px;
   position: fixed;
-  background: #E65100;
+  background: $colorTheme;
   display: flex;
   flex: 1 1 auto;
   align-items: center;
@@ -29,7 +29,7 @@
   height: 48px;
 
   .svg-icon {
-    fill: #ffffff;
+    fill: $colorThemeText;
   }
 }
 
@@ -49,14 +49,14 @@
 
 .navbar-title {
   font-size: 20px;
-  color: #ffffff;
+  color: $colorThemeText;
   margin: 0 0 0 10px;
   display: inline-block;
 
   .svg-icon {
     width: 16px;
     height: 16px;
-    fill: #ffffff;
+    fill: $colorThemeText;
     vertical-align: middle;
   }
 }
