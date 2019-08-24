@@ -1,0 +1,68 @@
+{
+  "datetime": {
+    "name": "Date",
+    "type": "datetime",
+    "unit": "",
+    "icon": "event"
+  },
+  "duration": {
+    "name": "Duration",
+    "type": "number",
+    "unit": "min",
+    "icon": "alarm_on"
+  },
+  "distance": {
+    "name": "Distance",
+    "type": "number",
+    "unit": "km",
+    "icon": "map"
+  },
+  "speed_average": {
+    "name": "Average speed",
+    "type": "number",
+    "unit": "km/h",
+    "icon": "play_arrow"
+  },
+  "speed_max": {
+    "name": "Max speed",
+    "type": "number",
+    "unit": "km/h",
+    "icon": "fast_forward"
+  },
+  "calories": {
+    "name": "Calories",
+    "type": "number",
+    "unit": "",
+    "icon": "whatshot"
+  },
+  "heartbeat_average": {
+    "name": "Heartbeat (average)",
+    "type": "number",
+    "unit": "bpm",
+    "icon": "favorite"
+  },
+  "sets": {
+    "name": "Sets",
+    "type": "number",
+    "unit": "",
+    "icon": "forward_5"
+  },
+  "reps": {
+    "name": "Reps",
+    "type": "number",
+    "unit": "",
+    "icon": "forward_10"
+  },
+  "weight": {
+    "name": "Weight",
+    "type": "number",
+    "unit": "kg",
+    "icon": "fitness_center"
+  },
+  "steps": {
+    "name": "Steps",
+    "type": "number",
+    "unit": "",
+    "icon": "trending_up"
+  }
+}

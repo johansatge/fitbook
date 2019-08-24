@@ -2,6 +2,8 @@
 
 import { format as formatDate } from 'date-fns'
 import dropbox from 'dropbox'
+import fields from './config/fields.json'
+import workouts from './config/workouts.json'
 
 const Dropbox = dropbox.Dropbox
 const dropboxAppKey = __DROPBOX_APP_KEY__
@@ -22,7 +24,7 @@ export function clearAccessToken() {
 }
 
 export function getConfigAndMonths() {
-  const getters = [getMonths(), getJsonFile('/config/fields.json'), getJsonFile('/config/workouts.json')]
+  const getters = [getMonths(), Promise.resolve(fields), Promise.resolve(workouts)]
   return Promise.all(getters).then(([months, fields, workouts]) => {
     return {
       months,

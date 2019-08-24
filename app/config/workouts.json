@@ -1,0 +1,141 @@
+{
+  "elliptical": {
+    "name": "Elliptical",
+    "icon": "accessibility_new",
+    "fields": [
+      "datetime",
+      "duration",
+      "distance",
+      "speed_average",
+      "speed_max",
+      "calories",
+      "heartbeat_average"
+    ],
+    "highlight": "distance"
+  },
+  "bike": {
+    "name": "Indoor bike",
+    "icon": "directions_bike",
+    "fields": [
+      "datetime",
+      "duration",
+      "distance",
+      "speed_average",
+      "speed_max",
+      "calories",
+      "heartbeat_average"
+    ],
+    "highlight": "distance"
+  },
+  "treadmill": {
+    "name": "Treadmill",
+    "icon": "directions_run",
+    "fields": [
+      "datetime",
+      "duration",
+      "distance",
+      "speed_average",
+      "speed_max",
+      "calories",
+      "heartbeat_average"
+    ],
+    "highlight": "distance"
+  },
+  "rowing": {
+    "name": "Rowing machine",
+    "icon": "directions_boat",
+    "fields": [
+      "datetime",
+      "duration",
+      "distance"
+    ],
+    "highlight": "distance"
+  },
+  "abs_roman_chair": {
+    "name": "Abs (roman chair)",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets"
+    ],
+    "highlight": "reps"
+  },
+  "abs_crunch": {
+    "name": "Abs (crunch machine)",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "back_crunch": {
+    "name": "Back (crunch machine)",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "pec_fly": {
+    "name": "Pec fly",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "dip_assist": {
+    "name": "Dip assist",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "vertical_press": {
+    "name": "Vertical bench press",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "incline_press": {
+    "name": "Incline press",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "stair_climber": {
+    "name": "Stair climber",
+    "icon": "trending_up",
+    "fields": [
+      "datetime",
+      "duration",
+      "steps",
+      "heartbeat_average"
+    ],
+    "highlight": "steps"
+  }
+}
