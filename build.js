@@ -1,7 +1,5 @@
-/* global Promise */
-
 const ejs = require('ejs')
-const fs = require('fs-extra')
+const fsp = require('fs').promises
 const glob = require('glob')
 const path = require('path')
 const pkg = require('./package.json')
@@ -29,9 +27,14 @@ cleanDist()
     log(`An error occurred (${error})`)
   })
 
-function cleanDist() {
+async function cleanDist() {
   log(`Cleaning ${distDir}`)
-  return fs.emptyDir(distDir)
+  try {
+    await fsp.rm(distDir, { recursive: true })
+  } catch (error) {
+    // nothing
+  }
+  await fsp.mkdir(distDir, { recursive: true })
 }
 
 function buildEjsTemplates() {
@@ -42,7 +45,7 @@ function buildEjsTemplates() {
 }
 
 function buildEjsTemplate(templatePath) {
-  return fs.readFile(templatePath, 'utf8').then((contents) => {
+  return fsp.readFile(templatePath, 'utf8').then((contents) => {
     const compiled = ejs.compile(contents, {
       client: true,
       compileDebug: false,
@@ -71,7 +74,7 @@ function buildWebpack(ejsTemplates) {
 function buildIcons() {
   log('Building SVG icons')
   return promisify(glob)(path.join(__dirname, 'app/icons/*.svg')).then((files) => {
-    return Promise.all(files.map((file) => fs.readFile(file, 'utf8'))).then((svgFiles) => {
+    return Promise.all(files.map((file) => fsp.readFile(file, 'utf8'))).then((svgFiles) => {
       return svgFiles.map((svg, index) => insertIconIdInSvg(files[index], svg)).join('\n')
     })
   })
@@ -84,27 +87,27 @@ function insertIconIdInSvg(filePath, svg) {
 
 function renderIndexHtml({ assets, icons }) {
   log('Rendering HTML (index)')
-  return fs.readFile(path.join(__dirname, 'app/index.ejs'), 'utf8').then((ejsTemplate) => {
+  return fsp.readFile(path.join(__dirname, 'app/index.ejs'), 'utf8').then((ejsTemplate) => {
     const html = ejs.render(ejsTemplate, {
       assets,
       icons,
       appTitle: pkg.name,
       appTitleFull: `${pkg.name} ${pkg.version}`,
     })
-    return fs.writeFile(path.join(distDir, 'index.html'), html, 'utf8')
+    return fsp.writeFile(path.join(distDir, 'index.html'), html, 'utf8')
   })
 }
 
 function renderLoginHtml({ assets }) {
   log('Rendering HTML (login)')
-  return fs.readFile(path.join(__dirname, 'app/login.ejs'), 'utf8').then((ejsTemplate) => {
+  return fsp.readFile(path.join(__dirname, 'app/login.ejs'), 'utf8').then((ejsTemplate) => {
     const html = ejs.render(ejsTemplate, {
       assets,
       appTitle: pkg.name,
       appTitleFull: `${pkg.name} ${pkg.version}`,
       dropboxAppKey: FITBOOK_DROPBOX_APP_KEY,
     })
-    return fs.writeFile(path.join(distDir, 'login.html'), html, 'utf8')
+    return fsp.writeFile(path.join(distDir, 'login.html'), html, 'utf8')
   })
 }
 

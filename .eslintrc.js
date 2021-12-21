@@ -1,21 +1,20 @@
 module.exports = {
   env: {
-    browser: true,
+    es6: true,
     node: true,
   },
   plugins: ['prettier'],
-  extends: ['eslint:recommended'],
-  parser: 'babel-eslint',
+  extends: 'eslint:recommended',
+  parserOptions: {
+    sourceType: 'module',
+    ecmaVersion: 8,
+  },
   rules: {
     'prettier/prettier': 'error',
-    'no-console': ['error'],
-    'no-debugger': ['error'],
-    'no-else-return': ['error'],
-    'no-undef': ['error'],
-    'no-unused-vars': ['error'],
-    'no-var': ['error'],
-    'prefer-const': ['error'],
-    'prefer-template': ['warn'],
-    'react/prop-types': ['off'],
+    indent: ['error', 2],
+    'linebreak-style': ['error', 'unix'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'never'],
+    'object-curly-spacing': ['error', 'always'],
   },
 }
