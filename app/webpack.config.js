@@ -31,7 +31,7 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
     entry: {
       index: path.join(__dirname, 'index.js'),
       login: path.join(__dirname, 'login.js'),
-      styles: path.join(__dirname, 'styles/styles.scss'),
+      styles: path.join(__dirname, 'styles/styles.css'),
     },
     output: {
       path: path.join(__dirname, '../.dist'),
@@ -54,24 +54,11 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
           },
         },
         {
-          test: /\.scss$/,
+          test: /\.css$/,
           include: [__dirname],
           use: [
             { loader: MiniCssExtractPlugin.loader },
             { loader: 'css-loader' },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: () => [autoprefixer()],
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                includePaths: [path.join(__dirname, '..', 'node_modules'), path.join(__dirname, 'components')],
-                outputStyle: 'compressed',
-              },
-            },
           ],
         },
       ],
