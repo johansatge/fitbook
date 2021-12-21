@@ -1,21 +1,6 @@
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 const webpack = require('webpack')
-
-class MiniCssExtractPluginCleaner {
-  apply(compiler) {
-    compiler.hooks.emit.tapAsync('MiniCssExtractPluginCleaner', (compilation, callback) => {
-      const cssAssets = Object.keys(compilation.assets).filter((asset) => asset.match(/\.css$/))
-      Object.keys(compilation.assets).forEach((asset) => {
-        if (!asset.match(/\.css$/) && cssAssets.includes(asset.replace(/\.js$/, '.css'))) {
-          delete compilation.assets[asset]
-        }
-      })
-      callback()
-    })
-  }
-}
 
 module.exports = ({ dropboxAppKey, ejsTemplates }) => {
   const defines = {
@@ -29,7 +14,6 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
     entry: {
       index: path.join(__dirname, 'index.js'),
       login: path.join(__dirname, 'login.js'),
-      styles: path.join(__dirname, 'styles/styles.css'),
     },
     output: {
       path: path.join(__dirname, '../.dist'),
@@ -51,11 +35,6 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
             presets: ['@babel/preset-env'],
           },
         },
-        {
-          test: /\.css$/,
-          include: [__dirname],
-          use: [{ loader: MiniCssExtractPlugin.loader }, { loader: 'css-loader' }],
-        },
       ],
     },
     resolve: {
@@ -65,16 +44,12 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
     },
     plugins: [
       new webpack.DefinePlugin(defines),
-      new MiniCssExtractPlugin({
-        filename: '[name].[chunkhash].css',
-      }),
       new BundleAnalyzerPlugin({
         analyzerMode: 'disabled',
         reportFilename: path.join(__dirname, '../.dist/bundle.analyze.html'),
         openAnalyzer: false,
         logLevel: 'silent',
       }),
-      new MiniCssExtractPluginCleaner(),
     ],
   }
 }

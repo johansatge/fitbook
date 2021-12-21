@@ -5,6 +5,7 @@ const pkg = require('./package.json')
 const promisify = require('util').promisify
 const webpack = require('webpack')
 const webpackConfig = require('./app/webpack.config.js')
+const crypto = require('crypto')
 
 const distDir = path.join(__dirname, '.dist')
 const { FITBOOK_DROPBOX_APP_KEY } = require('./.env.js')
@@ -17,6 +18,7 @@ async function build() {
     await cleanDist()
     const ejsTemplates = await buildEjsTemplates()
     const assets = await buildWebpack(ejsTemplates)
+    assets.styles = await buildCss()
     const icons = await buildIcons()
     await renderIndexHtml({ assets, icons })
     await renderLoginHtml({ assets })
@@ -68,6 +70,22 @@ async function buildWebpack(ejsTemplates) {
     log(`Webpack warning: ${warning}`)
   })
   return stats.assetsByChunkName
+}
+
+async function buildCss() {
+  log('Building CSS assets')
+  const cssPath = path.join(__dirname, 'app/styles/styles.css')
+  let css = await fsp.readFile(cssPath, 'utf8')
+  css = css.replace(/\n/g, ' ')
+  css = css.replace(/ {2,}/g, '')
+  css = css.replace(/\/\*[^*]*\*\//g, '')
+  const hash = crypto
+    .createHash('sha1')
+    .update(css)
+    .digest('hex')
+  const filename = `styles.${hash}.css`
+  await fsp.writeFile(path.join(distDir, filename), css, 'utf8')
+  return filename
 }
 
 async function buildIcons() {
