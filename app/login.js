@@ -1,8 +1,9 @@
-/* global document  */
+/* global document, window */
 
 import { getAuthUrl, saveAccessTokenFromUrlAndRedirect } from './store.js'
 
-export { init }
+window.Scripts = window.Scripts || {}
+window.Scripts.login = { init }
 
 function init() {
   saveAccessTokenFromUrlAndRedirect()

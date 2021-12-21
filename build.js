@@ -2,10 +2,8 @@ const ejs = require('ejs')
 const fsp = require('fs').promises
 const path = require('path')
 const pkg = require('./package.json')
-const promisify = require('util').promisify
-const webpack = require('webpack')
-const webpackConfig = require('./app/webpack.config.js')
 const crypto = require('crypto')
+const esbuild = require('esbuild')
 
 const distDir = path.join(__dirname, '.dist')
 const { FITBOOK_DROPBOX_APP_KEY } = require('./.env.js')
@@ -17,7 +15,10 @@ async function build() {
     const startTime = new Date().getTime()
     await cleanDist()
     const ejsTemplates = await buildEjsTemplates()
-    const assets = await buildWebpack(ejsTemplates)
+    const assets = {}
+    const { indexJs, loginJs } = await buildJs(ejsTemplates)
+    assets.index = indexJs
+    assets.login = loginJs
     assets.styles = await buildCss()
     const icons = await buildIcons()
     await renderIndexHtml({ assets, icons })
@@ -59,17 +60,29 @@ async function buildEjsTemplate(templatePath) {
   return compiled.toString()
 }
 
-async function buildWebpack(ejsTemplates) {
-  log('Building webpack assets')
-  const config = webpackConfig({ dropboxAppKey: FITBOOK_DROPBOX_APP_KEY, ejsTemplates })
-  const stats = (await promisify(webpack)(config)).toJson()
-  if (stats.errors.length > 0) {
-    throw new Error(stats.errors[0])
-  }
-  stats.warnings.forEach((warning) => {
-    log(`Webpack warning: ${warning}`)
+async function buildJs(ejsTemplates) {
+  log('Building JS assets')
+  const result = await esbuild.build({
+    entryPoints: [path.join(__dirname, 'app/index.js'), path.join(__dirname, 'app/login.js')],
+    bundle: true,
+    minify: true,
+    entryNames: '[name].[hash]',
+    outdir: distDir,
+    metafile: true,
+    define: {
+      __DROPBOX_APP_KEY__: JSON.stringify(FITBOOK_DROPBOX_APP_KEY),
+      __EJS_FEED__: JSON.stringify(ejsTemplates.feed),
+      __EJS_ADD__: JSON.stringify(ejsTemplates.add),
+    },
   })
-  return stats.assetsByChunkName
+  if (result.errors.length > 0) {
+    throw new Error(result.errors[0])
+  }
+  const assets = Object.keys(result.metafile.outputs)
+  return {
+    indexJs: path.parse(assets[0]).base,
+    loginJs: path.parse(assets[1]).base,
+  }
 }
 
 async function buildCss() {

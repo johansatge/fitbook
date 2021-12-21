@@ -1,10 +1,11 @@
-/* global __EJS_FEED__, __EJS_ADD__ */
+/* global __EJS_FEED__, __EJS_ADD__, window, document */
 
 import { format as formatDate } from 'date-fns'
 import { clearAccessToken, getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin, saveLog } from './store.js'
 import { setToast } from './toast.js'
 
-export { init }
+window.Scripts = window.Scripts || {}
+window.Scripts.index = { init }
 
 const nodeFeedFilter = document.querySelector('[data-js-feed-filter]')
 const nodeFeedFilterName = document.querySelector('[data-js-feed-filter-name]')
@@ -21,10 +22,8 @@ const nodeMenuOverlayOpen = document.querySelector('[data-js-menu-overlay-open]'
 const nodeMenuOverlayBack = document.querySelector('[data-js-menu-overlay-back]')
 const nodeLogout = document.querySelector('[data-js-logout]')
 
-const templates = {
-  feed: __EJS_FEED__,
-  add: __EJS_ADD__,
-}
+window.eval(`window.addTemplate = ${__EJS_ADD__}`)
+window.eval(`window.feedTemplate = ${__EJS_FEED__}`)
 
 const state = {
   months: null,
@@ -79,7 +78,7 @@ function onAddOpen() {
   const currentDate = formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss')
   nodeAddMenu.querySelector('option:checked').selected = false
   nodeAddOverlay.classList.add('js-visible')
-  nodeAddForm.innerHTML = templates.add({
+  nodeAddForm.innerHTML = window.addTemplate({
     workout: state.workouts[state.currentAddWorkout],
     fields: state.fields,
     currentDate,
@@ -176,7 +175,7 @@ function populateFeedWithMonth(logs) {
     days[day].logs.push(log)
     countWorkouts += 1
   })
-  nodeFeed.innerHTML = templates.feed({
+  nodeFeed.innerHTML = window.feedTemplate({
     days,
     workouts: state.workouts,
     fields: state.fields,
