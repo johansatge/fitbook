@@ -1,6 +1,5 @@
 const ejs = require('ejs')
 const fsp = require('fs').promises
-const glob = require('glob')
 const path = require('path')
 const pkg = require('./package.json')
 const promisify = require('util').promisify
@@ -73,15 +72,14 @@ async function buildWebpack(ejsTemplates) {
 
 async function buildIcons() {
   log('Building SVG icons')
-  const files = await promisify(glob)(path.join(__dirname, 'app/icons/*.svg'))
-  return Promise.all(files.map((file) => fsp.readFile(file, 'utf8'))).then((svgFiles) => {
-    return svgFiles.map((svg, index) => insertIconIdInSvg(files[index], svg)).join('\n')
-  })
-}
-
-function insertIconIdInSvg(filePath, svg) {
-  const fileName = filePath.match(/([a-z0-9_]+)\.svg$/)
-  return svg.replace('<svg ', `<svg id="svg-${fileName[1]}" `)
+  const iconsPath = path.join(__dirname, 'app/icons')
+  const files = (await fsp.readdir(iconsPath)).filter((file) => file.endsWith('.svg'))
+  const svgs = []
+  for (const file of files) {
+    const svg = await fsp.readFile(path.join(iconsPath, file), 'utf8')
+    svgs.push(svg.replace('<svg ', `<svg id="svg-${path.parse(file).name}" `))
+  }
+  return svgs
 }
 
 async function renderIndexHtml({ assets, icons }) {
