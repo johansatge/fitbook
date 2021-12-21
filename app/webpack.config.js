@@ -1,5 +1,3 @@
-const argv = require('yargs').argv
-const autoprefixer = require('autoprefixer')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
@@ -27,7 +25,7 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
     defines[`__EJS_${templateName.toUpperCase()}__`] = ejsTemplates[templateName]
   })
   return {
-    mode: argv.dev ? 'none' : 'production',
+    mode: 'production',
     entry: {
       index: path.join(__dirname, 'index.js'),
       login: path.join(__dirname, 'login.js'),
@@ -56,10 +54,7 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
         {
           test: /\.css$/,
           include: [__dirname],
-          use: [
-            { loader: MiniCssExtractPlugin.loader },
-            { loader: 'css-loader' },
-          ],
+          use: [{ loader: MiniCssExtractPlugin.loader }, { loader: 'css-loader' }],
         },
       ],
     },
@@ -74,7 +69,7 @@ module.exports = ({ dropboxAppKey, ejsTemplates }) => {
         filename: '[name].[chunkhash].css',
       }),
       new BundleAnalyzerPlugin({
-        analyzerMode: argv.dev ? 'static' : 'disabled',
+        analyzerMode: 'disabled',
         reportFilename: path.join(__dirname, '../.dist/bundle.analyze.html'),
         openAnalyzer: false,
         logLevel: 'silent',
