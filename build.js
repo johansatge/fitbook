@@ -1,7 +1,5 @@
 /* global Promise */
 
-require('dotenv').config()
-
 const ejs = require('ejs')
 const fs = require('fs-extra')
 const glob = require('glob')
@@ -12,6 +10,7 @@ const webpack = require('webpack')
 const webpackConfig = require('./app/webpack.config.js')
 
 const distDir = path.join(__dirname, '.dist')
+const { FITBOOK_DROPBOX_APP_KEY } = require('./.env.js')
 
 const startTime = new Date().getTime()
 cleanDist()
@@ -56,7 +55,7 @@ function buildEjsTemplate(templatePath) {
 
 function buildWebpack(ejsTemplates) {
   log('Building webpack assets')
-  const config = webpackConfig({ dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY, ejsTemplates })
+  const config = webpackConfig({ dropboxAppKey: FITBOOK_DROPBOX_APP_KEY, ejsTemplates })
   return promisify(webpack)(config).then((stats) => {
     stats = stats.toJson()
     if (stats.errors.length > 0) {
@@ -103,7 +102,7 @@ function renderLoginHtml({ assets }) {
       assets,
       appTitle: pkg.name,
       appTitleFull: `${pkg.name} ${pkg.version}`,
-      dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY,
+      dropboxAppKey: FITBOOK_DROPBOX_APP_KEY,
     })
     return fs.writeFile(path.join(distDir, 'login.html'), html, 'utf8')
   })
