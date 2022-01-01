@@ -5,11 +5,11 @@ html, body, div, h1, h2, h3, div, span, p, header, section, a, button, input, te
   font-family: Roboto, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-weight: $fontWeightNormal;
+  font-weight: var(--fontWeightNormal);
 }
 
 html, body {
-  background: $colorBackground;
+  background: var(--colorBackground);
 }
 
 button {
@@ -21,3 +21,4 @@ button {
   width: 24px;
   height: 24px;
 }
+

@@ -1,3 +1,5 @@
+/* global document */
+
 const nodeToast = document.querySelector('[data-js-toast]')
 
 const state = {

@@ -4,7 +4,7 @@
   box-sizing: border-box;
   padding: 8px 12px 8px 12px;
   position: fixed;
-  background: $colorTheme;
+  background: var(--colorTheme);
   display: flex;
   flex: 1 1 auto;
   align-items: center;
@@ -27,10 +27,10 @@
 .navbar-menu {
   width: 48px;
   height: 48px;
+}
 
-  .svg-icon {
-    fill: $colorThemeText;
-  }
+.navbar-menu .svg-icon {
+  fill: var(--colorThemeText);
 }
 
 .navbar-menu--loader {
@@ -38,10 +38,9 @@
   opacity: 0.5;
   cursor: default;
   animation:spin 2s linear infinite;
-
-  &.js-visible {
-    display: block;
-  }
+}
+.navbar-menu--loader.js-visible {
+  display: block;
 }
 @keyframes spin {
   100% {
@@ -50,17 +49,16 @@
 }
 
 .navbar-title {
-  font-size: $fontSizeTitle;
-  color: $colorThemeText;
+  font-size: var(--fontSizeTitle);
+  color: var(--colorThemeText);
   margin: 0 0 0 10px;
   display: inline-block;
-
-  .svg-icon {
-    width: 16px;
-    height: 16px;
-    fill: $colorThemeText;
-    vertical-align: middle;
-  }
+}
+.navbar-title .svg-icon {
+  width: 16px;
+  height: 16px;
+  fill: var(--colorThemeText);
+  vertical-align: middle;
 }
 
 .navbar-title-current {
