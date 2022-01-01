@@ -89,6 +89,7 @@ async function buildJs(ejsTemplates) {
       __EJS_FEED__: JSON.stringify(ejsTemplates.feed),
       __EJS_ADD__: JSON.stringify(ejsTemplates.add),
     },
+    external: ['crypto', 'util'], // Dropbox is using those for Node compat
   })
   if (result.errors.length > 0) {
     throw new Error(result.errors[0])
