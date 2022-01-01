@@ -21,8 +21,8 @@
   "dependencies": {
     "dropbox": "^4.0.17",
     "ejs": "^3.1.6",
-    "esbuild": "^0.14.6",
-    "eslint": "^8.5.0",
+    "esbuild": "^0.14.10",
+    "eslint": "^8.6.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1"
   }
