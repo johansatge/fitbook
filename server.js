@@ -1,24 +1,28 @@
+// eslint-disable no-console
+
 const path = require('path')
 const fsp = require('fs').promises
 const http = require('http')
 const { networkInterfaces } = require('os')
 
-const localPort = 4000
-const distPath = path.join(__dirname, '.dist')
+const serverPort = 4000
+const serverPath = path.join(__dirname, '.dist')
 
-startLocalServer()
+module.exports = {
+  startLocalServer,
+}
 
 async function startLocalServer() {
   try {
     const server = http.createServer()
     server.on('request', onLocalServerRequest)
     server.on('error', onLocalServerError)
-    server.listen(localPort)
+    server.listen(serverPort)
     if (server.listening) {
       printLocalIps()
     }
   } catch (error) {
-    console.log(`Server could not start: ${error.message}`) // eslint-disable-line no-console
+    console.log(`Server could not start: ${error.message}`)
   }
 }
 
@@ -28,7 +32,7 @@ async function onLocalServerRequest(request, response) {
       throw new Error(`Invalid method ${request.method}`)
     }
     const requestPath = getRequestPath(request.url)
-    const contents = await fsp.readFile(path.join(distPath, requestPath))
+    const contents = await fsp.readFile(path.join(serverPath, requestPath))
     response.writeHead(200, {
       'Content-Type': getMimeType(requestPath),
       'Cache-Control': 'no-cache, no-store',
@@ -62,17 +66,17 @@ function getMimeType(requestPath) {
 }
 
 function onLocalServerError(error) {
-  console.log(`A server error occurred: ${error.message}`) // eslint-disable-line no-console
+  console.log(`A server error occurred: ${error.message}`)
   process.exitCode = 1
 }
 
 function printLocalIps() {
-  console.log(`Serving http://localhost:${localPort}`) // eslint-disable-line no-console
+  console.log(`Serving http://localhost:${serverPort}`)
   const nets = networkInterfaces()
   for (const name of Object.keys(nets)) {
     for (const net of nets[name]) {
       if (net.family === 'IPv4') {
-        console.log(`Serving http://${net.address}:${localPort}`) // eslint-disable-line no-console
+        console.log(`Serving http://${net.address}:${serverPort}`)
       }
     }
   }

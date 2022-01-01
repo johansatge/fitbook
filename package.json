@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "build": "node build.js",
-    "server": "node build.js && node server.js",
+    "watch": "node build.js --watch",
     "checkstyle": "eslint ."
   },
   "keywords": [

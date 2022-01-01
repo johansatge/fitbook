@@ -1,14 +1,21 @@
 const ejs = require('ejs')
+const fs = require('fs')
 const fsp = require('fs').promises
 const path = require('path')
 const pkg = require('./package.json')
 const crypto = require('crypto')
 const esbuild = require('esbuild')
+const { startLocalServer } = require('./server.js')
 
+const srcDir = path.join(__dirname, 'app')
 const distDir = path.join(__dirname, '.dist')
 const { FITBOOK_DROPBOX_APP_KEY } = require('./.env.js')
 
 build()
+if (process.argv.includes('--watch')) {
+  startLocalServer()
+  buildOnChange()
+}
 
 async function build() {
   try {
@@ -30,6 +37,14 @@ async function build() {
     log(error.stack)
     process.exit(1)
   }
+}
+
+async function buildOnChange() {
+  log(`Watching ${srcDir}`)
+  fs.watch(srcDir, { recursive: true }, (evtType, file) => {
+    log(`Event ${evtType} on ${file}, building...`)
+    build()
+  })
 }
 
 async function cleanDist() {
