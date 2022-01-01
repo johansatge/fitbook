@@ -54,6 +54,7 @@ function getRequestPath(requestUrl) {
 function getMimeType(requestPath) {
   const types = {
     html: 'text/html',
+    css: 'text/css',
     woff: 'font/woff',
     woff2: 'font/woff2',
     js: 'application/javascript',

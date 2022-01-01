@@ -103,8 +103,24 @@ async function buildJs(ejsTemplates) {
 
 async function buildCss() {
   log('Building CSS assets')
-  const cssPath = path.join(__dirname, 'app/styles/styles.css')
-  let css = await fsp.readFile(cssPath, 'utf8')
+  const files = [
+    'vars',
+    'reset',
+    'button',
+    'navbar',
+    'floatingbutton',
+    'toast',
+    'feed',
+    'footer',
+    'login',
+    'addoverlay',
+    'menuoverlay',
+  ]
+  let css = ''
+  for (const file of files) {
+    const contents = await fsp.readFile(path.join(__dirname, `app/styles/${file}.css`), 'utf8')
+    css += contents + '\n\n'
+  }
   css = css.replace(/\n/g, ' ')
   css = css.replace(/ {2,}/g, '')
   css = css.replace(/\/\*[^*]*\*\//g, '')

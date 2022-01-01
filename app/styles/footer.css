@@ -1,0 +1,8 @@
+.footer {
+  margin: 35px 10px 35px 10px;
+  font-size: var(--fontSizeTextBig);
+  font-weight: var(--fontWeightLight);
+  text-align: center;
+  color: var(--colorTextAlt);
+}
+

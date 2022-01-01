@@ -1,0 +1,12 @@
+.login {
+  text-align: center;
+}
+
+.login-title {
+  padding: 50px 0 20px 0;
+  color: var(--colorText);
+  font-size: var(--fontSizeTitleHero);
+  font-weight: var(--fontWeightLight);
+  text-align: center;
+}
+
