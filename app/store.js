@@ -1,4 +1,4 @@
-/* global document __DROPBOX_APP_KEY__ FileReader localStorage Promise fetch */
+/* global document __DROPBOX_APP_KEY__ FileReader localStorage fetch window */
 
 import { formatDate } from './date.js'
 import dropbox from 'dropbox'

@@ -107,10 +107,7 @@ async function buildCss() {
   css = css.replace(/\n/g, ' ')
   css = css.replace(/ {2,}/g, '')
   css = css.replace(/\/\*[^*]*\*\//g, '')
-  const hash = crypto
-    .createHash('sha1')
-    .update(css)
-    .digest('hex')
+  const hash = crypto.createHash('sha1').update(css).digest('hex')
   const filename = `styles.${hash}.css`
   await fsp.writeFile(path.join(distDir, filename), css, 'utf8')
   return filename
