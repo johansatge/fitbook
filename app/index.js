@@ -1,8 +1,8 @@
 /* global __EJS_FEED__, __EJS_ADD__, window, document */
 
-import { format as formatDate } from 'date-fns'
 import { clearAccessToken, getConfigAndMonths, getMonth, isStoreConnected, redirectToLogin, saveLog } from './store.js'
 import { setToast } from './toast.js'
+import { formatDate } from './date.js'
 
 window.Scripts = window.Scripts || {}
 window.Scripts.index = { init }

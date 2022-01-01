@@ -1,6 +1,6 @@
 /* global document __DROPBOX_APP_KEY__ FileReader localStorage Promise fetch */
 
-import { format as formatDate } from 'date-fns'
+import { formatDate } from './date.js'
 import dropbox from 'dropbox'
 import fields from './config/fields.json'
 import workouts from './config/workouts.json'
