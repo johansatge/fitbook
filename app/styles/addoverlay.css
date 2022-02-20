@@ -91,6 +91,15 @@
   border-bottom: 1px solid var(--colorTheme);
 }
 
+.addoverlay-input::-webkit-outer-spin-button,
+.addoverlay-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.addoverlay-input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .addoverlay-icon {
   position: absolute;
   z-index: 2;

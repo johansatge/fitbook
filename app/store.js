@@ -38,7 +38,7 @@ export function getMonth(filePath) {
 
 export function getAuthUrl() {
   const dbx = new Dropbox({ clientId: __DROPBOX_APP_KEY__ })
-  return dbx.getAuthenticationUrl(document.location.href, null, 'token')
+  return dbx.auth.getAuthenticationUrl(document.location.href)
 }
 
 export function saveAccessTokenFromUrlAndRedirect() {

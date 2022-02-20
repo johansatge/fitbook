@@ -7,6 +7,7 @@ window.Scripts.login = { init }
 
 function init() {
   saveAccessTokenFromUrlAndRedirect()
-  const authUrl = getAuthUrl()
-  document.querySelector('[data-js-login-button]').href = authUrl
+  getAuthUrl().then((authUrl) => {
+    document.querySelector('[data-js-login-button]').href = authUrl
+  })
 }
