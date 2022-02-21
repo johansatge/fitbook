@@ -7,9 +7,15 @@ const crypto = require('crypto')
 const esbuild = require('esbuild')
 const { startLocalServer } = require('./server.js')
 
+try {
+  const { FITBOOK_DROPBOX_APP_KEY } = require('./.env.js')
+  process.env.FITBOOK_DROPBOX_APP_KEY = FITBOOK_DROPBOX_APP_KEY
+} catch (error) {
+  /* do nothing */
+}
+
 const srcDir = path.join(__dirname, 'app')
 const distDir = path.join(__dirname, '.dist')
-const { FITBOOK_DROPBOX_APP_KEY } = require('./.env.js')
 
 build()
 if (process.argv.includes('--watch')) {
@@ -85,7 +91,7 @@ async function buildJs(ejsTemplates) {
     outdir: distDir,
     metafile: true,
     define: {
-      __DROPBOX_APP_KEY__: JSON.stringify(FITBOOK_DROPBOX_APP_KEY),
+      __DROPBOX_APP_KEY__: JSON.stringify(process.env.FITBOOK_DROPBOX_APP_KEY),
       __EJS_FEED__: JSON.stringify(ejsTemplates.feed),
       __EJS_ADD__: JSON.stringify(ejsTemplates.add),
     },
@@ -161,7 +167,7 @@ async function renderLoginHtml({ assets }) {
     assets,
     appTitle: pkg.name,
     appTitleFull: `${pkg.name} ${pkg.version}`,
-    dropboxAppKey: FITBOOK_DROPBOX_APP_KEY,
+    dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY,
   })
   await fsp.writeFile(path.join(distDir, 'login.html'), html, 'utf8')
 }
