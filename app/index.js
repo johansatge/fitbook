@@ -11,12 +11,25 @@ const nodeFeedFilter = document.querySelector('[data-js-feed-filter]')
 const nodeFeedFilterName = document.querySelector('[data-js-feed-filter-name]')
 const nodeLoader = document.querySelector('[data-js-loader]')
 const nodeFeed = document.querySelector('[data-js-feed]')
+
 const nodeAddButton = document.querySelector('[data-js-add-button]')
 const nodeAddMenu = document.querySelector('[data-js-add-menu]')
 const nodeAddOverlay = document.querySelector('[data-js-add-overlay]')
 const nodeAddForm = document.querySelector('[data-js-add-form]')
 const nodeAddCancel = document.querySelector('[data-js-add-cancel]')
 const nodeAddSave = document.querySelector('[data-js-add-save]')
+
+const nodeStopwatchOpen = document.querySelector('[data-js-stopwatch-open]')
+const nodeStopwatchOverlay = document.querySelector('[data-js-stopwatch-overlay]')
+const nodeStopwatchClose = document.querySelector('[data-js-stopwatch-close]')
+const nodeStopwatchStart = document.querySelector('[data-js-stopwatch-start]')
+const nodeStopwatchSetsField = document.querySelector('[data-js-stopwatch-sets-field]')
+const nodeStopwatchRestField = document.querySelector('[data-js-stopwatch-rest-field]')
+const nodeStopwatchFields = document.querySelector('[data-js-stopwatch-fields]')
+const nodeStopwatchCurrentSet = document.querySelector('[data-js-stopwatch-currentset]')
+const nodeStopwatchCurrentSetNumber = document.querySelector('[data-js-stopwatch-currentsetnumber]')
+const nodeStopwatchCurrentRest = document.querySelector('[data-js-stopwatch-currentrest]')
+
 const nodeMenuOverlay = document.querySelector('[data-js-menu-overlay]')
 const nodeMenuOverlayOpen = document.querySelector('[data-js-menu-overlay-open]')
 const nodeMenuOverlayBack = document.querySelector('[data-js-menu-overlay-back]')
@@ -31,6 +44,12 @@ const state = {
   fields: null,
   currentMonthId: null,
   currentAddWorkout: null,
+  stopwatch: {
+    currentSet: null,
+    totalSets: null,
+    restTime: null,
+    restTimeout: null,
+  },
 }
 
 function init() {
@@ -46,6 +65,10 @@ function init() {
   nodeAddMenu.addEventListener('change', onAddOpen)
   nodeAddCancel.addEventListener('click', onAddClose)
   nodeAddSave.addEventListener('click', onAddSave)
+  nodeStopwatchOpen.addEventListener('click', onStopwatchOpen)
+  nodeStopwatchClose.addEventListener('click', onStopwatchClose)
+  nodeStopwatchStart.addEventListener('click', onStopwatchStart)
+  nodeStopwatchCurrentSet.addEventListener('click', onStopwatchFinishSet)
   setLoading(true)
   getConfigAndMonths().then(({ months, workouts, fields }) => {
     state.months = months
@@ -137,6 +160,72 @@ function parseFieldValue(fieldName, rawValue) {
   return null
 }
 
+function onStopwatchOpen() {
+  nodeStopwatchSetsField.value = ''
+  nodeStopwatchRestField.value = ''
+  nodeStopwatchStart.innerText = 'Start'
+  nodeStopwatchFields.classList.add('js-visible')
+  nodeStopwatchCurrentSet.classList.remove('js-visible')
+  nodeStopwatchCurrentRest.classList.remove('js-visible')
+  nodeStopwatchOverlay.classList.add('js-visible')
+  nodeStopwatchSetsField.classList.remove('js-error')
+  nodeStopwatchRestField.classList.remove('js-error')
+}
+
+function onStopwatchClose() {
+  nodeStopwatchOverlay.classList.remove('js-visible')
+  clearTimeout(state.stopwatch.restTimeout)
+}
+
+function onStopwatchStart() {
+  clearTimeout(state.stopwatch.restTimeout)
+  const totalSets = parseInt(nodeStopwatchSetsField.value) || 0
+  nodeStopwatchSetsField.classList.toggle('js-error', totalSets <= 0)
+  const restTime = parseInt(nodeStopwatchRestField.value) || 0
+  nodeStopwatchRestField.classList.toggle('js-error', restTime <= 0)
+  if (totalSets <= 0 || restTime <= 0) {
+    return
+  }
+  nodeStopwatchStart.innerText = 'Restart'
+  nodeStopwatchFields.classList.remove('js-visible')
+  state.stopwatch.currentSet = 1
+  state.stopwatch.totalSets = totalSets
+  state.stopwatch.restTime = restTime
+  document.querySelector(':root').style.setProperty('--stopwatchRestTime', `${restTime}s`)
+  setStopWatchState('set')
+}
+
+function onStopwatchFinishSet() {
+  if (state.stopwatch.currentSet < state.stopwatch.totalSets) {
+    setStopWatchState('rest')
+    return
+  }
+  onStopwatchClose()
+}
+
+function setStopWatchState(currentState) {
+  if (currentState === 'set') {
+    nodeStopwatchCurrentSetNumber.innerText = `${state.stopwatch.currentSet}/${state.stopwatch.totalSets}`
+    nodeStopwatchCurrentSet.classList.add('js-visible')
+    nodeStopwatchCurrentRest.classList.remove('js-visible')
+  }
+  if (currentState === 'rest') {
+    nodeStopwatchCurrentSet.classList.remove('js-visible')
+    nodeStopwatchCurrentRest.classList.add('js-visible')
+    triggerStopwatchRestAnimation()
+    state.stopwatch.restTimeout = setTimeout(() => {
+      state.stopwatch.currentSet += 1
+      setStopWatchState('set')
+    }, state.stopwatch.restTime * 1000)
+  }
+}
+
+function triggerStopwatchRestAnimation() {
+  nodeStopwatchCurrentRest.classList.remove('js-animate')
+  void nodeStopwatchCurrentRest.offsetWidth
+  nodeStopwatchCurrentRest.classList.add('js-animate')
+}
+
 function onFeedClick(evt) {
   const toggleId = evt.target.dataset.jsFeedToggle
   if (!toggleId) {
@@ -216,4 +305,5 @@ function setFeedFilter() {
 function setLoading(isLoading) {
   nodeLoader.classList.toggle('js-visible', isLoading)
   nodeAddButton.classList.toggle('js-visible', !isLoading)
+  nodeStopwatchOpen.classList.toggle('js-visible', !isLoading)
 }

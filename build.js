@@ -121,6 +121,7 @@ async function buildCss() {
     'login',
     'addoverlay',
     'menuoverlay',
+    'stopwatchoverlay',
   ]
   let css = ''
   for (const file of files) {

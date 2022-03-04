@@ -34,12 +34,17 @@
         </button>
       </div>
     </div>
-    <span class="floatingbutton" data-js-add-button>
-      <svg class="svg-icon"><use href="#svg-add"></use></svg>
-      <select class="floatingbutton-actions" data-js-add-menu>
-        <option disabled>loading</option>
-      </select>
-    </span>
+    <div class="floatingbuttons">
+      <span class="floatingbutton" data-js-add-button>
+        <svg class="svg-icon"><use href="#svg-add"></use></svg>
+        <select class="floatingbutton-actions" data-js-add-menu>
+          <option disabled>loading</option>
+        </select>
+      </span>
+      <button class="floatingbutton" data-js-stopwatch-open>
+        <svg class="svg-icon"><use href="#svg-alarm_on"></use></svg>
+      </button>
+    </div>
     <div class="toast" data-js-toast>
       I am a toast
     </div>
@@ -53,6 +58,33 @@
         <div class="addoverlay-buttons">
           <button class="button" data-js-add-cancel>Cancel</button>
           <button class="button button--main" data-js-add-save>Save</button>
+        </div>
+      </div>
+    </div>
+    <div class="stopwatchoverlay" data-js-stopwatch-overlay>
+      <div class="stopwatchoverlay-form">
+        <div class="stopwatchoverlay-fields" data-js-stopwatch-fields>
+          <label class="stopwatchoverlay-field">
+            <svg class="stopwatchoverlay-icon svg-icon"><use href="#svg-forward_10"></use></svg>
+            <input type="number" class="stopwatchoverlay-input" data-js-stopwatch-sets-field placeholder="Sets" autocomplete="off">
+          </label>
+          <label class="stopwatchoverlay-field">
+            <svg class="stopwatchoverlay-icon svg-icon"><use href="#svg-alarm_on"></use></svg>
+            <input type="number" class="stopwatchoverlay-input" data-js-stopwatch-rest-field placeholder="Rest time" autocomplete="off">
+          </label>
+        </div>
+        <div class="stopwatchoverlay-currentset" data-js-stopwatch-currentset>
+          <div class="stopwatchoverlay-currentset-title">
+            Set <span data-js-stopwatch-currentsetnumber>X/Y</span>
+          </div>
+          Tap to end
+        </div>
+        <div class="stopwatchoverlay-currentrest" data-js-stopwatch-currentrest>
+          <div class="stopwatchoverlay-currentrest-title">Rest</div>
+        </div>
+        <div class="stopwatchoverlay-buttons">
+          <button class="button" data-js-stopwatch-close>Close</button>
+          <button class="button button--main" data-js-stopwatch-start>Start</button>
         </div>
       </div>
     </div>

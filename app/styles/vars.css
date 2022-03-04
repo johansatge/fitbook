@@ -18,8 +18,11 @@
   --fontSizeTitle: 20px;
   --fontSizeTextBig: 16px;
   --fontSizeText: 14px;
+  --fontSizeStopwatchBig: 32px;
 
   --fontWeightNormal: 500;
   --fontWeightLight: 400;
+
+  --stopwatchRestTime: 10s;
 }
 
