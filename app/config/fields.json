@@ -17,6 +17,12 @@
     "unit": "km",
     "icon": "map"
   },
+  "distance_m": {
+    "name": "Distance",
+    "type": "number",
+    "unit": "m",
+    "icon": "map"
+  },
   "speed_average": {
     "name": "Average speed",
     "type": "number",

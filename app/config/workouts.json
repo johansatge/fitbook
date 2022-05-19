@@ -47,9 +47,9 @@
     "fields": [
       "datetime",
       "duration",
-      "distance"
+      "distance_m"
     ],
-    "highlight": "distance"
+    "highlight": "distance_m"
   },
   "abs_roman_chair": {
     "name": "Abs (roman chair)",
@@ -118,6 +118,17 @@
   },
   "incline_press": {
     "name": "Incline press",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "shoulder_press": {
+    "name": "Shoulder press",
     "icon": "fitness_center",
     "fields": [
       "datetime",
