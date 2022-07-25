@@ -155,8 +155,8 @@
     "fields": [
       "datetime",
       "duration_s",
-      "reps"
+      "sets"
     ],
-    "highlight": "reps"
+    "highlight": "sets"
   }
 }
