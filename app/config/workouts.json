@@ -148,5 +148,15 @@
       "heartbeat_average"
     ],
     "highlight": "steps"
+  },
+  "plank": {
+    "name": "Plank",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "duration",
+      "reps"
+    ],
+    "highlight": "reps"
   }
 }
