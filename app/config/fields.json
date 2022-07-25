@@ -11,6 +11,12 @@
     "unit": "min",
     "icon": "alarm_on"
   },
+  "duration_s": {
+    "name": "Duration",
+    "type": "number",
+    "unit": "s",
+    "icon": "alarm_on"
+  },
   "distance": {
     "name": "Distance",
     "type": "number",

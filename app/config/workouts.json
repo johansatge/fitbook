@@ -154,7 +154,7 @@
     "icon": "fitness_center",
     "fields": [
       "datetime",
-      "duration",
+      "duration_s",
       "reps"
     ],
     "highlight": "reps"
