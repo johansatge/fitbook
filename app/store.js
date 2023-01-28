@@ -42,8 +42,8 @@ export function getAuthUrl() {
 }
 
 export function saveAccessTokenFromUrlAndRedirect() {
-  const matches = document.location.href.match(/access_token=([a-zA-Z0-9-_]+)/)
-  const token = matches && matches[1] ? matches[1] : null
+  const searchParams = new URLSearchParams(document.location.hash.substring(1))
+  const token = searchParams.get('access_token')
   if (token) {
     localStorage.setItem(localStorageTokenKey, token)
     document.location.href = '/'
@@ -83,7 +83,7 @@ async function getMonths() {
 
 function getAccessTokenFromStore() {
   const token = localStorage.getItem(localStorageTokenKey)
-  return typeof token === 'string' && token.search(/^[a-zA-Z0-9-_]+$/) === 0 ? token : null
+  return typeof token === 'string' && token.search(/^[a-zA-Z0-9-_.]+$/) === 0 ? token : null
 }
 
 function getDropboxInstance() {
