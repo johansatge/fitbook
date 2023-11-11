@@ -153,6 +153,9 @@ function parseFieldValue(fieldName, rawValue) {
   if (type === 'datetime') {
     return rawValue.match(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/) ? rawValue : null
   }
+  if (type === 'place') {
+    return ['gym', 'home'].includes(rawValue) ? rawValue : null
+  }
   if (type === 'number') {
     const number = parseFloat(rawValue)
     return !isNaN(number) ? number : null

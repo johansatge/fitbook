@@ -5,6 +5,12 @@
     "unit": "",
     "icon": "event"
   },
+  "place": {
+    "name": "Place",
+    "type": "place",
+    "unit": "",
+    "icon": "location_city"
+  },
   "duration": {
     "name": "Duration",
     "type": "number",

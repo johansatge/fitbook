@@ -62,7 +62,7 @@ Field types are stored in `app/config/fields.json`. Example:
 }
 ```
 
-Available icons are visible in `app/icons`.
+Available icons are visible in `app/icons` ([Material Symbols](https://fonts.google.com/icons)).
 
 ## Build and deployment
 
