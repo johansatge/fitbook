@@ -172,5 +172,14 @@
       "sets"
     ],
     "highlight": "sets"
+  },
+  "indoor_bouldering": {
+    "name": "Bouldering (indoor)",
+    "icon": "hiking",
+    "fields": [
+      "datetime",
+      "duration"
+    ],
+    "highlight": "duration"
   }
 }
