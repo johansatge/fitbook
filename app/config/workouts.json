@@ -152,7 +152,7 @@
   },
   "stair_climber": {
     "name": "Stair climber",
-    "icon": "trending_up",
+    "icon": "hiking",
     "fields": [
       "datetime",
       "place",
@@ -181,5 +181,16 @@
       "duration"
     ],
     "highlight": "duration"
+  },
+  "push_ups": {
+    "name": "Push-ups",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "reps",
+      "sets"
+    ],
+    "highlight": "sets"
   }
 }
