@@ -36,6 +36,7 @@ async function build() {
     const icons = await buildIcons()
     await renderIndexHtml({ assets, icons })
     await renderLoginHtml({ assets })
+    await fsp.copyFile(path.join(__dirname, '_headers'), path.join(distDir, '_headers'))
     const endTime = new Date().getTime()
     log(`Done in ${endTime - startTime}ms`)
   } catch (error) {
