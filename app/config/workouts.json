@@ -157,10 +157,10 @@
       "datetime",
       "place",
       "duration",
-      "steps",
+      "meters",
       "heartbeat_average"
     ],
-    "highlight": "steps"
+    "highlight": "meters"
   },
   "plank": {
     "name": "Plank",

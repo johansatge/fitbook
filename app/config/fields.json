@@ -77,10 +77,10 @@
     "unit": "kg",
     "icon": "fitness_center"
   },
-  "steps": {
-    "name": "Steps",
+  "meters": {
+    "name": "Meters",
     "type": "number",
-    "unit": "",
+    "unit": "m",
     "icon": "trending_up"
   }
 }
