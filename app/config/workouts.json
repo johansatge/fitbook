@@ -178,6 +178,7 @@
     "icon": "hiking",
     "fields": [
       "datetime",
+      "place",
       "duration"
     ],
     "highlight": "duration"
