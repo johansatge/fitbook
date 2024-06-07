@@ -78,7 +78,9 @@ async function getMonths() {
         hash: formatDate(entry.name.replace('.json', ''), 'MMMM-YYYY').toLowerCase(),
       }
     })
-    .reverse()
+    .sort((a, b) => {
+      return a.path > b.path ? -1 : a.path < b.path ? 1 : 0
+    })
 }
 
 function getAccessTokenFromStore() {
