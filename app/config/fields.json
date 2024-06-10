@@ -35,6 +35,12 @@
     "unit": "m",
     "icon": "map"
   },
+  "elevation": {
+    "name": "Elevation",
+    "type": "number",
+    "unit": "m",
+    "icon": "hiking"
+  },
   "speed_average": {
     "name": "Average speed",
     "type": "number",

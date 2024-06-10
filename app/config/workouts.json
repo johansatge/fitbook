@@ -37,6 +37,7 @@
       "place",
       "duration",
       "distance",
+      "elevation",
       "speed_average",
       "speed_max",
       "calories",
