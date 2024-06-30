@@ -5,7 +5,6 @@ const path = require('path')
 const pkg = require('./package.json')
 const crypto = require('crypto')
 const esbuild = require('esbuild')
-const { startLocalServer } = require('./server.js')
 
 try {
   const { FITBOOK_DROPBOX_APP_KEY } = require('./.env.js')
@@ -19,8 +18,21 @@ const distDir = path.join(__dirname, '.dist')
 
 build()
 if (process.argv.includes('--watch')) {
-  startLocalServer()
+  const httpdir = require('/usr/local/lib/node_modules/httpdir')
+  const server = httpdir.createServer({ basePath: '.dist', httpPort: 4000 })
+  server.onStart(({ urls }) => {
+    console.log(urls.join('\n'))
+  })
+  server.start()
   buildOnChange()
+}
+
+async function buildOnChange() {
+  console.log(`Watching ${srcDir}`)
+  fs.watch(srcDir, { recursive: true }, (evtType, file) => {
+    console.log(`Event ${evtType} on ${file}, building...`)
+    build()
+  })
 }
 
 async function build() {
