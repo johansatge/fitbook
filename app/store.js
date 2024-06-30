@@ -7,10 +7,22 @@ import workouts from './config/workouts.json'
 
 const localStorageTokenKey = 'dropboxAccessToken'
 
-const dbx = getDropboxInstance()
+let dbx = null
+const token = getAccessTokenFromStore()
+if (token) {
+  dbx = new Dropbox({ accessToken: token })
+}
 
-export function isStoreConnected() {
-  return getAccessTokenFromStore() ? true : false
+export async function isStoreConnected() {
+  if (!dbx) {
+    return false
+  }
+  try {
+    await dbx.usersGetCurrentAccount()
+    return true
+  } catch(error) {
+    return false
+  }
 }
 
 export function redirectToLogin() {
@@ -86,14 +98,6 @@ async function getMonths() {
 function getAccessTokenFromStore() {
   const token = localStorage.getItem(localStorageTokenKey)
   return typeof token === 'string' && token.search(/^[a-zA-Z0-9-_.]+$/) === 0 ? token : null
-}
-
-function getDropboxInstance() {
-  if (isStoreConnected()) {
-    const token = getAccessTokenFromStore()
-    return new Dropbox({ accessToken: token })
-  }
-  return null
 }
 
 async function getJsonFile(filePath, returnEmptyIfNotFound = false) {

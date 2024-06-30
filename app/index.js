@@ -52,8 +52,9 @@ const state = {
   },
 }
 
-function init() {
-  if (!isStoreConnected()) {
+async function init() {
+  const isConnected = await isStoreConnected()
+  if (!isConnected) {
     redirectToLogin()
   }
   nodeLogout.addEventListener('click', onLogout)
@@ -70,16 +71,15 @@ function init() {
   nodeStopwatchStart.addEventListener('click', onStopwatchStart)
   nodeStopwatchCurrentSet.addEventListener('click', onStopwatchFinishSet)
   setLoading(true)
-  getConfigAndMonths().then(({ months, workouts, fields }) => {
-    state.months = months
-    state.workouts = workouts
-    state.fields = fields
-    populateFeedFilter()
-    populateAddMenu()
-    setLoading(false)
-    setToast('Loaded app config')
-    onHashChangeLoadMonth()
-  })
+  const { months, workouts, fields } = await getConfigAndMonths()
+  state.months = months
+  state.workouts = workouts
+  state.fields = fields
+  populateFeedFilter()
+  populateAddMenu()
+  setLoading(false)
+  setToast('Loaded app config')
+  onHashChangeLoadMonth()
 }
 
 function onLogout() {
