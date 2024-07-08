@@ -35,7 +35,12 @@ export function clearAccessToken() {
 
 export function getConfigAndMonths() {
   const getters = [getMonths(), Promise.resolve(fields), Promise.resolve(workouts)]
-  return Promise.all(getters).then(([months, fields, workouts]) => {
+  return Promise.all(getters).then(([months, fields, workoutsJson]) => {
+    const workouts = Object.fromEntries(
+      Object.entries(workoutsJson).sort((a, b) => {
+        return a[1].name > b[1].name ? 1 : (a[1].name < b[1].name ? -1 : 0)
+      })
+    )
     return {
       months,
       workouts,

@@ -15,7 +15,7 @@
     "highlight": "distance"
   },
   "bike": {
-    "name": "Indoor bike",
+    "name": "Bike (indoor)",
     "icon": "directions_bike",
     "fields": [
       "datetime",
@@ -141,6 +141,30 @@
   },
   "shoulder_press": {
     "name": "Shoulder press",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "chest_press": {
+    "name": "Chest press",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
+  "leg_press": {
+    "name": "Leg press",
     "icon": "fitness_center",
     "fields": [
       "datetime",
