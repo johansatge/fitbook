@@ -1,4 +1,3 @@
-const ejs = require('ejs')
 const fs = require('fs')
 const fsp = require('fs').promises
 const path = require('path')
@@ -13,11 +12,12 @@ try {
   /* do nothing */
 }
 
-const srcDir = path.join(__dirname, 'app')
+const srcDir = path.join(__dirname, 'src')
 const distDir = path.join(__dirname, '.dist')
 
+const isWatching = process.argv.includes('--watch')
 build()
-if (process.argv.includes('--watch')) {
+if (isWatching) {
   const httpdir = require('/usr/local/lib/node_modules/httpdir')
   const server = httpdir.createServer({ basePath: '.dist', httpPort: 4000 })
   server.onStart(({ urls }) => {
@@ -39,35 +39,24 @@ async function build() {
   try {
     const startTime = new Date().getTime()
     await cleanDist()
-    const ejsTemplates = await buildEjsTemplates()
-    const assets = {}
-    const { indexJs, loginJs } = await buildJs(ejsTemplates)
-    assets.index = indexJs
-    assets.login = loginJs
-    assets.styles = await buildCss()
-    const icons = await buildIcons()
-    await renderIndexHtml({ assets, icons })
-    await renderLoginHtml({ assets })
+    const jsFilename = await buildJs()
+    const cssFilename = await buildCss()
+    const iconsSvg = await buildIcons()
+    await buildHtml({ jsFilename, cssFilename, iconsSvg })
     await fsp.copyFile(path.join(__dirname, '_headers'), path.join(distDir, '_headers'))
     const endTime = new Date().getTime()
-    log(`Done in ${endTime - startTime}ms`)
+    console.log(`Done in ${endTime - startTime}ms`)
   } catch (error) {
-    log(error.message)
-    log(error.stack)
-    process.exit(1)
+    console.log(error.message)
+    console.log(error.stack)
+    if (!isWatching) {
+      process.exit(1)
+    }
   }
 }
 
-async function buildOnChange() {
-  log(`Watching ${srcDir}`)
-  fs.watch(srcDir, { recursive: true }, (evtType, file) => {
-    log(`Event ${evtType} on ${file}, building...`)
-    build()
-  })
-}
-
 async function cleanDist() {
-  log(`Cleaning ${distDir}`)
+  console.log(`Cleaning ${distDir}`)
   try {
     await fsp.rm(distDir, { recursive: true })
   } catch (error) {
@@ -76,69 +65,58 @@ async function cleanDist() {
   await fsp.mkdir(distDir, { recursive: true })
 }
 
-async function buildEjsTemplates() {
-  log('Building EJS templates')
-  const feed = await buildEjsTemplate('app/feed.ejs')
-  const add = await buildEjsTemplate('app/add.ejs')
-  return { feed, add }
-}
-
-async function buildEjsTemplate(templatePath) {
-  const contents = await fsp.readFile(templatePath, 'utf8')
-  const compiled = ejs.compile(contents, {
-    client: true,
-    compileDebug: false,
-    strict: true,
-    localsName: 'data',
-  })
-  return compiled.toString()
-}
-
-async function buildJs(ejsTemplates) {
-  log('Building JS assets')
+async function buildJs() {
+  console.log('Building JS assets')
   const result = await esbuild.build({
-    entryPoints: [path.join(__dirname, 'app/index.js'), path.join(__dirname, 'app/login.js')],
+    entryPoints: [path.join(srcDir, 'jsx/index.jsx')],
     bundle: true,
     minify: true,
     entryNames: '[name].[hash]',
     outdir: distDir,
     metafile: true,
-    define: {
-      __DROPBOX_APP_KEY__: JSON.stringify(process.env.FITBOOK_DROPBOX_APP_KEY),
-      __EJS_FEED__: JSON.stringify(ejsTemplates.feed),
-      __EJS_ADD__: JSON.stringify(ejsTemplates.add),
-    },
-    external: ['crypto', 'util'], // Dropbox is using those for Node compat
+    jsxFactory: 'h',
+    jsxFragment: 'Fragment',
+    external: ['crypto', 'util'], // Dropbox is using these for Node compat
   })
   if (result.errors.length > 0) {
     throw new Error(result.errors[0])
   }
   const assets = Object.keys(result.metafile.outputs)
-  return {
-    indexJs: path.parse(assets[0]).base,
-    loginJs: path.parse(assets[1]).base,
-  }
+  return path.parse(assets[0]).base
+}
+
+async function buildHtml({ jsFilename, cssFilename, iconsSvg }) {
+  console.log('Building HTML')
+  let html = await fsp.readFile(path.join(srcDir, 'index.html'), 'utf8')
+  html = html.replaceAll('__appTitle__', pkg.name)
+  html = html.replaceAll('__appTitleFull__', `${pkg.name} ${pkg.version}`)
+  html = html.replaceAll('__jsFilename__', jsFilename)
+  html = html.replaceAll('__cssFilename__', cssFilename)
+  html = html.replaceAll('__iconsSvg__', iconsSvg)
+  html = html.replaceAll('__dropboxAppKey__', process.env.FITBOOK_DROPBOX_APP_KEY)
+  await fsp.writeFile(path.join(distDir, 'index.html'), html, 'utf8')
 }
 
 async function buildCss() {
-  log('Building CSS assets')
+  console.log('Building CSS assets')
   const files = [
     'vars',
     'reset',
+    'initialloader',
     'button',
     'navbar',
     'floatingbutton',
-    'toast',
     'feed',
     'footer',
     'login',
     'addoverlay',
     'menuoverlay',
     'stopwatchoverlay',
+    'toast',
   ]
   let css = ''
   for (const file of files) {
-    const contents = await fsp.readFile(path.join(__dirname, `app/styles/${file}.css`), 'utf8')
+    const contents = await fsp.readFile(path.join(srcDir, `css/${file}.css`), 'utf8')
     css += contents + '\n\n'
   }
   css = css.replace(/\n/g, ' ')
@@ -151,41 +129,13 @@ async function buildCss() {
 }
 
 async function buildIcons() {
-  log('Building SVG icons')
-  const iconsPath = path.join(__dirname, 'app/icons')
+  console.log('Building SVG icons')
+  const iconsPath = path.join(srcDir, 'icons')
   const files = (await fsp.readdir(iconsPath)).filter((file) => file.endsWith('.svg'))
   const svgs = []
   for (const file of files) {
     const svg = await fsp.readFile(path.join(iconsPath, file), 'utf8')
     svgs.push(svg.replace('<svg ', `<svg id="svg-${path.parse(file).name}" `))
   }
-  return svgs
-}
-
-async function renderIndexHtml({ assets, icons }) {
-  log('Rendering HTML (index)')
-  const ejsTemplate = await fsp.readFile(path.join(__dirname, 'app/index.ejs'), 'utf8')
-  const html = ejs.render(ejsTemplate, {
-    assets,
-    icons,
-    appTitle: pkg.name,
-    appTitleFull: `${pkg.name} ${pkg.version}`,
-  })
-  await fsp.writeFile(path.join(distDir, 'index.html'), html, 'utf8')
-}
-
-async function renderLoginHtml({ assets }) {
-  log('Rendering HTML (login)')
-  const ejsTemplate = await fsp.readFile(path.join(__dirname, 'app/login.ejs'), 'utf8')
-  const html = ejs.render(ejsTemplate, {
-    assets,
-    appTitle: pkg.name,
-    appTitleFull: `${pkg.name} ${pkg.version}`,
-    dropboxAppKey: process.env.FITBOOK_DROPBOX_APP_KEY,
-  })
-  await fsp.writeFile(path.join(distDir, 'login.html'), html, 'utf8')
-}
-
-function log(message) {
-  console.log(message) // eslint-disable-line no-console
+  return svgs.join('\n')
 }
