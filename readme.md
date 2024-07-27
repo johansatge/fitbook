@@ -74,4 +74,4 @@ npm run build
 
 Assets are built in `.dist`.
 
-Deployment is handled by [Netlify](https://www.netlify.com/), when pushing updates on `master`.
+Deployment is handled by [Cloudflare Pages](https://pages.cloudflare.com/), when pushing updates on `master`.

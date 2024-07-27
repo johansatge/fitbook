@@ -1,6 +1,6 @@
 {
   "name": "fitbook",
-  "version": "2.1.0",
+  "version": "3.1.0",
   "description": "Fitness log book",
   "private": true,
   "scripts": {
@@ -20,10 +20,8 @@
   "license": "MIT",
   "dependencies": {
     "dropbox": "^10.34.0",
-    "ejs": "^3.1.6",
-    "esbuild": "^0.14.10",
-    "eslint": "^8.6.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.5.1"
+    "esbuild": "^0.23.0",
+    "htm": "^3.1.1",
+    "preact": "^10.22.1"
   }
 }
