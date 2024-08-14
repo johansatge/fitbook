@@ -175,6 +175,18 @@
     ],
     "highlight": "weight"
   },
+  "glute_press": {
+    "name": "Glute press",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
+  },
   "stair_climber": {
     "name": "Stair climber",
     "icon": "hiking",
