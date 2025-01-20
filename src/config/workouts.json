@@ -241,5 +241,17 @@
       "sets"
     ],
     "highlight": "sets"
+  },
+  "triceps_press": {
+    "name": "Triceps press",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "reps",
+      "sets",
+      "weight"
+    ],
+    "highlight": "weight"
   }
 }
