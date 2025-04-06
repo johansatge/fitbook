@@ -264,5 +264,16 @@
       "weight"
     ],
     "highlight": "weight"
+  },
+  "hanging_knee_raises": {
+    "name": "Hanging knee raises",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "reps",
+      "sets"
+    ],
+    "highlight": "sets"
   }
 }
