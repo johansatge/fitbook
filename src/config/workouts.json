@@ -220,6 +220,17 @@
     ],
     "highlight": "duration"
   },
+  "pull_ups": {
+    "name": "Pull-ups",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "reps",
+      "sets"
+    ],
+    "highlight": "sets"
+  },
   "push_ups": {
     "name": "Push-ups",
     "icon": "fitness_center",
