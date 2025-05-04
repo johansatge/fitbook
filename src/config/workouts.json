@@ -141,7 +141,7 @@
   },
   "shoulder_press": {
     "name": "Shoulder press",
-    "icon": "fitness_center",
+    "icon": "emoji_people",
     "fields": [
       "datetime",
       "place",
@@ -165,7 +165,7 @@
   },
   "leg_press": {
     "name": "Leg press",
-    "icon": "fitness_center",
+    "icon": "femur_alt",
     "fields": [
       "datetime",
       "place",
@@ -177,7 +177,7 @@
   },
   "glute_press": {
     "name": "Glute press",
-    "icon": "fitness_center",
+    "icon": "femur_alt",
     "fields": [
       "datetime",
       "place",
@@ -222,7 +222,7 @@
   },
   "pull_ups": {
     "name": "Pull-ups",
-    "icon": "fitness_center",
+    "icon": "tools_ladder",
     "fields": [
       "datetime",
       "place",
@@ -233,7 +233,7 @@
   },
   "push_ups": {
     "name": "Push-ups",
-    "icon": "fitness_center",
+    "icon": "emoji_people",
     "fields": [
       "datetime",
       "place",
@@ -244,7 +244,7 @@
   },
   "squats": {
     "name": "Squats",
-    "icon": "fitness_center",
+    "icon": "femur_alt",
     "fields": [
       "datetime",
       "place",
@@ -255,7 +255,7 @@
   },
   "triceps_press": {
     "name": "Triceps press",
-    "icon": "fitness_center",
+    "icon": "emoji_people",
     "fields": [
       "datetime",
       "place",
@@ -278,7 +278,7 @@
   },
   "hangboarding": {
     "name": "Hangboarding",
-    "icon": "fitness_center",
+    "icon": "altitude",
     "fields": [
       "datetime",
       "place",
@@ -286,6 +286,6 @@
       "duration_s",
       "hold"
     ],
-    "highlight": "sets"
+    "highlight": "hold"
   }
 }
