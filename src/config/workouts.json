@@ -275,5 +275,17 @@
       "sets"
     ],
     "highlight": "sets"
+  },
+  "hangboarding": {
+    "name": "Hangboarding",
+    "icon": "fitness_center",
+    "fields": [
+      "datetime",
+      "place",
+      "sets",
+      "duration_s",
+      "hold"
+    ],
+    "highlight": "sets"
   }
 }

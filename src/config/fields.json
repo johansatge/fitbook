@@ -88,5 +88,11 @@
     "type": "number",
     "unit": "m",
     "icon": "trending_up"
+  },
+  "hold": {
+    "name": "Hold",
+    "type": "string",
+    "unit": "",
+    "icon": "trending_up"
   }
 }
