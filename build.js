@@ -44,6 +44,7 @@ async function build() {
     const iconsSvg = await buildIcons()
     await buildHtml({ jsFilename, cssFilename, iconsSvg })
     await fsp.copyFile(path.join(__dirname, '_headers'), path.join(distDir, '_headers'))
+    await fsp.copyFile(path.join(srcDir, '404.html'), path.join(distDir, '404.html'))
     const endTime = new Date().getTime()
     console.log(`Done in ${endTime - startTime}ms`)
   } catch (error) {
